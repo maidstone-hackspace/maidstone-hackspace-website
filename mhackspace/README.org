@@ -1,0 +1,13 @@
+
+
+First build your containers locally if needed, only needed when you first start or if requirements change.
+
+#+BEGIN_SRC sh
+docker-compose -fdev.yml build
+#+END_SRC
+
+Startup your new containers containing a database and django 
+
+#+BEGIN_SRC sh
+docker-compose -fdev up
+#+END_SRC
