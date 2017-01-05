@@ -27,7 +27,6 @@ services:
     build: ./compose/nginx
     depends_on:
       - django
-
       - certbot
 
     ports:

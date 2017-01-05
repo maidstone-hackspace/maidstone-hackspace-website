@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     # custom users app
     'mhackspace.users.apps.UsersConfig',
+    'mhackspace.feeds',
     # Your stuff: custom apps go here
 )
 

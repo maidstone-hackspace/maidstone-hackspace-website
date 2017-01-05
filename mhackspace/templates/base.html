@@ -43,6 +43,21 @@
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Chat</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Donate</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Contat</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Mailing List</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Login</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{% url 'about' %}">About</a>
               </li>
             </ul>
@@ -82,7 +97,25 @@
       {% endblock content %}
 
     </div> <!-- /container -->
-
+    <footer class="footer">
+      <div class="m-b-1 navbar-dark bg-inverse">&nbsp;</div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div mailing-list-signup="" class="google-groups-signup">
+              <h3>Signup  and make yourself known</h3>
+              <form class="block" name="signup" method="get" action="https://groups.google.com/group/maidstone-hackspace/boxsubscribe">
+                <label for="groups-email">Email Address</label>
+                <input id="groups-email" name="email" class="required">
+                <button type="submit">Subscribe</button>
+                <a href="http://groups.google.com/group/maidstone-hackspace">View Group</a>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-6">©2016 Maidstone Hackspace</div>
+        </div>
+      </div>
+    </footer>
     {% block modal %}{% endblock modal %}
 
     <!-- Le javascript

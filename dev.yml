@@ -26,18 +26,13 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
+      - "8180:8000"
     links:
       - postgres
-
       - mailhog
-
-
-
-
 
   mailhog:
     image: mailhog/mailhog
     ports:
-      - "8025:8025"
+      - "8025:8125"
 

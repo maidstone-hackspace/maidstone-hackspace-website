@@ -1,1 +1,8 @@
 {% extends "base.html" %}
+{% load feed_views %}
+
+{% block content %}
+  <h2>Introduction</h2>
+  Hackspaces are a shared space where artists, designers, makers, hackers, programmers, tinkerers, professionals and hobbyists can work on their projects, share knowledge and collaborate.We are in the process of developing Maidstone Hackspace. We're previous members of (ICMP) and looking to form a new space in the future. At the moment, communication is via google groups, email, and the website. If you're at all intrested please join our mailing list and make yourself known!
+  {% show_feeds %}
+{% endblock content %}

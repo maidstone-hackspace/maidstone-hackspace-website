@@ -1,0 +1,22 @@
+Maker feed
+
+<div class="card-deck-wrapper">
+  <div class="card-deck">
+    {% for feed in feeds %}
+      <div class="card">
+        <img class="card-img-top img-responsive" src="{{ feed.image }}" alt="Card image cap" style="width:100%">
+        <div class="card-block">
+          <h4 class="card-title">{{ feed.title }}</h4>
+          <p class="card-text">{{ feed.author }}</p>
+        </div>
+        <div class="card-block">
+          <p class="card-text">{{ feed.description }}</p>
+        </div>
+        <div class="card-block">
+          <a href="{{ feed.url }}" class="card-link">View Original</a>
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 %}</div><div class="card-deck">{% endif %}
+    {% endfor %}
+  </div>
+</div>
