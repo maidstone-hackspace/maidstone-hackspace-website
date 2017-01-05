@@ -47,6 +47,7 @@ LOCAL_APPS = (
     # custom users app
     'mhackspace.users.apps.UsersConfig',
     'mhackspace.feeds',
+    'mhackspace.contact',
     # Your stuff: custom apps go here
 )
 

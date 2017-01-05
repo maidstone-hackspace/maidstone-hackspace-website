@@ -12,7 +12,7 @@
     <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
-
+    <link rel="icon" type="image/png" href="/static/images/favicon.png">
     {% block css %}
     <!-- Latest compiled and minified Bootstrap 4 Alpha 4 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" integrity="sha384-2hfp1SzUoho7/TsGGGDaFdsuuDL0LX2hnUp6VkX3CUQ2K4K+xjboZdsXyp4oUHZj" crossorigin="anonymous">
@@ -23,7 +23,6 @@
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     {% endcompress %}
     {% endblock %}
-
   </head>
 
   <body>
@@ -43,16 +42,16 @@
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Chat</a>
+                <a class="nav-link" href="{% url 'chat' %}">Chat</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">Donate</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Contat</a>
+                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Mailing List</a>
+                <a class="nav-link" href="{% url 'group' %}">Mailing List</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">Login</a>

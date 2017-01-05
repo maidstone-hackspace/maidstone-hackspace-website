@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load feed_views %}
+
+{% block content %}
+  <h2>Mailing list</h2>
+  <iframe id="forum_embed" src="javascript:void(0)" style="background-color:#fff;width:100%;" scrolling="no" frameborder="0" width="900" height="700"></iframe>
+
+{% endblock content %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script type="text/javascript">
+   document.getElementById("forum_embed").src = "https://groups.google.com/forum/embed/?place=forum/maidstone-hackspace" + "&showsearch=true&showpopout=true&parenturl=" + encodeURIComponent(window.location.href);
+  </script>
+{% endblock %}

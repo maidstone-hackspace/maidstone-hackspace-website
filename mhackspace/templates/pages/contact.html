@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load recapture %}
+
+{% block content %}
+  <h2>Contact us</h2>
+
+  <form method="POST" action="{% url 'account_change_password' %}" class="password_change">
+    {% csrf_token %}
+    {{ form|crispy }}
+    {{ google_capture }}
+    <button class="btn btn-primary" type="submit" name="action">{% trans "Send" %}</button>
+  </form>
+
+{% endblock content %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
