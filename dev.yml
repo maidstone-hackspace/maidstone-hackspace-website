@@ -34,5 +34,5 @@ services:
   mailhog:
     image: mailhog/mailhog
     ports:
-      - "8025:8125"
+      - "8125:8025"
 

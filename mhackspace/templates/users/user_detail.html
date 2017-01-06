@@ -6,6 +6,32 @@
 {% block content %}
 <div class="container">
 
+<h2>Profile</h2>
+<div class="row">
+  <div class="col-md-6">
+    <img src="{{ MEDIA_URL }}{{ user.image }}" alt="Profile image"/>
+
+    <p>{{ user.username }}</p>
+    <p>{{ user.name }}</p>
+    <p>{{ user.email }}</p>
+    <p>Last login {{ user.last_login}}</p>
+    <p>Member since</p>
+    <p>Description: {{ blurb.description }}</p>
+    <p>Skills: {{ blurb.description }}</p>
+  </div>
+  <div class="col-md-6">
+    <div id="membercard" class="registered">
+      <div class="date">Joined </div>
+      <div class="container">
+        <div class="middle">
+          <p>MHS{{ user.id|stringformat:"05d" }}</p><p>Change me</p>
+          <a href="/profile/membership/cancel">Cancel Membership</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <div class="row">
     <div class="col-sm-12">
 

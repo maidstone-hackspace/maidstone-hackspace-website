@@ -40,3 +40,11 @@ docker-compose -f dev.yml run django python manage.py migrate
 #+BEGIN_SRC sh
 docker-compose -f dev.yml run django python manage.py createsuperuser
 #+END_SRC
+
+
+** Migrations / Managing default data
+If you want to export some data you entered into the admin area you can use =dumpdata= and =loaddata= to export and import.
+
+#+BEGIN_SRC sh
+docker-compose -fdev.yml run django python manage.py dumpdata feeds > mhackspace/feeds/fixtures/default.json
+#+END_SRC

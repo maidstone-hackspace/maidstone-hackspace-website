@@ -17,6 +17,7 @@ urlpatterns = [
 
     url(r'^contact/$', contact, name='contact'),
 
+    # need to be logged in for these urls
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
 
