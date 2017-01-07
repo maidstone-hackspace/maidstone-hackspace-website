@@ -17,6 +17,7 @@ django-braces==1.10.0
 django-crispy-forms==1.6.1
 
 # Models
+django-stdimage
 django-model-utils==2.6
 
 # Images

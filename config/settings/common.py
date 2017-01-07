@@ -28,6 +28,7 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'stdimage',
 
     # Useful template tags:
     # 'django.contrib.humanize',

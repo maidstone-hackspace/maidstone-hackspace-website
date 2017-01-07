@@ -26,7 +26,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
+      - "8180:8000"
     links:
       - postgres
       - mailhog
@@ -36,3 +36,5 @@ services:
     ports:
       - "8125:8025"
 
+  redis:
+    image: redis:latest

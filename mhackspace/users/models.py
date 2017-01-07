@@ -7,12 +7,20 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-
+from stdimage.models import StdImageField
 
 @python_2_unicode_compatible
 class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
-    image = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    image = StdImageField(
+        upload_to='avatars/',
+        blank=True,
+        null=True,
+        variations={
+            'profile': {
+                "width": 256,
+                "height": 256,
+                "crop": True}})
 
     def __str__(self):
         return self.username
