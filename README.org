@@ -46,5 +46,6 @@ docker-compose -f dev.yml run django python manage.py createsuperuser
 If you want to export some data you entered into the admin area you can use =dumpdata= and =loaddata= to export and import.
 
 #+BEGIN_SRC sh
-docker-compose -fdev.yml run django python manage.py dumpdata feeds > mhackspace/feeds/fixtures/default.json
+docker-compose -fdev.yml run django python manage.py dumpdata feeds > mhackspace/feeds/fixtures/defaults.json
+docker-compose -fdev.yml run django python manage.py loaddata mhackspace/feeds/fixtures/defaults.json
 #+END_SRC

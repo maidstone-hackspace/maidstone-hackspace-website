@@ -17,4 +17,4 @@ def show_feeds():
         })
 
     result = feed_reader(rss_feeds)
-    return {'feeds': [item for item in result]}
+    return {'articles': [item for item in result]}
