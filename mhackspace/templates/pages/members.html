@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+Members feed
+
+<div class="row">
+  <div class="">Users {{ paginator.count }}</div>
+  <div class="">Members {{ total }}</div>
+</div>
+
+<div class="card-deck-wrapper">
+  <div class="card-deck">
+    {% for member in members %}
+      <div class="card">
+        <img class="card-img-top img-responsive" src="{{ MEDIA_URL }}{{ member.image }}" alt="Card image cap" style="width:100%">
+        <div class="card-block">
+          <h4 class="card-title">{{ member.name }}</h4>
+          <p class="card-text">{{ member.users.description }}</p>
+          <p class="card-text">{{ member.users.skills }}</p>
+
+          {% for group in member.groups.all %}
+          {{ group.name }}
+          {% endfor %}
+        </div>
+        <div class="card-block">
+          <p class="card-text">{{ member.userblurb }}</p>
+        </div>
+        <div class="card-block">
+          <a href="{{ feed.url }}" class="card-link">View Original</a>
+        </div>
+      </div>
+      {% if forloop.counter|divisibleby:3 %}</div><div class="card-deck">{% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

@@ -22,7 +22,7 @@ class User(AbstractUser):
 
 
 class UserBlurb(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL) 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='users') 
     skills = models.CharField(max_length=255)
     description = models.TextField()
 

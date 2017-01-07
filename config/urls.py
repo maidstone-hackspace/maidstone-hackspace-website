@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from mhackspace.contact.views import contact
+from mhackspace.members.views import MemberListView
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -18,6 +19,8 @@ urlpatterns = [
     url(r'^contact/$', contact, name='contact'),
 
     # need to be logged in for these urls
+    url(r'^members/$', MemberListView.as_view(), name='members'),
+
     # Django Admin, use {% url 'admin:index' %}
     url(settings.ADMIN_URL, admin.site.urls),
 

@@ -1,5 +1,6 @@
 pipeline:
   backend:
+    image: maidstonehackspacewebsite_django
     commands:
       - python manage.py test
 

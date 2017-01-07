@@ -49,6 +49,7 @@ LOCAL_APPS = (
     'mhackspace.users.apps.UsersConfig',
     'mhackspace.feeds',
     'mhackspace.contact',
+    'mhackspace.members',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
