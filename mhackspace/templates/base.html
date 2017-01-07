@@ -13,9 +13,19 @@
   <!--[if lt IE 9]>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
     <![endif]-->
-  <link rel="icon" type="image/png" href="/static/images/favicon.png">
-  {% block css %}
 
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}" sizes="32x32">
+  <link rel="icon" type="image/png" href="{% static 'images/favicon-16x16.png' %}" sizes="16x16">
+  <link rel="manifest" href="{% static 'manifest.json' %}/static/">
+  <link rel="mask-icon" href="{% static 'images/safari-pinned-tab.svg' %}" color="#008080">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+  <meta name="apple-mobile-web-app-title" content="Maidstone Hackspace">
+  <meta name="application-name" content="Maidstone Hackspace">
+  <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
+  <meta name="theme-color" content="#008080">
+
+  {% block css %}
     <!-- Your stuff: Third-party CSS libraries go here -->
     {#    { compress css }#}
     <!-- This file stores project-specific CSS -->
@@ -33,7 +43,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="/">
-      <img src="/static/images/logo.svg" alt="Maidstone Hackspace Logo" id="navbar-logo">
+      <img src="{% static 'images/logo.svg' %}" alt="Maidstone Hackspace Logo" id="navbar-logo">
       Maidstone Hackspace
     </a>
 
