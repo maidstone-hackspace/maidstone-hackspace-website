@@ -1,6 +1,9 @@
 pipeline:
   backend:
     image: maidstonehackspacewebsite_django
+    environment:
+      - POSTGRES_USER=mhackspace
+      - USE_DOCKER=yes
     commands:
       - python manage.py test
 
@@ -37,6 +40,4 @@ services:
 
   mailhog:
     image: mailhog/mailhog
-    ports:
-      - "8125:8025"
 

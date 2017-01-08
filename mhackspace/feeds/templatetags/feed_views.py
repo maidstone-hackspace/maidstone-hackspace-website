@@ -6,4 +6,4 @@ register = template.Library()
 
 @register.inclusion_tag('feeds/list.html')
 def show_feeds():
-    return {'articles': Article.objects.filter(displayed=True).select_related('feed').order_by('-date')}
+    return {'articles': Article.objects.filter(displayed=True)}

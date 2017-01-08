@@ -20,8 +20,8 @@ def import_feeds(feed=False):
     articles = []
     for article in rss_articles:
         articles.append(Article(
-            url=article['url'],  # @olymk2 why cant I do article.url here?
-            feed=Feed.objects.get(pk=1),  # fixme: Nice hack :)
+            url=article['url'],
+            feed=Feed.objects.get(pk=article['id']),
             title=article['title'],
             original_image=article['image'],
             description=article['description'],
@@ -72,6 +72,7 @@ def get_active_feeds(feed=False):
         if feed.enabled is False:
             continue
         rss_feeds.append({
+            'id': feed.id,
             'author': feed.author,
             'url': feed.feed_url
         })

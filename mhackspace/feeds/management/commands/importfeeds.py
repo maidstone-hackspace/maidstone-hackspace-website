@@ -16,4 +16,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         imported = import_feeds(options['blog_id'])
-        self.stdout.write(self.style.SUCCESS('Successfully imported %s articles' % len(imported)))
+        self.stdout.write(
+            self.style.SUCCESS(
+                'Successfully imported %s articles' % len(imported)))
