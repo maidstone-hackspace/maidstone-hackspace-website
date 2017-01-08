@@ -2,19 +2,54 @@
 from __future__ import unicode_literals, absolute_import
 
 from django.db import models
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
+from stdimage.models import StdImageField
+from stdimage.utils import UploadToAutoSlugClassNameDir
+
+from mhackspace.users.models import User
 
 
 @python_2_unicode_compatible
 class Feed(models.Model):
-    id = models.AutoField(primary_key=True)
-    url = models.CharField(max_length=255)
+    home_url = models.URLField(verbose_name="Site Home Page")
+    feed_url = models.URLField(verbose_name="RSS Feed URL")
+    title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     tags = models.CharField(max_length=255, blank=True)
-    image = models.ImageField(blank=True)
+    image = StdImageField(
+        upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
+        blank=True,
+        null=True,
+        variations={
+            'home': {
+                "width": 530,
+                "height": 220,
+                "crop": True}})
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.url
+        return self.title
 
+
+class Article(models.Model):
+    url = models.URLField()
+    feed = models.ForeignKey(Feed)
+    title = models.CharField(max_length=255)
+    original_image = models.URLField(max_length=255, blank=True, null=True)
+    image = StdImageField(
+        upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
+        blank=True,
+        null=True,
+        variations={
+            'home': {
+                "width": 530,
+                "height": 220,
+                "crop": True}})
+
+    description = models.TextField()
+    displayed = models.BooleanField(default=True)
+    date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.title

@@ -1,10 +1,15 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
 <div class="card-columns" id="feeds">
   {% for article in articles %}
-    <div class="card" style="width: 20rem;">
-      <img class="card-img-top img-fluid" src="{{ article.image }}" alt="{{ article.title }}">
+    <div class="card">
+      <a href="{{ article.url }}">
+        <img class="card-img-top img-fluid" alt="{{ article.title }}"
+             src="{% firstof article.image.home.url article.feed.image.home.url "static/images/card.png" %}">
+      </a>
       <div class="card-block">
-        <h4 class="card-title">{{ article.title }}</h4>
-        <p class="card-text">{{ article.author }}</p>
+        <a href="{{ article.url }}" class="card-link"><h4 class="card-title">{{ article.title }}</h4></a>
+        <p class="card-text">{{ article.feed.author }}</p>
         <p class="card-text">{{ article.description|striptags }}</p>
         <a href="{{ article.url }}" class="card-link">View Original</a>
       </div>

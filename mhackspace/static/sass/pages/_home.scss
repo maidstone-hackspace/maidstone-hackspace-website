@@ -1,0 +1,23 @@
+.card-columns {
+  @include media-breakpoint-down(md) {
+    column-count: 2;
+  }
+  @include media-breakpoint-down(sm) {
+    column-count: 1;
+
+  }
+}
+
+.card {
+  @include media-breakpoint-down(sm) {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.card-title {
+  color: $body-color;
+}
+
+#feeds img {
+  width: 100%;
+}

@@ -1,4 +1,5 @@
-media/*
+mhackspace/media/*
 .idea/
 __pycache__/
 node_modules
+src

@@ -3,8 +3,10 @@
     "model": "feeds.feed",
     "pk": 1,
     "fields": {
-      "url": "http://waistcoatforensicator.blogspot.com/feeds/posts/default?alt=rss",
-      "author": "Simon Ridley",
+      "home_url": "http://thearduinoguy.org/",
+      "feed_url": "http://thearduinoguy.org/?feed=rss2",
+      "title": "The Arduino Guy",
+      "author": "Mike McRoberts",
       "tags": "",
       "image": "",
       "enabled": true
@@ -14,19 +16,23 @@
     "model": "feeds.feed",
     "pk": 2,
     "fields": {
-      "url": "http://www.matthewbeddow.co.uk/?feed=rss2",
-      "author": "Mathew Beddow",
-      "tags": "tech",
+      "home_url": "http://waistcoatforensicator.blogspot.com/",
+      "feed_url": "http://waistcoatforensicator.blogspot.com/feeds/posts/default?alt=rss",
+      "title": "Waistcoat Forensicator",
+      "author": "Simon Ridley",
+      "tags": "",
       "image": "",
-      "enabled": true
+      "enabled": false
     }
   },
   {
     "model": "feeds.feed",
     "pk": 3,
     "fields": {
-      "url": "http://blog.digitaloctave.co.uk/rss.xml",
-      "author": "Oliver Marks",
+      "home_url": "http://www.matthewbeddow.co.uk/",
+      "feed_url": "http://www.matthewbeddow.co.uk/?feed=rss2",
+      "title": "Mathew Beddow",
+      "author": "Mathew Beddow",
       "tags": "",
       "image": "",
       "enabled": true
@@ -36,8 +42,10 @@
     "model": "feeds.feed",
     "pk": 4,
     "fields": {
-      "url": "http://webboggles.com/feed/",
-      "author": "Ilya Titov",
+      "home_url": "http://blog.digitaloctave.co.uk",
+      "feed_url": "http://blog.digitaloctave.co.uk/rss.xml",
+      "title": "Oliver Marks",
+      "author": "Oliver Marks",
       "tags": "",
       "image": "",
       "enabled": true
@@ -47,8 +55,10 @@
     "model": "feeds.feed",
     "pk": 5,
     "fields": {
-      "url": "http://thearduinoguy.org/?feed=rss2",
-      "author": "Mike McRoberts",
+      "home_url": "http://webboggles.com/",
+      "feed_url": "http://webboggles.com/feed/",
+      "title": "Ilya Titov",
+      "author": "Ilya Titov",
       "tags": "",
       "image": "",
       "enabled": true
@@ -58,11 +68,97 @@
     "model": "feeds.feed",
     "pk": 6,
     "fields": {
-      "url": "https://feeds.feedburner.com/projects-jl",
-      "author": "James",
+      "home_url": "https://jamesleighton.com/",
+      "feed_url": "https://feeds.feedburner.com/projects-jl",
+      "title": "James Leighton",
+      "author": "James Leighton",
       "tags": "",
       "image": "",
       "enabled": false
+    }
+  },
+  {
+    "model": "feeds.article",
+    "pk": 507,
+    "fields": {
+      "url": "http://thearduinoguy.org/433mhz-radio-controlled-heating-controller-with-blynk-ui/",
+      "feed": 1,
+      "title": "433MHz Radio Controlled Heating Controller with Blynk UI",
+      "original_image": "http://thearduinoguy.org/wp-content/uploads/2016/12/Thermostat_bb-1-578x600.png",
+      "image": "",
+      "description": "<p>433MHz Radio Controlled Heating Controller with Blynk\u00a0UI This is a project to control your boiler using a 433MHz radio module. I have used a simple and cheap OOK radio module [\u2026]</p>",
+      "displayed": true,
+      "date": "2016-12-09T14:08:20Z"
+    }
+  },
+  {
+    "model": "feeds.article",
+    "pk": 508,
+    "fields": {
+      "url": "http://webboggles.com/wacom-intuos-pro-manufacturing-fault-leads-to-loss-of-touch/",
+      "feed": 1,
+      "title": "Wacom Intuos Pro manufacturing fault leads to loss of touch.",
+      "original_image": "http://webboggles.com/wp-content/uploads/2016/12/IMG_20161201_215435.jpg",
+      "image": "",
+      "description": "<p>I love using my Wacom for work and carry it around on daily basis. Recently the touch stopped working. As the tablet is 3 years old and out of warranty I decided to disassemble it and peek inside to see if I could mend it myself. And here is the problem \u2014 the USB connector\u2019s \u2026 <a href=\"http://webboggles.com/wacom-intuos-pro-manufacturing-fault-leads-to-loss-of-touch/\" class=\"more-link\">Continue reading <span class=\"screen-reader-text\">Wacom Intuos Pro manufacturing fault leads to loss of touch.</span></a></p>",
+      "displayed": true,
+      "date": "2016-12-01T23:53:08Z"
+    }
+  },
+  {
+    "model": "feeds.article",
+    "pk": 509,
+    "fields": {
+      "url": "http://thearduinoguy.org/neopixel-ring-clock/",
+      "feed": 1,
+      "title": "NeoPixel Ring Clock",
+      "original_image": "http://thearduinoguy.org/wp-content/uploads/2016/11/20161129_085040-1.jpg",
+      "image": "article/neopixel-ring-clock.jpg",
+      "description": "<p>I recently bought a 24 LED NeoPixel Ring. These things are great and I would highly recommend you getting one as they are great fun and very easy to use. [\u2026]</p>",
+      "displayed": true,
+      "date": "2016-11-29T09:11:17Z"
+    }
+  },
+  {
+    "model": "feeds.article",
+    "pk": 510,
+    "fields": {
+      "url": "http://webboggles.com/spectacular-vr-for-nexus-5/",
+      "feed": 1,
+      "title": "Spectacular VR for Nexus 5",
+      "original_image": "http://webboggles.com/wp-content/uploads/2016/03/IMG_0985.jpg",
+      "image": "",
+      "description": "<p>This is a quick and easy 3D print that turns a Nexus 5 phone into a VR device, inspired by google cardboard. DIY: STL files on Thingiverse 2x M3 bolts and nuts are required, or just use cable ties. 2x 28mm bi-convex lenses (The lenses can be ordered on ebay for a couple of pounds)</p>",
+      "displayed": true,
+      "date": "2016-03-01T16:59:12Z"
+    }
+  },
+  {
+    "model": "feeds.article",
+    "pk": 511,
+    "fields": {
+      "url": "http://thearduinoguy.org/lasertag-project/",
+      "feed": 1,
+      "title": "LaserTag Project",
+      "original_image": "http://thearduinoguy.org/wp-content/uploads/2016/08/LASERTAG-800x532.jpg",
+      "image": "article/lasertag-project.jpg",
+      "description": "<p>Along with some other guys from Maidstone Hackspace we have started work on a LaserTag project. I seem to have made the most progress so far and the prototype below [\u2026]</p>",
+      "displayed": true,
+      "date": "2016-08-31T09:57:13Z"
+    }
+  },
+  {
+    "model": "feeds.article",
+    "pk": 512,
+    "fields": {
+      "url": "http://webboggles.com/attiny85-game-kit-assembly-instructions/",
+      "feed": 1,
+      "title": "Attiny Arcade keychain game kit",
+      "original_image": "http://webboggles.com/wp-content/uploads/2016/01/IMG_3424-300x246.jpg",
+      "image": "",
+      "description": "<p>There has been a lot of updates to the Attiny Arcade keychain game project most notably the production of kits. I will add all the relevant information to this post and make it sticky. Buy via webboggles shop or on ebay. If you want to get in touch about the kit please tweet @webboggles, otherwise \u2026 <a href=\"http://webboggles.com/attiny85-game-kit-assembly-instructions/\" class=\"more-link\">Continue reading <span class=\"screen-reader-text\">Attiny Arcade keychain game kit</span></a></p>",
+      "displayed": true,
+      "date": "2016-01-17T00:34:00Z"
     }
   }
 ]

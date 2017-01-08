@@ -6707,5 +6707,25 @@ body {
   line-height: 60px;
   background-color: #f5f5f5; }
 
+@media (max-width: 991px) {
+  .card-columns {
+    -moz-column-count: 2;
+         column-count: 2; } }
+
+@media (max-width: 767px) {
+  .card-columns {
+    -moz-column-count: 1;
+         column-count: 1; } }
+
+@media (max-width: 767px) {
+  .card {
+    margin-bottom: 0.75rem; } }
+
+.card-title {
+  color: #292b2c; }
+
+#feeds img {
+  width: 100%; }
+
 [hidden][style="display: block;"] {
   display: block !important; }

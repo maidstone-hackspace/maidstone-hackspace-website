@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^members/$', MemberListView.as_view(), name='members'),
 
     # Django Admin, use {% url 'admin:index' %}
-    url(settings.ADMIN_URL, admin.site.urls),
+    url(r'{}'.format(settings.ADMIN_URL), admin.site.urls),
 
     # User management
     url(r'^users/', include('mhackspace.users.urls', namespace='users')),
