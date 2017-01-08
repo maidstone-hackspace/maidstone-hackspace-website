@@ -60,3 +60,7 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
         'django.template.loaders.app_directories.Loader',
     ]),
 ]
+
+DATABASES = {
+    'default': {'ENGINE': 'django.db.backends.sqlite3'}
+}

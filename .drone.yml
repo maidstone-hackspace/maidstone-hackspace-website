@@ -4,6 +4,7 @@ pipeline:
     environment:
       - POSTGRES_USER=mhackspace
       - USE_DOCKER=yes
+      - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
       - python manage.py test
 
