@@ -1,10 +1,13 @@
-* Maidstone hackspace website
+[[https://cdn.rawgit.com/maidstone-hackspace/administration/2ede7cb1/images/hackspace-banner.png]]
+
+* Maidstone Hackspace website
+[[https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/][https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/shield.svg]]
 
 Repository for the maidstone hackspace website
 
 
 ** Requirements
-Before getting started make sure you have compose and docker and git installed on your machine
+Before getting started make sure you have git, docker and docker-compose installed on your machine.
 The simplest way to setup this site is to use docker-compose so please install that from this site https://docs.docker.com/engine/installation/ and make sure the quick start guide works https://docs.docker.com/machine/get-started/ then you can use the commands below to test and make changes.
 
 ** Setup
@@ -14,13 +17,13 @@ To get started checkout the project to your machine.
 git clone https://github.com/olymk2/maidstone-hackspace.git
 #+END_SRC
 
-Once checked out build your containers locally if needed, only needed when you first start or if requirements change.
+Once checked out build your containers locally you only need to do this when first start or if requirements change.
 
 #+BEGIN_SRC sh
 docker-compose -fdev.yml build
 #+END_SRC
 
-Startup your new containers containing a database and django 
+*** Start your new containers containing a database and django
 
 #+BEGIN_SRC sh
 docker-compose -fdev up
@@ -30,13 +33,14 @@ Test django is serving pages
 http://127.0.0.1:8180
 
 
-Run migrations and setup admin user
-to run django command just prefix them with =docker-compose -f dev.yml run django= 
+*** Run migrations and setup admin user
+To run django commands just prefix them with =docker-compose -f dev.yml run django=
 #+BEGIN_SRC sh
 docker-compose -f dev.yml run django python manage.py makemigrations
 docker-compose -f dev.yml run django python manage.py migrate
 #+END_SRC
 
+Creating an admin user
 #+BEGIN_SRC sh
 docker-compose -f dev.yml run django python manage.py createsuperuser
 #+END_SRC
