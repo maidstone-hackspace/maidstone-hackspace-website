@@ -5,11 +5,11 @@
 wheel==0.29.0
 
 # Bleeding edge Django
-django==1.10.4
+django==1.10.5
 
 # Configuration
 django-environ==0.4.1
-whitenoise==3.2.2
+whitenoise==3.2.3
 
 
 # Forms
@@ -17,15 +17,15 @@ django-braces==1.10.0
 django-crispy-forms==1.6.1
 
 # Models
-django-stdimage
+django-stdimage==2.4.0
 django-model-utils==2.6
 
 # Images
-Pillow==3.4.2
+Pillow==4.0.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.29.0
+django-allauth==0.30.0
 
 
 # Python-PostgreSQL Database Adapter
@@ -38,7 +38,7 @@ awesome-slugify==1.6.5
 pytz==2016.10
 
 # Redis support
-django-redis==4.6.0
+django-redis==4.7.0
 redis>=2.10.5
 
 
@@ -47,7 +47,7 @@ redis>=2.10.5
 rcssmin==1.0.6 
 django-compressor==2.1
 
-lxml
+lxml==3.7.2
 
 # Your custom requirements go here
 -e git+https://github.com/olymk2/scaffold.git#egg=scaffold
