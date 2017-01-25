@@ -50,7 +50,7 @@ django-compressor==2.1
 lxml==3.7.2
 mock
 
-gocardless
+gocardless==0.5.3
 braintree
 
 # Your custom requirements go here
