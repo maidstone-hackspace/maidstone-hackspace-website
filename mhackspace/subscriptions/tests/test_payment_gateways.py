@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import unittest
+from test_plus.test import TestCase
+# import unittest
 from mock import patch, Mock
 
-from website.libs.payments import payment, gocardless_provider, braintree_provider
+from mhackspace.subscriptions.payments import payment, gocardless_provider, braintree_provider
 
-class TestPaymentGatewaysGocardless(unittest.TestCase):
+class TestPaymentGatewaysGocardless(TestCase):
 
     def setUp(self):
         self.auth_gocardless()
 
-    @patch('website.libs.payments.gocardless.request.requests.get', autospec=True)
+    @patch('mhackspace.subscriptions.payments.gocardless.request.requests.get', autospec=True)
     def auth_gocardless(self, mock_request):
         # mock braintree initalisation request
         mock_request.return_value = Mock(ok=True)
@@ -49,8 +50,8 @@ class TestPaymentGatewaysGocardless(unittest.TestCase):
             self.assertEqual(item.get('amount'), 20.00)
 
 
-class TestPaymentGatewaysBraintree(unittest.TestCase):
-    @patch('website.libs.payments.braintree.Configuration.configure')
+class TestPaymentGatewaysBraintree(TestCase):
+    @patch('mhackspace.subscriptions.payments.braintree.Configuration.configure')
     def auth_braintree(self, mock_request):
         # mock braintree initalisation request
         mock_request.return_value = Mock(ok=True)
@@ -63,7 +64,7 @@ class TestPaymentGatewaysBraintree(unittest.TestCase):
 
         self.provider = braintree_provider()
 
-    @patch('website.libs.payments.braintree.Subscription.search')
+    @patch('mhackspace.subscriptions.payments.braintree.Subscription.search')
     def test_fetch_subscription_braintree(self, mock_request):
         provider = self.auth_braintree()
 

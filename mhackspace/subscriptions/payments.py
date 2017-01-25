@@ -2,37 +2,19 @@ from pprint import pprint
 import pytz
 import gocardless
 import braintree
+
+from django.conf.settings import payment_providers
+
 # import gocardless_pro
-import paypalrestsdk as paypal
+# import paypalrestsdk as paypal
 
-from website.config import settings
-from website.config.settings import app_domain
+# from website.config import settings
+# from website.config.import app_domain
 
-from website.config.logger import log
+# from website.config.logger import log
 
-PROVIDER_ID = {'gocardless':1, 'paypal': 2}
-PROVIDER_NAME = {1: 'gocardless', 2: 'paypal'}
-
-payment_providers = {
-    'paypal': {              
-        "mode": "sandbox", # sandbox or live
-        'credentials': {
-            "mode": "sandbox", # sandbox or live
-            "client_id": "AaGlNEvd26FiEJiJi53nfpXh19_oKetteV1NGkBi4DDYZSqBexKVgaz9Lp0SI82gYFSAYpsmxO4iDtxU",
-            "client_secret": "EMcIuDJE_VDNSNZS7C7NLi9DEHaDvVu9jlIYyCCHaLmrLuy_VQ6C0bbcRnyF-7B6CcN__Dn6HqUwsgMG"}
-        },
-    'gocardless':{
-        'environment': 'sandbox',
-        'credentials': {
-            'app_id': 'MNHBS3C4X4ZG211SM70WSS7WCN8B3X1KAWZBKV9S8N6KH2RNH6YZ5Z5865RFD3H6',
-            'app_secret': 'NE4NWYDQY4FNN1B47VT9SZ318GPQND130DW7QGQ73JMVTZQZHJQNF23ZFNP48GKV',
-            'access_token': 'CJ7G7V36VAH5KVAHTYXD8VE8M4M0S41EQXH2E1HTGV5AN5TAZBER36ERAF4CG2NR',
-            'merchant_id': '11QFXD7TTA',
-        },
-        'redirect_url':'https://test.maidstone-hackspace.org.uk'
-    }
-}
-
+PROVIDER_ID = {'gocardless':1, 'braintree': 2}
+PROVIDER_NAME = {1: 'gocardless', 2: 'braintree'}
 
 def select_provider(type):
     if type == "gocardless": return gocardless_provider()
@@ -49,12 +31,12 @@ class gocardless_provider:
     def __init__(self):
         # gocardless are changing there api, not sure if we can switch yet
         # self.client = gocardless_pro.Client(
-        #     access_token=settings.payment_providers['gocardless']['credentials']['access_token'],
-        #     environment=settings.payment_providers['gocardless']['environment'])
+        #     access_token=payment_providers['gocardless']['credentials']['access_token'],
+        #     environment=payment_providers['gocardless']['environment'])
 
-        print(settings.payment_providers.keys)
-        gocardless.environment = settings.payment_providers['gocardless']['environment']
-        gocardless.set_details(**settings.payment_providers['gocardless']['credentials'])
+        print(payment_providers.keys)
+        gocardless.environment = payment_providers['gocardless']['environment']
+        gocardless.set_details(**payment_providers['gocardless']['credentials'])
         self.client = gocardless.client.merchant()
 
     def subscribe_confirm(self, args):
@@ -73,8 +55,8 @@ class gocardless_provider:
             #     print('test')
             #     print(dir(bill))
             #     print(bill.created_at)
-            print(dir(paying_member))
-            print(paying_member.reference_fields)
+            # print(dir(paying_member))
+            # print(paying_member.reference_fields)
             yield {
                 'status': paying_member.status,
                 'email': user.email,
@@ -83,7 +65,7 @@ class gocardless_provider:
                 'amount': paying_member.amount}
 
     def get_redirect_url(self):
-        return settings.payment_providers['gocardless']['redirect_url']
+        return payment_providers['gocardless']['redirect_url']
 
     def get_token(self):
         return 'N/A'
@@ -103,9 +85,9 @@ class braintree_provider:
     def __init__(self):
         braintree.Configuration.configure(
             environment=braintree.Environment.Sandbox,
-            merchant_id=settings.payment_providers['braintree']['credentials']['merchant_id'],
-            public_key=settings.payment_providers['braintree']['credentials']['public_key'],
-            private_key=settings.payment_providers['braintree']['credentials']['private_key'])
+            merchant_id=payment_providers['braintree']['credentials']['merchant_id'],
+            public_key=payment_providers['braintree']['credentials']['public_key'],
+            private_key=payment_providers['braintree']['credentials']['private_key'])
 
     def get_token(self):
         return braintree.ClientToken.generate()
@@ -150,17 +132,17 @@ class payment:
         self.environment = int(mode=='production')
         self.provider_id = PROVIDER_ID.get(provider)
 
-        print(settings.payment_providers)
+        print(payment_providers)
         if provider == 'paypal':
-            paypal.configure(**settings.payment_providers[provider]['credentials'])
+            paypal.configure(**payment_providers[provider]['credentials'])
             return
 
         gocardless_pro.Client(
-            access_token=settings.payment_providers[provider]['credentials']['access_token'],
-            environment=settings.payment_providers[provider])
-        #~ environment = int('production' = settings.payment_providers[provider]['environment'])
-        gocardless.environment = settings.payment_providers[provider]['environment']
-        gocardless.set_details(**settings.payment_providers[provider]['credentials'])
+            access_token=payment_providers[provider]['credentials']['access_token'],
+            environment=payment_providers[provider])
+        #~ environment = int('production' = payment_providers[provider]['environment'])
+        gocardless.environment = payment_providers[provider]['environment']
+        gocardless.set_details(**payment_providers[provider]['credentials'])
         merchant = gocardless.client.merchant()
 
     def lookup_provider_by_id(self, provider_id):

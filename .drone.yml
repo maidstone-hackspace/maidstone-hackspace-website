@@ -6,7 +6,7 @@ pipeline:
       - USE_DOCKER=yes
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
-      - python manage.py test
+      - python manage.py test mhackspace.subscriptions --verbosity 2
 
 #volumes:
 #  postgres_data_dev: {}
@@ -42,3 +42,10 @@ services:
   mailhog:
     image: mailhog/mailhog
 
+deploy:
+  ssh:
+    target: test.maidstone-hackspace.org.uk:/var/www/test-maidstone-hackspace.org.uk 22
+    artifacts:
+      - build.result
+      - config/file
+    cmd: /opt/bin/redeploy.sh

@@ -48,6 +48,7 @@ LOCAL_APPS = (
     # custom users app
     # Your stuff: custom apps go here
     'mhackspace.users.apps.UsersConfig',
+    'mhackspace.subscriptions',
     'mhackspace.feeds',
     'mhackspace.contact',
     'mhackspace.members',
@@ -259,3 +260,33 @@ ADMIN_URL = '^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+
+payment_providers = {
+    'braintree': {
+        'mode': 'sandbox',
+        'credentials': {
+            'merchant_id': env('BRAINTREE_MERCHANT_ID'),
+            'public_key': env('BRAINTREE_PUBLIC_KEY'),
+            'private_key': env('BRAINTREE_PRIVATE_KEY') ,
+        }
+    },
+    'paypal': {
+        "mode": "sandbox", # sandbox or live
+        'credentials': {
+            "mode": "sandbox", # sandbox or live
+            "client_id": end('PAYPAL_CLIENT_ID'),
+            "client_secret": env('PAYPAL_CLIENT_SECRET')}
+        },
+    'gocardless':{
+        'environment': 'sandbox',
+        'credentials': {
+            'app_id': env('GOCARDLESS_APP_ID') ,
+            'app_secret': env('GOCARDLESS_APP_SECRET'),
+            'access_token': env('GOCARDLESS_ACCESS_TOKEN'),
+            'merchant_id': env('GOCARDLESS_MERCHANT_ID'),
+        },
+        'redirect_url':'https://test.maidstone-hackspace.org.uk'
+    }
+}
+

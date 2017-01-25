@@ -3,3 +3,4 @@ mhackspace/media/*
 __pycache__/
 node_modules
 src
+.env
