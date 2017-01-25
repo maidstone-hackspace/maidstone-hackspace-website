@@ -48,7 +48,7 @@ rcssmin==1.0.6
 django-compressor==2.1
 
 lxml==3.7.2
-mock
+mock==2.0.0
 
 gocardless
 braintree
