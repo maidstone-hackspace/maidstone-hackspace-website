@@ -51,7 +51,7 @@ lxml==3.7.2
 mock
 
 gocardless
-braintree
+braintree==3.34.0
 
 # Your custom requirements go here
 -e git+https://github.com/olymk2/scaffold.git#egg=scaffold
