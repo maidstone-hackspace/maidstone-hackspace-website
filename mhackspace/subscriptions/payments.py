@@ -4,7 +4,6 @@ import gocardless
 import braintree
 
 from django.conf import settings
-print(dir(settings))
 payment_providers = settings.PAYMENT_PROVIDERS
 
 # import gocardless_pro
@@ -47,18 +46,15 @@ class gocardless_provider:
         return {
             'amount': subscription.amount,
             'start_date': subscription.created_at,
-            'reference': subscription.id
+            'reference': subscription.id,
+            'success': response.success
         }
 
     def fetch_subscriptions(self):
         for paying_member in self.client.subscriptions():
             user=paying_member.user()
-            # for bill in paying_member.bills():
-            #     print('test')
-            #     print(dir(bill))
-            #     print(bill.created_at)
-            # print(dir(paying_member))
-            # print(paying_member.reference_fields)
+
+            #gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
                 'email': user.email,
@@ -201,40 +197,6 @@ class payment:
                     'reference': paying_member.id,
                     'amount': paying_member.amount}
 
-        if self.provider == 'paypal':
-            #~ I-S39170DK26AF
-            #~ start_date, end_date = "2014-07-01", "2014-07-20"
-            billing_agreement = paypal.BillingAgreement.find('')
-            print(billing_agreement)
-            print(dir(billing_agreement))
-            #~ print billing_agreement.search_transactions(start_date, end_date)
-            #~ transactions = billing_agreement.search_transactions(start_date, end_date)
-            payment_history = paypal.Payment.all({"count": 2})
-
-            # List Payments
-            print("List Payment:")
-            print(payment_history)
-            for payment in payment_history.payments:
-                print("  -> Payment[%s]" % (payment.id))
-            #~ print paypal.BillingAgreement.all()
-            history = paypal.BillingPlan.all(
-                {"status": "CREATED", "page_size": 5, "page": 1, "total_required": "yes"})
-            print(history)
-
-            print("List BillingPlan:")
-            for plan in history.plans:
-                print(dir(plan))
-                print(plan.to_dict())
-                print("  -> BillingPlan[%s]" % (plan.id))
-    
-            #~ merchant = gocardless.client.merchant()
-            #~ for paying_member in merchant.subscriptions():
-                #~ user=paying_member.user()
-                #~ yield {
-                    #~ 'email': user.email,
-                    #~ 'start_date': paying_member.created_at,
-                    #~ 'reference': paying_member.id,
-                    #~ 'amount': paying_member.amount}
 
     def subscribe_confirm(self, args):
         if self.provider == 'gocardless':
