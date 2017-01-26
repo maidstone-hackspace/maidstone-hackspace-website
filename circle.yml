@@ -1,4 +1,6 @@
 machine:
-        environment:
-                DJANGO_SETTINGS_MODULE: config.settings.test
-                DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
+  python:
+    version: 3.5.0
+  environment:
+    DJANGO_SETTINGS_MODULE: config.settings.test
+    DATABASE_URL: postgres://ubuntu:@127.0.0.1:5432/circle_test
