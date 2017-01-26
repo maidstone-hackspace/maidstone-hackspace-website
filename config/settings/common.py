@@ -16,7 +16,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (mhackspace/config/settings/common.py -
 APPS_DIR = ROOT_DIR.path('mhackspace')
 
 env = environ.Env()
-env.read_env()
+env.read_env('%s/.env' % ROOT_DIR)
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
