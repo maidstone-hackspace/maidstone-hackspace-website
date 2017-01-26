@@ -54,4 +54,4 @@ gocardless
 braintree
 
 # Your custom requirements go here
--e git+https://github.com/olymk2/scaffold.git#egg=scaffold
+git+https://github.com/olymk2/scaffold.git
