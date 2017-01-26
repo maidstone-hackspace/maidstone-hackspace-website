@@ -262,7 +262,7 @@ ADMIN_URL = '^admin/'
 # ------------------------------------------------------------------------------
 
 
-payment_providers = {
+PAYMENT_PROVIDERS = {
     'braintree': {
         'mode': 'sandbox',
         'credentials': {
@@ -275,7 +275,7 @@ payment_providers = {
         "mode": "sandbox", # sandbox or live
         'credentials': {
             "mode": "sandbox", # sandbox or live
-            "client_id": end('PAYPAL_CLIENT_ID'),
+            "client_id": env('PAYPAL_CLIENT_ID'),
             "client_secret": env('PAYPAL_CLIENT_SECRET')}
         },
     'gocardless':{

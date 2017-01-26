@@ -3,7 +3,9 @@ import pytz
 import gocardless
 import braintree
 
-from django.conf.settings import payment_providers
+from django.conf import settings
+print(dir(settings))
+payment_providers = settings.PAYMENT_PROVIDERS
 
 # import gocardless_pro
 # import paypalrestsdk as paypal
