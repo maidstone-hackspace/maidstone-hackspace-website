@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from test_plus.test import TestCase
-# import unittest
+from unittest import skip
 from mock import patch, Mock
 
 from mhackspace.subscriptions.payments import payment, gocardless_provider, braintree_provider
@@ -25,6 +25,23 @@ class TestPaymentGatewaysGocardless(TestCase):
         with patch('gocardless.resources.Merchant') as mock_subscription:
             self.provider = gocardless_provider()
         return self.provider #self.provider
+
+    @skip("Need to implement")
+    @patch('mhackspace.subscriptions.payments.gocardless.client.subscription', autospec=True)
+    def test_unsubscribe(self, mock_subscription):
+        mock_subscription.return_value = Mock(success='success')
+        mock_subscription.cancel.return_value = Mock(
+            id='01',
+            status='active',
+            amount=20.00,
+            created_at='date'
+        )
+        result = self.provider.cancel_subscription(reference='M01')
+
+        self.assertEqual(result.get('amount'), 20.00)
+        self.assertEqual(result.get('start_date'), 'date')
+        self.assertEqual(result.get('reference'), '01')
+        self.assertEqual(result.get('success'), 'success')
 
     # @patch('mhackspace.subscriptions.payments.gocardless.request.requests.get', autospec=True)
     @patch('mhackspace.subscriptions.payments.gocardless.client.subscription', autospec=True)

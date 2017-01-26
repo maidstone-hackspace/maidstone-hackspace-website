@@ -68,6 +68,16 @@ class gocardless_provider:
     def get_token(self):
         return 'N/A'
 
+    def cancel_subscribe(self, reference):
+        subscription = gocardless.client.subscription(reference)
+        response = subscription.cancel()
+        return {
+            'amount': subscription.amount,
+            'start_date': subscription.created_at,
+            'reference': subscription.id,
+            'success': response.success
+        }
+
     def create_subscription(self, amount, name, redirect_success, redirect_failure, interval_unit='month', interval_length='1'):
         return gocardless.client.new_subscription_url(
             amount=float(amount), 
