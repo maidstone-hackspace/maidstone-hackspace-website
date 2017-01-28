@@ -24,4 +24,4 @@ class Command(BaseCommand):
         for sub in provider.fetch_subscriptions():
             self.stdout.write(
                 self.style.SUCCESS(
-                    '\t{reference} - {amount} - {status} - {email}'.format(**sub)))
+                    '\t{start_date} {reference} - {amount} - {status} - {email}'.format(**sub)))

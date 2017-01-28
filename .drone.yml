@@ -9,6 +9,10 @@ pipeline:
       - cp -n env.example .env
       - python manage.py test mhackspace --verbosity 2
 
+  deploy:
+
+
+
 #volumes:
 #  postgres_data_dev: {}
 #  postgres_backup_dev: {}

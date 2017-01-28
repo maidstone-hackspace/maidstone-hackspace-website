@@ -4,8 +4,8 @@
 Members feed
 
 <div class="row">
-  <div class="">Users {{ paginator.count }}</div>
-  <div class="">Members {{ total }}</div>
+  <div class="col">Users {{ paginator.count }}</div>
+  <div class="col">Members {{ total }}</div>
 </div>
 
 <div class="card-deck-wrapper">
@@ -17,13 +17,14 @@ Members feed
           <h4 class="card-title">{{ member.name }}</h4>
           <p class="card-text">{{ member.users.description }}</p>
           <p class="card-text">{{ member.users.skills }}</p>
+          <p class="card-text">{{ member.status }}</p>
 
           {% for group in member.groups.all %}
           {{ group.name }}
           {% endfor %}
         </div>
         <div class="card-block">
-          <p class="card-text">{{ member.userblurb }}</p>
+          <p class="card-text">{{ member.blurb }}</p>
         </div>
         <div class="card-block">
           <a href="{{ feed.url }}" class="card-link">View Original</a>

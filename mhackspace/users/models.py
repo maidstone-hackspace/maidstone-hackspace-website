@@ -29,14 +29,44 @@ class User(AbstractUser):
         return reverse('users:detail', kwargs={'username': self.username})
 
 
-class UserBlurb(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='users') 
+class Blurb(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='+') 
     skills = models.CharField(max_length=255)
     description = models.TextField()
 
 
-class UserMembership(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL) 
-    payment = models.DecimalField(max_digits=6, decimal_places=2)
+MEMBERSHIP_STRING = {
+    0: 'Non Member',
+    1: 'Member',
+    3: 'Membership Expired'
+}
+
+MEMBERSHIP_STATUS = {
+    'active': 1,
+    'cancelled': 2
+}
+
+class Membership(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True,
+        default=None,
+        related_name='user'
+    )
+    payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     date = models.DateTimeField() 
     reference = models.CharField(max_length=255)
+    status = models.PositiveSmallIntegerField(default=0)
+    email = models.CharField(max_length=255)
+
+    @property
+    def get_status(self):
+        return MEMBERSHIP_STRING[self.status]
+
+    def lookup_status(name):
+        if not name:
+            return 0
+        return MEMBERSHIP_STATUS.get(name.lower(), 0)
+
+    def __str__(self):
+        return self.reference

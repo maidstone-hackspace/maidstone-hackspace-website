@@ -10,7 +10,7 @@ from mhackspace.users.models import User
 
 class MemberListView(LoginRequiredMixin, ListView):
     template_name = 'pages/members.html'
-    queryset = User.objects.prefetch_related('users', 'groups')
+    queryset = User.objects.prefetch_related('user', 'groups')
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
