@@ -56,16 +56,16 @@ class gocardless_provider:
         merchant = gocardless.client.merchant()
         for customer in merchant.bills():
             user = customer.user()
-            print(dir(customer))
-            print(dir(customer.reference_fields))
-            print(customer.reference_fields)
-            print(customer.payout_id)
-            print(customer.reference_fields.payout_id)
+            # print(dir(customer))
+            # print(dir(customer.reference_fields))
+            # print(customer.reference_fields)
+            # print(customer.payout_id)
+            # print(customer.reference_fields.payout_id)
             result = {
                 'user_id': user.id,
                 'email': user.email,
                 'status': customer.status,
-                'payment_id': customer.source_id,
+                'payment_id': customer.id,
                 'payment_type': customer.source_type,
                 'payment_date': customer.created_at,
                 'amount': customer.amount

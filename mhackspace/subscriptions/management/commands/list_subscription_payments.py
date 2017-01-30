@@ -16,14 +16,16 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.NOTICE(
-                '== Gocardless customers =='))
+                '== Gocardless customer payments =='))
 
         Payments.objects.all().delete()
-        for customer in provider.fetch_customers():
-            self.stdout.write(str(dir(customer)))
-            self.stdout.write(str(customer))
 
-            Payments.objects.create(
+        payment_objects = []
+        for customer in provider.fetch_customers():
+            # self.stdout.write(str(dir(customer)))
+            # self.stdout.write(str(customer))
+
+            payment_objects.append(Payments(
                 user=None,
                 user_reference=customer.get('user_id'),
                 user_email=customer.get('email'),
@@ -31,11 +33,13 @@ class Command(BaseCommand):
                 amount=customer.get('amount'),
                 type=Payments.lookup_payment_type(customer.get('payment_type')),
                 date=customer.get('payment_date')
-            )
+            ))
             # self.stdout.write(str(customer.email))
             # self.stdout.write(str(dir(customer['email']())))
-            # self.stdout.write(
-            #     self.style.SUCCESS(
-            #         '\t{reference} - {payment} - {status} - {email}'.format(**model_to_dict(subscriptions[-1]))))
+            self.stdout.write(
+                self.style.SUCCESS(
+                    '\t{reference} - {amount} - {type} - {user_email}'.format(**model_to_dict(payment_objects[-1]))))
 
 
+
+        Payments.objects.bulk_create(payment_objects)
