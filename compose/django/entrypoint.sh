@@ -33,5 +33,4 @@ until postgres_ready; do
   sleep 1
 done
 
->&2 echo "Postgres is up - continuing..."
 exec $cmd
