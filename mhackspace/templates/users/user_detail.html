@@ -36,7 +36,7 @@
   </div>
   <div class="col-md-6">
     <div id="membercard" class="registered">
-      <div class="date">Joined </div>
+      <div class="date">Joined {{membership.start_date}}</div>
       <div class="container">
         <div class="middle">
           <p>MHS{{ user.id|stringformat:"05d" }}</p><p>{{user.name}}{{user.last_name}}</p>

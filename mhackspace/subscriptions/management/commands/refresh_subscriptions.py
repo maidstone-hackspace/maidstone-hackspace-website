@@ -20,7 +20,7 @@ class Command(BaseCommand):
         Membership.objects.all().delete()
         subscriptions = []
 
-        group = Group.objects.get(name='member')
+        group = Group.objects.get(name='members')
 
         for sub in provider.fetch_subscriptions():
             try:

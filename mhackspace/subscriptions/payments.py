@@ -50,6 +50,39 @@ class gocardless_provider:
             'success': response.success
         }
 
+
+
+    def fetch_customers(self):
+        merchant = gocardless.client.merchant()
+        for customer in merchant.bills():
+            user = customer.user()
+            print(dir(customer))
+            print(dir(customer.reference_fields))
+            print(customer.reference_fields)
+            print(customer.payout_id)
+            print(customer.reference_fields.payout_id)
+            result = {
+                'user_id': user.id,
+                'email': user.email,
+                'status': customer.status,
+                'payment_id': customer.source_id,
+                'payment_type': customer.source_type,
+                'payment_date': customer.created_at,
+                'amount': customer.amount
+            }
+            yield result #customer
+
+
+
+        # for customer in self.client.users():
+        #     result = {
+        #         'email': customer.email,
+        #         'created_date': customer.created_at,
+        #         'first_name': customer.first_name,
+        #         'last_name': customer.last_name
+        #     }
+        #     yield customer
+
     def fetch_subscriptions(self):
         for paying_member in self.client.subscriptions():
             user=paying_member.user()
