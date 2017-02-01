@@ -36,8 +36,8 @@ class Blurb(models.Model):
 
 
 MEMBERSHIP_STRING = {
-    0: 'Non Member',
-    1: 'Member',
+    0: 'Guest user',
+    1: 'Active membership',
     3: 'Membership Expired'
 }
 

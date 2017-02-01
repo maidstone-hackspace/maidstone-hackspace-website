@@ -33,12 +33,12 @@ class Command(BaseCommand):
             self.stdout.write(sub.get('status'))
             subscriptions.append(
                 Membership(
-                    user= user_model,
-                    email= sub.get('email'),
-                    reference= sub.get('reference'),
-                    payment= 10.00,
-                    # 'date'= sub.get('start_date'),
-                    date=timezone.now(),
+                    user=user_model,
+                    email=sub.get('email'),
+                    reference=sub.get('reference'),
+                    payment=10.00,
+                    date= sub.get('start_date'),
+                    # date=timezone.now(),
                     status=Membership.lookup_status(name=sub.get('status'))
                 )
             )

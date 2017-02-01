@@ -1,6 +1,7 @@
 version: '2'
 
 volumes:
+  gunicorn_socket: {}
   postgres_data: {}
   postgres_backup: {}
 
@@ -22,24 +23,24 @@ services:
       - redis
     command: /gunicorn.sh
     env_file: .env
+    volumes:
+      - .:/app
+      - gunicorn_socket:/data/sockets/
 
-#  nginx:
-#    build: ./compose/nginx
-#    depends_on:
-#      - django
-#      - certbot
+  nginx:
+    build: ./compose/nginx
+    depends_on:
+      - django
+#     - certbot
 
-#    ports:
-#      - "0.0.0.0:80:80"
-
-#    environment:
-#      - MY_DOMAIN_NAME=maidstone-hackspace.org.uk
-#    ports:
-#      - "0.0.0.0:80:80"
-#      - "0.0.0.0:443:443"
-#    volumes:
-#      - /etc/letsencrypt:/etc/letsencrypt
-#      - /var/lib/letsencrypt:/var/lib/letsencrypt
+    environment:
+      - MY_DOMAIN_NAME=maidstone-hackspace.org.uk
+    ports:
+      - "0.0.0.0:80:80"
+#     - "0.0.0.0:443:443"
+#   volumes:
+#     - /etc/letsencrypt:/etc/letsencrypt
+#     - /var/lib/letsencrypt:/var/lib/letsencrypt
 
 #  certbot:
 #    image: quay.io/letsencrypt/letsencrypt
