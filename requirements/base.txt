@@ -42,10 +42,9 @@ django-redis==4.7.0
 redis>=2.10.5
 
 
-
-
-rcssmin==1.0.6 
+rcssmin==1.0.6
 django-compressor==2.1
+django-sass-processor
 
 lxml==3.7.2
 mock

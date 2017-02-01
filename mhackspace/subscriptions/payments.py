@@ -369,9 +369,7 @@ class payment:
         confirm_details['successfull'] = False
         print('---------------------')
         print(args)
-        
 
-        
         from pprint import pprint
         if self.provider == 'paypal':
             print(args.get('paymentId'))
