@@ -44,7 +44,7 @@ redis>=2.10.5
 
 rcssmin==1.0.6
 django-compressor==2.1
-django-sass-processor
+django-sass-processor==0.5.3
 
 lxml==3.7.2
 
