@@ -52,7 +52,7 @@ lxml==3.7.2
 mock
 
 gocardless
-braintree
+braintree==3.34.0
 
 django-autofixture==0.12.1
 
