@@ -47,10 +47,13 @@ django-compressor==2.1
 django-sass-processor
 
 lxml==3.7.2
+
+# Your custom requirements go here
 mock
 
 gocardless
 braintree
 
-# Your custom requirements go here
+django-autofixture
+
 git+https://github.com/olymk2/scaffold.git
