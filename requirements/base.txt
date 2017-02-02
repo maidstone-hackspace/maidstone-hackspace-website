@@ -51,7 +51,7 @@ lxml==3.7.2
 # Your custom requirements go here
 mock
 
-gocardless
+gocardless==0.5.3
 braintree
 
 django-autofixture==0.12.1
