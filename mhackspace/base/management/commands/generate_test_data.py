@@ -1,6 +1,6 @@
 from autofixture import AutoFixture
 from django.core.management.base import BaseCommand
-from mhackspace.feeds.models import Article
+from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User
 
 
@@ -11,7 +11,10 @@ class Command(BaseCommand):
         users = AutoFixture(User)
         users.create(10)
 
-        feeds = AutoFixture(User)
+        feed = AutoFixture(Feed)
+        feed.create(10)
+
+        feeds = AutoFixture(Article)
         feeds.create(10)
 
         self.stdout.write(

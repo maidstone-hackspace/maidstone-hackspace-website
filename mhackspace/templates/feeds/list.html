@@ -10,7 +10,7 @@
       <div class="card-block">
         <a href="{{ article.url }}" class="card-link"><h4 class="card-title">{{ article.title }}</h4></a>
         <p class="card-text">{{ article.feed.author }}</p>
-        <p class="card-text">{{ article.description|striptags }}</p>
+        <p class="card-text">{{ article.description|striptags|truncatewords:30 }}</p>
         <a href="{{ article.url }}" class="card-link">View Original</a>
       </div>
     </div>

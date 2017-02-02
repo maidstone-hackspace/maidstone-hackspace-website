@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
+from mhackspace.base.feeds import LatestEntriesFeed
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -29,6 +30,7 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
+    url(r'^latest/$', LatestEntriesFeed()),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
