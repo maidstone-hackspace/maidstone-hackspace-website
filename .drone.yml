@@ -6,7 +6,12 @@ pipeline:
       - USE_DOCKER=yes
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
-      - python manage.py test mhackspace.subscriptions --verbosity 2
+      - cp -n env.example .env
+      - python manage.py test mhackspace --verbosity 2
+
+  deploy:
+
+
 
 #volumes:
 #  postgres_data_dev: {}

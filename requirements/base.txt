@@ -42,16 +42,19 @@ django-redis==4.7.0
 redis>=2.10.5
 
 
-
-
-rcssmin==1.0.6 
+rcssmin==1.0.6
 django-compressor==2.1
+django-sass-processor==0.5.3
 
 lxml==3.7.2
+
+
+# Your custom requirements go here
 mock==2.0.0
 
 gocardless
-braintree
+braintree==3.34.0
 
-# Your custom requirements go here
--e git+https://github.com/olymk2/scaffold.git#egg=scaffold
+django-autofixture==0.12.1
+
+git+https://github.com/olymk2/scaffold.git

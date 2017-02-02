@@ -2,9 +2,9 @@
 from django.db import models
 from django.forms import ModelForm
 
-from .models import UserBlurb
+from .models import Blurb
 
-class UserBlurbForm(ModelForm):
+class BlurbForm(ModelForm):
     class Meta:
-        model = UserBlurb
+        model = Blurb
         exclude = ['user']

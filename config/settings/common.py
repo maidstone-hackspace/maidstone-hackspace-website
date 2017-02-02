@@ -16,7 +16,7 @@ ROOT_DIR = environ.Path(__file__) - 3  # (mhackspace/config/settings/common.py -
 APPS_DIR = ROOT_DIR.path('mhackspace')
 
 env = environ.Env()
-env.read_env()
+env.read_env('%s/.env' % ROOT_DIR)
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -48,6 +48,7 @@ LOCAL_APPS = (
     # custom users app
     # Your stuff: custom apps go here
     'mhackspace.users.apps.UsersConfig',
+    'mhackspace.base',
     'mhackspace.subscriptions',
     'mhackspace.feeds',
     'mhackspace.contact',
@@ -189,6 +190,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
 )
 
 # MEDIA CONFIGURATION
@@ -252,7 +254,7 @@ LOGIN_URL = 'account_login'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 # django-compressor
 # ------------------------------------------------------------------------------
-INSTALLED_APPS += ("compressor", )
+INSTALLED_APPS += ("compressor", 'sass_processor',)
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
@@ -262,7 +264,7 @@ ADMIN_URL = '^admin/'
 # ------------------------------------------------------------------------------
 
 
-payment_providers = {
+PAYMENT_PROVIDERS = {
     'braintree': {
         'mode': 'sandbox',
         'credentials': {
@@ -275,7 +277,7 @@ payment_providers = {
         "mode": "sandbox", # sandbox or live
         'credentials': {
             "mode": "sandbox", # sandbox or live
-            "client_id": end('PAYPAL_CLIENT_ID'),
+            "client_id": env('PAYPAL_CLIENT_ID'),
             "client_secret": env('PAYPAL_CLIENT_SECRET')}
         },
     'gocardless':{

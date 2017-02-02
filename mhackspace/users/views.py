@@ -7,10 +7,10 @@ from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import User
-from .models import UserBlurb
-from .models import UserMembership
+from .models import Blurb
+from .models import Membership
 
-from .forms import UserBlurbForm
+from .forms import BlurbForm
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
@@ -21,8 +21,8 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         # xxx will be available in the template as the related objects
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        context['blurb'] = UserBlurb.objects.filter(user=self.get_object()).first()
-        context['membership'] = UserMembership.objects.filter(user=self.get_object()).first()
+        context['blurb'] = Blurb.objects.filter(user=self.get_object()).first()
+        context['membership'] = Membership.objects.filter(user=self.get_object()).first()
         return context
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -45,8 +45,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
-        profile = UserBlurb.objects.filter(user=self.get_object()).first()
-        context['form_blurb'] = UserBlurbForm(instance=profile)
+        profile = Blurb.objects.filter(user=self.get_object()).first()
+        context['form_blurb'] = BlurbForm(instance=profile)
         return context
 
     def get_object(self):
@@ -54,8 +54,8 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
     def form_valid(self, form):
-        profile = UserBlurb.objects.filter(user=self.get_object()).first()
-        form_blurb = UserBlurbForm(self.request.POST, instance=profile)
+        profile = Blurb.objects.filter(user=self.get_object()).first()
+        form_blurb = BlurbForm(self.request.POST, instance=profile)
         if form_blurb.is_valid():
             blurb_model = form_blurb.save(commit=False)
             blurb_model.user = self.request.user
