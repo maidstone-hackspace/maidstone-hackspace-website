@@ -1,8 +1,9 @@
 version: '2'
 
 volumes:
-  gunicorn_socket:
+  sockets:
     driver: local
+    external: true
   postgres_data:
     driver: local
   postgres_backup:
@@ -36,22 +37,22 @@ services:
     env_file: .env
     volumes:
       - .:/app
-      - gunicorn_socket:/data/sockets
+      - sockets:/data/sockets
 
-  nginx:
-    build: ./compose/nginx
-    env_file: .env
-    depends_on:
-      - django
+#  nginx:
+#    build: ./compose/nginx
+#    env_file: .env
+#    depends_on:
+#      - django
 #     - certbot
-
-    environment:
-      - MY_DOMAIN_NAME=maidstone-hackspace.org.uk
-    ports:
-      - "0.0.0.0:8080:80"
-    volumes:
-      - .:/app
-      - gunicorn_socket:/data/sockets
+#
+#    environment:
+#      - MY_DOMAIN_NAME=test.maidstone-hackspace.org.uk
+#    ports:
+#      - "0.0.0.0:8080:80"
+#    volumes:
+#      - .:/app
+#      - sockets:/data/sockets
 #     - "0.0.0.0:443:443"
 #   volumes:
 #     - /etc/letsencrypt:/etc/letsencrypt

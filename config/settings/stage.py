@@ -55,7 +55,7 @@ X_FRAME_OPTIONS = 'DENY'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['maidstone-hackspace.org.uk'])
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['test.maidstone-hackspace.org.uk'])
 ALLOWED_HOSTS.append('127.0.0.1')
 ALLOWED_HOSTS.append('172.18.0.5')
 
@@ -108,17 +108,25 @@ COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 # EMAIL
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
-                         default='Maidstone Hackspace <noreply@maidstone-hackspace.org.uk>')
+                         default='Maidstone Hackspace <noreply@test.maidstone-hackspace.org.uk>')
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[Maidstone Hackspace] ')
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
+SERVER_EMAIL_PORT = '465'
+
+EMAIL_USE_TLS = False
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_USER')
+EMAIL_PORT = 465
 
 # Anymail with Mailgun
-INSTALLED_APPS += ("anymail", )
-ANYMAIL = {
-    "MAILGUN_API_KEY": env('DJANGO_MAILGUN_API_KEY'),
-    "MAILGUN_SENDER_DOMAIN": env('MAILGUN_SENDER_DOMAIN')
-}
-EMAIL_BACKEND = "anymail.backends.mailgun.MailgunBackend"
+#INSTALLED_APPS += ("anymail", )
+#ANYMAIL = {
+#    "MAILGUN_API_KEY": env('DJANGO_MAILGUN_API_KEY'),
+#    "MAILGUN_SENDER_DOMAIN": env('MAILGUN_SENDER_DOMAIN')
+#}
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # TEMPLATE CONFIGURATION
 # ------------------------------------------------------------------------------

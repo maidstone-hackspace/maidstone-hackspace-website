@@ -14,7 +14,7 @@ class ContactForm(forms.Form):
         required=True,
         widget=forms.Textarea
     )
-    type = forms.MultipleChoiceField(
+    enquiry_type = forms.ChoiceField(
         required=True,
         widget=forms.Select,
         choices=TYPES)
