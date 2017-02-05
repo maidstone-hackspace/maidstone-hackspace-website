@@ -2,7 +2,6 @@ version: '2'
 
 volumes:
   sockets:
-    driver: local
     external: true
   postgres_data:
     driver: local
