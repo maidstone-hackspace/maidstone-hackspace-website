@@ -108,17 +108,17 @@ COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 # EMAIL
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
-                         default='Maidstone Hackspace <noreply@test.maidstone-hackspace.org.uk>')
+                         default='Maidstone Hackspace <no-reply@test.maidstone-hackspace.org.uk>')
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[Maidstone Hackspace] ')
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
-SERVER_EMAIL_PORT = '465'
+SERVER_EMAIL_PORT = '587'
 
-EMAIL_USE_TLS = False
+EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_HOST_USER = env('EMAIL_USER')
-EMAIL_PORT = 465
+EMAIL_PORT = 587
 
 # Anymail with Mailgun
 #INSTALLED_APPS += ("anymail", )
@@ -193,12 +193,12 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+            'formatter': 'verbose',00 
         },
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename': BASE_DIR + "/../logfile",
+            'filename': ROOT_DIR.path("django.log"),
         },
     },
     'loggers': {

@@ -6,7 +6,6 @@ from mhackspace.contact.forms import ContactForm
 # add to your views
 def contact(request):
     form_class = ContactForm
-    form = form_class(data=request.POST)
     if request.method == 'POST':
         form = form_class(data=request.POST)
         if form.is_valid():
@@ -14,9 +13,11 @@ def contact(request):
             email = EmailMessage(
                 '[%s] - %s' % (data['enquiry_type'], data['subject']),
                 data['message'],
-                to=['no-reply@maidstone-hackspace..org.uk'])
+                to=['contact@maidstone-hackspace.org.uk'])
             email.send()
             messages.add_message(request, messages.INFO, 'E-Mail sent')
+    else:
+        form = form_class()
 
 
     return render(request, 'pages/contact.html', {
