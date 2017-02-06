@@ -43,11 +43,36 @@
             aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="/">
-      <img src="{% static 'images/logo.svg' %}" alt="Maidstone Hackspace Logo" id="navbar-logo">
+    <a href="#navbarSideMenu" class="navbar-brand" type="button" data-toggle="collapse"
+            aria-controls="navbarMainMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <img src="{% static 'images/logo.svg' %}" alt="Maidstone Hackspace Logo" id="navbar-logo"  data-target="collapse" data-targt="#navbarSideMenu" style="padding:0px;">
       Maidstone Hackspace
     </a>
 
+    <div class="collapse" id="navbarSideMenu" style="position:absolute;top:80px;left:0px;z-index:1;background-color:#bbbbbb;">
+      <ul class="nav flex-column navbar-left navbar-nav mr-auto" >
+
+        {% if request.user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'members' %}">Members</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'group'%}">Mailing List</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{# url 'equipment' #}">Equipment</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'account_logout' %}">Sign out</a>
+        </li>
+      </ul>
+    </div>
 
     <div class="collapse navbar-collapse" id="navbarMainMenu">
       <ul class="navbar-nav mr-auto">
@@ -92,24 +117,6 @@
   </nav>
 </div>
 
-<ul class="nav flex-column navbar-left" style="position:absolute;top:80px;background-color:#bbbbbb;">
-  <li class="nav-item">
-    <a class="nav-link active" href="#">Profile</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="/members">Members</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="/mailing-list">Mailing List</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="/equipment">Equipment</a>
-  </li>
-
-  <li class="nav-item">
-    <a class="nav-link disabled" href="/accounts/signout">Sign out make these reversed</a>
-  </li>
-</ul>
 <div class="container">
   {% if messages %}
     {% for message in messages %}
