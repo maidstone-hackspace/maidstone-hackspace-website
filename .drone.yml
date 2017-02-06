@@ -1,5 +1,6 @@
 pipeline:
   backend:
+    build: ./compose/django/Dockerfile
     image: maidstonehackspacewebsite_django
     environment:
       - POSTGRES_USER=mhackspace
@@ -7,9 +8,9 @@ pipeline:
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
       - cp -n env.example .env
+      -  pip install -r /requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
 
-  deploy:
 
 
 
@@ -20,6 +21,9 @@ pipeline:
 services:
   postgres:
     build: ./compose/postgres
+#    build:
+#      context: .
+#      dockerfile: ./compose/django/Dockerfile
 #    volumes:
 #      - postgres_data_dev:/var/lib/postgresql/data
 #      - postgres_backup_dev:/backups
@@ -47,10 +51,22 @@ services:
   mailhog:
     image: mailhog/mailhog
 
+# deploy:
+#   ssh:
+#     target: test.maidstone-hackspace.org.uk:/var/www/test-maidstone-hackspace.org.uk 22
+#     artifacts:
+#       - build.result
+#       - config/file
+#     cmd: /opt/bin/redeploy.sh
+
 deploy:
-  ssh:
-    target: test.maidstone-hackspace.org.uk:/var/www/test-maidstone-hackspace.org.uk 22
-    artifacts:
-      - build.result
-      - config/file
-    cmd: /opt/bin/redeploy.sh
+    ssh:
+        host: maidstone-hackspace-stage
+        port: 22
+        commands:
+            - cd /var/www/stage/maidstone-hackspace-website/
+            - docker-compose -fstage.yml build
+            - docker-compose -fstage.yml down --remove-orphans
+            - docker-compose -fstage.yml up
+    when:
+        branch: master
