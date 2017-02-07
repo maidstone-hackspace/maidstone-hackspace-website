@@ -1,6 +1,6 @@
 pipeline:
   backend:
-    build: ./compose/django/Dockerfile
+    build: ./compose/django/Dockerfile-dev
     image: maidstonehackspacewebsite_django
     environment:
       - POSTGRES_USER=mhackspace
@@ -10,8 +10,6 @@ pipeline:
       - cp -n env.example .env
       -  pip install -r /requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
-
-
 
 
 #volumes:
