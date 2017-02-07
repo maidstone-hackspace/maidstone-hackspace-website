@@ -10,7 +10,7 @@ from .models import User
 from .models import Blurb
 from .models import Membership
 
-from .forms import BlurbForm
+from .forms import BlurbForm, MembershipJoinForm
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
@@ -23,6 +23,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         context['blurb'] = Blurb.objects.filter(user=self.get_object()).first()
         context['membership'] = Membership.objects.filter(user=self.get_object()).first()
+        context['membership_form'] = MembershipJoinForm(initial={'amount': 20.00})
         return context
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):

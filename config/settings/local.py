@@ -89,3 +89,5 @@ CAPTCHA = {
     'secret': '',
     'site': ''
 }
+
+SASS_PROCESSOR_AUTO_INCLUDE = False

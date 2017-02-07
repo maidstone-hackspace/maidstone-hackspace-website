@@ -1,25 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}User: {{ object.username }}{% endblock %}
 
 {% block content %}
 <div class="container">
-  <style>
-#membercard {
-    color: #000;
-    background-color: #8C50A5;
-    border-radius: 14px;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5);
-    background-image: url('/static/images/membership_card_background.png');
-    width: 430px;
-    height: 240px;
-    margin-left: 20px;
-    text-shadow: 1px 1px #FFF;
-    position: relative;
-    float: right;
-}
-  </style>
 <h2>Profile</h2>
 <div class="row">
   <div class="col-md-6">
@@ -42,6 +29,12 @@
       <div class="date">Joined {{membership.date}}</div>
       <div class="container">
         <div class="middle">
+
+          <form method="POST" action="{% url 'contact' %}" class="contact_us_form">
+            {% csrf_token %}
+            {{ membership_form|crispy }}
+            <button class="btn btn-primary" type="submit" name="action">{% trans "Send" %}</button>
+          </form>
           <p>MHS{{ user.id|stringformat:"05d" }}</p><p>{{user.name}}{{user.last_name}}</p>
           <a href="/profile/membership/cancel">Cancel Membership</a>
         </div>

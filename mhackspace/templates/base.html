@@ -1,3 +1,4 @@
+{% load sass_tags %}
 {% load i18n compress %}
 {% load static from staticfiles %}
 <!DOCTYPE html>
@@ -30,7 +31,7 @@
     <!-- Your stuff: Third-party CSS libraries go here -->
     {#    { compress css }#}
     <!-- This file stores project-specific CSS -->
-    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <link href="{% sass_src 'css/project.css' %}" rel="stylesheet">
     {#    { endcompress }#}
   {% endblock %}
 </head>
@@ -50,7 +51,7 @@
       Maidstone Hackspace
     </a>
 
-    <div class="collapse" id="navbarSideMenu" style="position:absolute;top:80px;left:0px;z-index:1;background-color:#bbbbbb;">
+    <div class="collapse navbar-inverse bg-inverse" id="navbarSideMenu" style="position:absolute;top:72px;left:0px;z-index:1;background-color:#bbbbbb;">
       <ul class="nav flex-column navbar-left navbar-nav mr-auto" >
 
         {% if request.user.is_authenticated %}

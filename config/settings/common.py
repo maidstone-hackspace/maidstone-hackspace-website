@@ -192,7 +192,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 )
-
+SASS_PROCESSOR_AUTO_INCLUDE = True
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
@@ -291,4 +291,6 @@ PAYMENT_PROVIDERS = {
         'redirect_url':'https://test.maidstone-hackspace.org.uk'
     }
 }
+
+SASS_PRECISION = 8
 
