@@ -1,9 +1,9 @@
 pipeline:
   docker:
     image: plugins/docker
-    repo: maidstonehackspacewebsite_django
+    #repo: maidstonehackspacewebsite_django
     dockerfile: ./compose/django/Dockerfile-dev
-    tgs: latest
+#    tags: latest
 
   tests:
     image: maidstonehackspacewebsite_django
