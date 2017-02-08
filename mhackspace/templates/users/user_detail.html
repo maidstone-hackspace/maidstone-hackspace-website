@@ -30,7 +30,7 @@
       <div class="container">
         <div class="middle">
 
-          <form method="POST" action="{% url 'contact' %}" class="contact_us_form">
+          <form method="POST" action="{% url 'join_hackspace' %}" class="contact_us_form">
             {% csrf_token %}
             {{ membership_form|crispy }}
             <button class="btn btn-primary" type="submit" name="action">{% trans "Send" %}</button>

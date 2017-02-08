@@ -192,7 +192,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 )
-SASS_PROCESSOR_AUTO_INCLUDE = True
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
@@ -294,3 +293,12 @@ PAYMENT_PROVIDERS = {
 
 SASS_PRECISION = 8
 
+
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    # str(ROOT_DIR),
+    str(APPS_DIR) + '/static/sass',
+    str(ROOT_DIR) + '/node_modules',
+]
+print(SASS_PROCESSOR_INCLUDE_DIRS)
+SASS_PROCESSOR_ENABLED = True
+SASS_PROCESSOR_AUTO_INCLUDE = True

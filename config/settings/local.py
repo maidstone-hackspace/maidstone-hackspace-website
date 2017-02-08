@@ -90,4 +90,3 @@ CAPTCHA = {
     'site': ''
 }
 
-SASS_PROCESSOR_AUTO_INCLUDE = False

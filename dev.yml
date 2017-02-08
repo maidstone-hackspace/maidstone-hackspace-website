@@ -36,5 +36,10 @@ services:
     ports:
       - "8125:8025"
 
+  node:
+    image: node:7-onbuild
+    command: npm install
+    volumes:
+      - ./:/usr/src/app
   redis:
     image: redis:latest
