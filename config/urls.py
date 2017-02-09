@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
-from mhackspace.subscriptions.views import MembershipJoinView
+from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
 
 urlpatterns = [
@@ -33,7 +33,9 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     url(r'^latest/$', LatestEntriesFeed()),
 
-    url(r'membership/join/$', MembershipJoinView.as_view(), name='join_hackspace'),
+    url(r'membership/join/$', subscription.MembershipJoinView.as_view(), name='join_hackspace'),
+    url(r'membership/(?P<provider>[\w\-]+)/success$', subscription.MembershipJoinSuccessView.as_view(), name='join_hackspace_success'),
+    url(r'membership/(?P<provider>\w{0,50})/failure$', subscription.MembershipJoinFailureView.as_view(), name='join_hackspace_failure'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
