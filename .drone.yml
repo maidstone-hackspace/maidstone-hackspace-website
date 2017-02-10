@@ -1,12 +1,6 @@
 pipeline:
-  docker:
-    image: plugins/docker
-    #repo: maidstonehackspacewebsite_django
-    dockerfile: ./compose/django/Dockerfile-dev
-#    tags: latest
-
   tests:
-    image: maidstonehackspacewebsite_django
+    image: python:3.5
 
     environment:
       - POSTGRES_USER=mhackspace
@@ -14,63 +8,8 @@ pipeline:
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
       - cp -n env.example .env
-      -  pip install -r /requirements/test.txt
+      - pip install -r /drone/src/requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
-
-
-#volumes:
-#  postgres_data_dev: {}
-#  postgres_backup_dev: {}
-
-#services:
-#  postgres:
-#    build: ./compose/postgres
-#    build:
-#      context: .
-#      dockerfile: ./compose/django/Dockerfile
-#    volumes:
-#      - postgres_data_dev:/var/lib/postgresql/data
-#      - postgres_backup_dev:/backups
-#    environment:
-#      - POSTGRES_USER=mhackspace
-
-#  django:
-#    build:
-#      context: .
-#      dockerfile: ./compose/django/Dockerfile-dev
-#    command: /start-dev.sh
-#    depends_on:
-#      - postgres
-#    environment:
-#      - POSTGRES_USER=mhackspace
-#      - USE_DOCKER=yes
-#    volumes:
-#      - .:/app
-#    ports:
-#      - "8180:8000"
-#    links:
-#      - postgres
-#      - mailhog
 
   mailhog:
     image: mailhog/mailhog
-
-# deploy:
-#   ssh:
-#     target: test.maidstone-hackspace.org.uk:/var/www/test-maidstone-hackspace.org.uk 22
-#     artifacts:
-#       - build.result
-#       - config/file
-#     cmd: /opt/bin/redeploy.sh
-
-#deploy:
-#    ssh:
-#        host: maidstone-hackspace-stage
-#        port: 22
-#        commands:
-#            - cd /var/www/stage/maidstone-hackspace-website/
-#            - docker-compose -fstage.yml build
-#            - docker-compose -fstage.yml down --remove-orphans
-#            - docker-compose -fstage.yml up
-#    when:
-#        branch: master
