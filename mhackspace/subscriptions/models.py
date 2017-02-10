@@ -30,7 +30,7 @@ class Payments(models.Model):
     reference = models.CharField(max_length=255, unique=True)
     amount = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     type = models.PositiveSmallIntegerField(default=0)
-    date = models.DateTimeField() 
+    date = models.DateTimeField()
 
     def lookup_payment_type(name):
         return PAYMENT_TYPES.get(name, 0)

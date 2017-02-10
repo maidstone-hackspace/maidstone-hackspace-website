@@ -1,5 +1,6 @@
 from autofixture import AutoFixture
 from django.core.management.base import BaseCommand
+from mhackspace.base.models import BannerImages
 from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User
 
@@ -16,6 +17,9 @@ class Command(BaseCommand):
 
         feeds = AutoFixture(Article)
         feeds.create(10)
+
+        banners = AutoFixture(BannerImages)
+        banners.create(10)
 
         self.stdout.write(
             self.style.SUCCESS(

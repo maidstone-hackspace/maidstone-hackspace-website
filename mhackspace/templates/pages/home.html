@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% load feed_views %}
+{% load banner_images %}
+{% load static from staticfiles %}
 
 {% block content %}
+  <img src="{% static 'images/logo.svg' %}" class="img-fluid" alt="Responsive image">
+
+  {% show_banner_images %}
+
   <h2>Introduction</h2>
   <p>Hackspaces are a shared space where artists, designers, makers, hackers, programmers, tinkerers, professionals and hobbyists can work on their projects, share knowledge and collaborate.We are in the process of developing Maidstone Hackspace. We're previous members of (ICMP) and looking to form a new space in the future. At the moment, communication is via google groups, email, and the website. If you're at all intrested please join our mailing list and make yourself known!</p>
 
