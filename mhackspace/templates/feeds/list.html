@@ -1,18 +1,27 @@
 {% load static %}
 {% get_static_prefix as STATIC_PREFIX %}
+
+<h3 class="mb-1">See what our memberrs have been creating below.</h3>
+<br />
 <div class="card-columns" id="feeds">
-  {% for article in articles %}
-    <div class="card">
-      <a href="{{ article.url }}">
-        <img class="card-img-top img-fluid" alt="{{ article.title }}"
-             src="{% firstof article.image.home.url article.feed.image.home.url "static/images/card.png" %}">
-      </a>
-      <div class="card-block">
-        <a href="{{ article.url }}" class="card-link"><h4 class="card-title">{{ article.title }}</h4></a>
-        <p class="card-text">{{ article.feed.author }}</p>
-        <p class="card-text">{{ article.description|striptags|truncatewords:30 }}</p>
-        <a href="{{ article.url }}" class="card-link">View Original</a>
+  <div class="card-deck">
+    {% for article in articles %}
+      <div class="card">
+        <a href="{{ article.url }}">
+
+          {% if article.image %} 
+          <img class="card-img-top img-fluid" alt="{{ article.title }}" src="{{ article.image.url }}">
+          {% endif %}
+        </a>
+        <div class="card-block">
+          <a href="{{ article.url }}" class="card-link"><h4 class="card-title">{{ article.title }}</h4></a>
+          <p class="card-text">{{ article.feed.author }}</p>
+          <p class="card-text">{{ article.description|striptags|truncatewords:30 }}</p>
+          <a href="{{ article.url }}" class="card-link">View Original</a>
+        </div>
       </div>
-    </div>
-  {% endfor %}
+
+      {% if forloop.counter|divisibleby:3 %}</div><div class="card-deck">{% endif %}
+    {% endfor %}
+  </div>
 </div>

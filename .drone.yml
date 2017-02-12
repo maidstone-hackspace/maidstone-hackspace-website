@@ -8,6 +8,8 @@ pipeline:
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
       - cp -n env.example .env
+      - ls -la /drone/src/
+      - ls -la /drone/src/requirements/
       - pip install -r /drone/src/requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
 

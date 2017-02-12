@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
 
-Members feed
 
 <div class="row">
-  <div class="col">Users {{ paginator.count }}</div>
-  <div class="col">Members {{ total }}</div>
+  <div class="col-md-4">Hackspace Members</div>
+  <div class="col-md-4"><a href="#">Total Users <span class="badge badge-default">{{ paginator.count }}</span></a></div>
+  <div class="col-md-4"><a href="#">Total Members <span class="badge badge-success">{{ total }}</span></a></div>
 </div>
 
-<div class="card-deck-wrapper">
+<br />
+
+<div class="card-columns" id="feeds">
   <div class="card-deck">
     {% for member in members %}
       <div class="card">
