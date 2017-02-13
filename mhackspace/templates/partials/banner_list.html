@@ -1,0 +1,14 @@
+{% load static %}
+
+<div class="card-columns" id="banners">
+  {% for banner in banners %}
+    <div class="carousel-item">
+      <img src="{{ banner.scaled_image }}" alt="">
+      <div class="carousel-caption d-none d-md-block">
+        <h3>{{ banner.title }}</h3>
+        <p>{{ banner.description }}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
