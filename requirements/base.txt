@@ -48,8 +48,9 @@ django-sass-processor==0.5.3
 libsass==0.12.3
 lxml==3.7.2
 
+
 # Your custom requirements go here
-mock
+mock==2.0.0
 
 gocardless
 braintree==3.34.0
