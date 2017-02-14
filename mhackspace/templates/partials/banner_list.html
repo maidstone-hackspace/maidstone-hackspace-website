@@ -1,14 +1,16 @@
 {% load static %}
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+<div class="carousel-inner" role="listbox">
+  {% for banner in bannerlist %}
 
-<div class="card-columns" id="banners">
-  {% for banner in banners %}
-    <div class="carousel-item">
-      <img src="{{ banner.scaled_image }}" alt="">
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <img class="img-fluid" src="{{ banner.scaled_image.url }}" alt="">
       <div class="carousel-caption d-none d-md-block">
         <h3>{{ banner.title }}</h3>
-        <p>{{ banner.description }}</p>
+        <p>{{ banner.description |truncatewords:30}}</p>
       </div>
     </div>
   {% endfor %}
+</div>
 </div>
 

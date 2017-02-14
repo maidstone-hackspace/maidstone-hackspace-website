@@ -5,6 +5,8 @@ from django.db import models
 from django.utils import timezone
 from stdimage.models import StdImageField
 from stdimage.utils import UploadToAutoSlugClassNameDir
+from stdimage.validators import MinSizeValidator
+
 
 
 class BannerImages(models.Model):
@@ -20,7 +22,9 @@ class BannerImages(models.Model):
             'home': {
                 "width": 530,
                 "height": 220,
-                "crop": True}})
+                "crop": True}},
+        validators=[
+            MinSizeValidator(800, 600))
 
     caption = models.TextField()
     date = models.DateTimeField(default=timezone.now)

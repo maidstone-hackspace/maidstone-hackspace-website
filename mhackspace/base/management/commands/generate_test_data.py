@@ -6,7 +6,7 @@ from mhackspace.users.models import User
 
 
 class Command(BaseCommand):
-    help = 'Imports the RSS feeds from active blogs'
+    help = 'Build test data for development environment'
 
     def handle(self, *args, **options):
         users = AutoFixture(User)

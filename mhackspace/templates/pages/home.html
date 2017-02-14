@@ -4,7 +4,6 @@
 {% load static from staticfiles %}
 
 {% block content %}
-  <img src="{% static 'images/logo.svg' %}" class="img-fluid" alt="Responsive image">
 
   {% show_banner_images %}
 
@@ -13,3 +12,12 @@
 
   {% show_feeds %}
 {% endblock content %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript">
+ $(document).ready(function(){
+     $('.carousel').carousel();
+ });
+</script>
+{% endblock %}
