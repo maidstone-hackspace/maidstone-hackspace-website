@@ -1,3 +1,7 @@
+workspace:
+  base: /drone
+  path: src
+
 pipeline:
   tests:
     image: python:3.5
@@ -7,6 +11,8 @@ pipeline:
       - USE_DOCKER=yes
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
+      - echo $DRONE_BUILD_DIR
+      - echo $WORKSPACE
       - cp -n env.example .env
       - ls -la /drone/src/
       - ls -la /drone/src/requirements/
