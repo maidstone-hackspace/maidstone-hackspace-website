@@ -299,6 +299,7 @@ SASS_PROCESSOR_INCLUDE_DIRS = [
     str(APPS_DIR) + '/static/sass',
     str(ROOT_DIR) + '/node_modules',
 ]
-print(SASS_PROCESSOR_INCLUDE_DIRS)
+
+
 SASS_PROCESSOR_ENABLED = True
 SASS_PROCESSOR_AUTO_INCLUDE = True

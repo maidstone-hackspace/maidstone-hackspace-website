@@ -198,7 +198,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename': ROOT_DIR.path("django.log"),
+            'filename': "%s/django.log" % ROOT_DIR,
         },
     },
     'loggers': {

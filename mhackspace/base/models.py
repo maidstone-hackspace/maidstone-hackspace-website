@@ -24,7 +24,7 @@ class BannerImages(models.Model):
                 "height": 220,
                 "crop": True}},
         validators=[
-            MinSizeValidator(800, 600))
+            MinSizeValidator(800, 600)])
 
     caption = models.TextField()
     date = models.DateTimeField(default=timezone.now)
