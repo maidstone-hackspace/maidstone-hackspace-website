@@ -133,15 +133,12 @@
 
 <footer class="footer">
   <div class="container">
-    <span class="text-muted">&copy; 2016 Maidstone Hackspace</span>
+    <span class="text-muted">&copy; {% now "Y" %} Maidstone Hackspace</span>
   </div>
 </footer>
 
 {% block modal %}{% endblock modal %}
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
 {% block javascript %}
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
           integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
@@ -153,9 +150,6 @@
           integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
           crossorigin="anonymous"></script>
 
-  <!-- Your stuff: Third-party javascript libraries go here -->
-
-  <!-- place project specific Javascript in this file -->
   {% compress js %}
     <script src="{% static 'js/project.js' %}"></script>
   {% endcompress %}
