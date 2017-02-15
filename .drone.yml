@@ -11,13 +11,18 @@ pipeline:
       - USE_DOCKER=yes
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
-      - echo $DRONE_BUILD_DIR
-      - echo $WORKSPACE
       - cp -n env.example .env
-      - ls -la /drone/src/
-      - ls -la /drone/src/requirements/
       - pip install -r ./requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
+
+  publish:
+    image: appleboy/drone-ssh
+    host: maidstone-hackspace.org.uk
+    # user: root
+    # password: 1234
+    port: 22
+    script:
+      - echo 'to be added'
 
 services:
   mailhog:
