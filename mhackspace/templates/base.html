@@ -44,36 +44,10 @@
             aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a href="#navbarSideMenu" class="navbar-brand" type="button" data-toggle="collapse"
-            aria-controls="navbarMainMenu" aria-expanded="false"
-            aria-label="Toggle navigation">
-      <img src="{% static 'images/logo.svg' %}" alt="Maidstone Hackspace Logo" id="navbar-logo"  data-target="collapse" data-targt="#navbarSideMenu" style="padding:0px;">
+    <a class="navbar-brand" href="/">
+      <img src="/static/images/logo.svg" alt="Maidstone Hackspace Logo" id="navbar-logo">
       Maidstone Hackspace
     </a>
-
-    <div class="collapse navbar-inverse bg-inverse" id="navbarSideMenu" style="position:absolute;top:72px;left:0px;z-index:1;background-color:#bbbbbb;">
-      <ul class="nav flex-column navbar-left navbar-nav mr-auto" >
-
-        {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link active" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
-        </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'members' %}">Members</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'group'%}">Mailing List</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{# url 'equipment' #}">Equipment</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'account_logout' %}">Sign out</a>
-        </li>
-      </ul>
-    </div>
 
     <div class="collapse navbar-collapse" id="navbarMainMenu">
       <ul class="navbar-nav mr-auto">
@@ -99,6 +73,15 @@
 
       <ul class="nav navbar-nav pull-xs-right">
         {% if request.user.is_authenticated %}
+<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Member Area
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="{% url 'members' %}">Members</a>
+          <a class="dropdown-item" href="{# url 'equipment' #}">Equipment</a>
+        </div>
+      </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
           </li>
@@ -126,7 +109,8 @@
   {% endif %}
 
   {% block content %}
-    <p>Use this document as a way to quick start any new project.</p>
+    <h1>Under Construction</h1>
+    <p>We are still working on this page. Please bare with us.</p>
   {% endblock content %}
 
 </div>
@@ -134,6 +118,8 @@
 <footer class="footer">
   <div class="container">
     <span class="text-muted">&copy; {% now "Y" %} Maidstone Hackspace</span>
+    <div class="float-right">
+      <a class="btn btn-primary" href="https://groups.google.com/forum/#!forum/maidstone-hackspace" role="button">Mailing List</a>
   </div>
 </footer>
 
