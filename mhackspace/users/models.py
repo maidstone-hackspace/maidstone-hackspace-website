@@ -5,11 +5,10 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from stdimage.models import StdImageField
 
-@python_2_unicode_compatible
+
 class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
     image = StdImageField(

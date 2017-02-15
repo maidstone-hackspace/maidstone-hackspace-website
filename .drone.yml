@@ -19,5 +19,6 @@ pipeline:
       - pip install -r ./requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
 
+services:
   mailhog:
     image: mailhog/mailhog

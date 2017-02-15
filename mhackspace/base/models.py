@@ -8,7 +8,6 @@ from stdimage.utils import UploadToAutoSlugClassNameDir
 from stdimage.validators import MinSizeValidator
 
 
-
 class BannerImages(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=255)
@@ -19,12 +18,16 @@ class BannerImages(models.Model):
         blank=True,
         null=True,
         variations={
-            'home': {
-                "width": 530,
-                "height": 220,
+            'small': {
+                "width": 600,
+                "height": 300,
+                "crop": True},
+            'large': {
+                "width": 1024,
+                "height": 300,
                 "crop": True}},
         validators=[
-            MinSizeValidator(800, 600)])
+            MinSizeValidator(1200, 300)])
 
     caption = models.TextField()
     date = models.DateTimeField(default=timezone.now)
