@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^latest/$', LatestEntriesFeed()),
 
     url(r'membership/join/$', subscription.MembershipJoinView.as_view(), name='join_hackspace'),
+    url(r'membership/cancel/$', subscription.MembershipCancelView.as_view(), name='cancel_membership'),
     url(r'membership/(?P<provider>[\w\-]+)/success$', subscription.MembershipJoinSuccessView.as_view(), name='join_hackspace_success'),
     url(r'membership/(?P<provider>\w{0,50})/failure$', subscription.MembershipJoinFailureView.as_view(), name='join_hackspace_failure'),
     url(r'^admin/password_reset/$', auth_views.password_reset, name='admin_password_reset'),

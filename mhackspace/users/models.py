@@ -29,10 +29,18 @@ class User(AbstractUser):
 
 
 class Blurb(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='+') 
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='+')
     skills = models.CharField(max_length=255)
     description = models.TextField()
 
+MEMBERSHIP_CANCELLED = 0
+
+MEMBERSHIP_STATUS_CHOICES = (
+    (0, 'Guest user'),
+    (1, 'Active membership'),
+    (3, 'Membership Expired'),
+    (4, 'Membership Cancelled')
+)
 
 MEMBERSHIP_STRING = {
     0: 'Guest user',
@@ -55,7 +63,7 @@ class Membership(models.Model):
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     date = models.DateTimeField() 
     reference = models.CharField(max_length=255)
-    status = models.PositiveSmallIntegerField(default=0)
+    status = models.PositiveSmallIntegerField(default=0, choices=MEMBERSHIP_STATUS_CHOICES)
     email = models.CharField(max_length=255)
 
     @property

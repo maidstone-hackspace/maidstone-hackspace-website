@@ -9,4 +9,12 @@
     margin: auto;
     text-shadow: 1px 1px #FFF;
     position: relative;
+    .middle {
+        font-size: 2rem;
+        text-align: center;
+        margin: 50px;
+    }
+    .date {
+        padding:14px;
+    }
 }

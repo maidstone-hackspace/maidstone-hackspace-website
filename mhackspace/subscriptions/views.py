@@ -9,9 +9,40 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from mhackspace.users.models import User
+from mhackspace.users.models import User, Membership
+from mhackspace.users.models import MEMBERSHIP_CANCELLED
 from mhackspace.users.forms import MembershipJoinForm
 from mhackspace.subscriptions.payments import select_provider
+
+
+class MembershipCancelView(LoginRequiredMixin, RedirectView):
+    permanent = False
+    pattern_name = 'users:detail'
+
+    def get_redirect_url(self, *args, **kwargs):
+        payment_provider = 'gocardless'
+        provider = select_provider(payment_provider)
+
+        member = Membership.objects.filter(user=self.request.user).first()
+
+        result = provider.cancel_subscription(
+            reference=member.reference
+        )
+        if result.get('success') is True:
+            # set membership to cancelled on success
+            member.status = MEMBERSHIP_CANCELLED
+            member.save()
+
+            # remove user from group on success
+            group = Group.objects.get(name='members')
+            self.request.user.groups.remove(group)
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                'Your membership has now been cancelled')
+        
+        kwargs['username'] =  self.request.user.get_username()
+        return super(MembershipCancelView, self).get_redirect_url(*args, **kwargs)
 
 
 class MembershipJoinView(LoginRequiredMixin, UpdateView):

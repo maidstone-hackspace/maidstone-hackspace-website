@@ -101,9 +101,14 @@ class gocardless_provider:
     def get_token(self):
         return 'N/A'
 
-    def cancel_subscribe(self, reference):
-        subscription = gocardless.client.subscription(reference)
-        response = subscription.cancel()
+    def cancel_subscription(self, reference):
+        try:
+            subscription = gocardless.client.subscription(reference)
+            response = subscription.cancel()
+        except  gocardless.exceptions.ClientError:
+            return {
+                'success': False
+            }
         return {
             'amount': subscription.amount,
             'start_date': subscription.created_at,

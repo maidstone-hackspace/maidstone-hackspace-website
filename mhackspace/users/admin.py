@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+from django.contrib.admin import ModelAdmin
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from .models import User
+from .models import User, Membership, MEMBERSHIP_STATUS_CHOICES
 
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
 
-
 class MyUserCreationForm(UserCreationForm):
-
     error_message = UserCreationForm.error_messages.update({
         'duplicate_username': 'This username has already been taken.'
     })
@@ -40,3 +39,8 @@ class MyUserAdmin(AuthUserAdmin):
     ) + AuthUserAdmin.fieldsets
     list_display = ('username', 'name', 'is_superuser')
     search_fields = ['name']
+
+@admin.register(Membership)
+class MembershipAdmin(ModelAdmin):
+    list_display = ('user', 'payment', 'date', 'status')
+    list_filter = ('status',)
