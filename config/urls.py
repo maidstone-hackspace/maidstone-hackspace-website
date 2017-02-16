@@ -7,11 +7,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
+from django.contrib.auth import views as auth_views
+
 from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
-from django.contrib.auth import views as auth_views
+from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -20,6 +22,12 @@ urlpatterns = [
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
 
     url(r'^contact/$', contact, name='contact'),
+    url(r'^blog/$', contact, name='contact'),
+    url(r'^blog/rss/$', BlogFeed()),
+    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogCategoryFeed(), name='blog-item'),
+    url(r'^blog/category/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogCategoryFeed(), name='blog-category'),
+    url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category_feed'),
+
 
     # need to be logged in for these urls
     url(r'^members/$', MemberListView.as_view(), name='members'),

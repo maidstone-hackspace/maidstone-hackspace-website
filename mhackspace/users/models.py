@@ -11,6 +11,7 @@ from stdimage.models import StdImageField
 
 class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
+    public = models.BooleanField(default=False, help_text='If the users email is public on post feeds')
     image = StdImageField(
         upload_to='avatars/',
         blank=True,
@@ -29,10 +30,9 @@ class User(AbstractUser):
 
 
 class Blurb(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='+') 
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='+')
     skills = models.CharField(max_length=255)
     description = models.TextField()
-
 
 MEMBERSHIP_STRING = {
     0: 'Guest user',
