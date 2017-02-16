@@ -14,6 +14,7 @@ from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
 from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
+from mhackspace.blog.views import blog
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -22,11 +23,11 @@ urlpatterns = [
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
 
     url(r'^contact/$', contact, name='contact'),
-    url(r'^blog/$', contact, name='contact'),
+    url(r'^blog/$', blog, name='contact'),
     url(r'^blog/rss/$', BlogFeed()),
-    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogCategoryFeed(), name='blog-item'),
-    url(r'^blog/category/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogCategoryFeed(), name='blog-category'),
-    url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category_feed'),
+    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
+    url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', blog, name='blog-category'),
+    url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category-feed'),
 
 
     # need to be logged in for these urls
