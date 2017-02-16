@@ -11,6 +11,7 @@ from stdimage.models import StdImageField
 
 class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
+    public = models.BooleanField(default=False, help_text='If the users email is public on post feeds')
     image = StdImageField(
         upload_to='avatars/',
         blank=True,
