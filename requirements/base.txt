@@ -46,7 +46,7 @@ rcssmin==1.0.6
 django-compressor==2.1.1
 django-sass-processor==0.5.3
 libsass==0.12.3
-lxml==3.7.2
+lxml==3.7.3
 
 
 # Your custom requirements go here
