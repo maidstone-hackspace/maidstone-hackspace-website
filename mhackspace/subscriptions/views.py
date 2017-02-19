@@ -33,6 +33,7 @@ class MembershipCancelView(LoginRequiredMixin, RedirectView):
             member.status = MEMBERSHIP_CANCELLED
             member.save()
 
+
             # remove user from group on success
             group = Group.objects.get(name='members')
             self.request.user.groups.remove(group)
@@ -40,7 +41,6 @@ class MembershipCancelView(LoginRequiredMixin, RedirectView):
                 self.request,
                 messages.SUCCESS,
                 'Your membership has now been cancelled')
-        
         kwargs['username'] =  self.request.user.get_username()
         return super(MembershipCancelView, self).get_redirect_url(*args, **kwargs)
 
@@ -79,7 +79,33 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
     pattern_name = 'users:detail'
 
     def get_redirect_url(self, *args, **kwargs):
+        payment_provider = 'gocardless'
+        provider = select_provider(payment_provider)
+        result = provider.confirm_subscription(
+            provider_response=kwargs
+        )
+
+        #if something went wrong return to profile with an error
+        if result.get('success') is False:
+            messages.add_message(
+                self.request,
+                messages.ERROR,
+                'Failure something went wrong activating your membership please contact us.')
+            return super(MembershipJoinSuccessView, self).get_redirect_url(*args, **kwargs)
+
         del(kwargs['provider'])
+        try:
+            member = Membership.objects.get(user=self.request.user)
+        except Membership.DoesNotExist:
+            member = Membership()
+
+        member.user = self.request.user
+        member.email = result.get('email')
+        member.reference = result.get('reference')
+        member.payment = result.get('amount')
+        member.date = result.get('start_date')
+        member.status = Membership.lookup_status(name=result.get('status'))
+        member.save()
         messages.add_message(
             self.request,
             messages.SUCCESS,
@@ -89,6 +115,10 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
         # add user to group on success
         group = Group.objects.get(name='members')
         self.request.user.groups.add(group)
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Success your membership should now be active')
         return super(MembershipJoinSuccessView, self).get_redirect_url(*args, **kwargs)
 
 
@@ -101,6 +131,6 @@ class MembershipJoinFailureView(LoginRequiredMixin, RedirectView):
         messages.add_message(
             self.request,
             messages.ERROR,
-            'Failed to sign up something went wrong with your payment, please contact us at %s' % EMAIL_SUPPORT)
+            'Failed to sign up something went wrong with your payment, please contact us at %s' % settings.EMAIL_SUPPORT)
         kwargs['username'] =  self.request.user.get_username()
         return super(MembershipJoinFailureView, self).get_redirect_url(*args, **kwargs)

@@ -118,12 +118,23 @@ class gocardless_provider:
 
     def create_subscription(self, amount, name, redirect_success, redirect_failure, interval_unit='month', interval_length='1'):
         return gocardless.client.new_subscription_url(
-            amount=float(amount), 
-            interval_length=interval_length, 
+            amount=float(amount),
+            interval_length=interval_length,
             interval_unit=interval_unit,
             name=name,
             redirect_uri=redirect_success)
 
+    def confirm_subscription(self, provider_response):
+        response = gocardless.client.confirm_resource(provider_response)
+        subscription = gocardless.client.subscription(provider_response.get('resource_id'))
+        user = subscription.user()
+        return {
+            'amount': subscription.amount,
+            'email': user.email,
+            'start_date': subscription.created_at,
+            'reference': subscription.id,
+            'success': response.success
+        }
 
 class braintree_provider:
     form_remote = False
@@ -153,6 +164,17 @@ class braintree_provider:
             #"price": "20.00"
             #'name': name
         })
+
+    def confirm_subscription(self, args):
+        if self.provider == 'gocardless':
+            response = gocardless.client.confirm_resource(args)
+            subscription = gocardless.client.subscription(args.get('resource_id'))
+            return {
+                'amount': subscription.amount,
+                'start_date': subscription.created_at,
+                'reference': subscription.id
+            }
+
 
     def fetch_subscriptions(self):
         for paying_member in braintree.Subscription.search(braintree.SubscriptionSearch.status == braintree.Subscription.Status.Active):
@@ -246,7 +268,7 @@ class payment:
                     'amount': paying_member.amount}
 
 
-    def subscribe_confirm(self, args):
+    def confirm_subscription(self, args):
         if self.provider == 'gocardless':
             response = gocardless.client.confirm_resource(args)
             subscription = gocardless.client.subscription(args.get('resource_id'))
