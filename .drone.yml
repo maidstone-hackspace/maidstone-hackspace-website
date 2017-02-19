@@ -17,14 +17,25 @@ pipeline:
       - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
 
-  publish:
+  publish-test:
     image: appleboy/drone-ssh
     host: maidstone-hackspace.org.uk
-    # user: root
-    # password: 1234
+    user: ${SSH_USERNAME}
+    key: ${SSH_KEY}
     port: 22
     script:
       - echo 'to be added'
+
+  publish-live:
+    image: appleboy/drone-ssh
+    user: ${SSH_USERNAME}
+    key: ${SSH_KEY}
+    host: maidstone-hackspace.org.uk
+    port: 22
+    script:
+      - echo 'to be added'
+    when:
+      event: [ tag ]
 
 services:
   mailhog:
