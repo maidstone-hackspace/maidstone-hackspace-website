@@ -133,7 +133,7 @@ class gocardless_provider:
             'email': user.email,
             'start_date': subscription.created_at,
             'reference': subscription.id,
-            'success': response.success
+            'success': response.get('success')
         }
 
 class braintree_provider:
