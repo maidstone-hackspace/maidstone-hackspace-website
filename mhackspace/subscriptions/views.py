@@ -82,7 +82,7 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
         payment_provider = 'gocardless'
         provider = select_provider(payment_provider)
         result = provider.confirm_subscription(
-            provider_response=kwargs
+            provider_response=self.request.GET
         )
 
         #if something went wrong return to profile with an error

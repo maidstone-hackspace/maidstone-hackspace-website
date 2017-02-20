@@ -37,8 +37,12 @@ class TestSubscriptionSuccessRedirectView(BaseUserTestCase):
         }
 
         request = self.factory.post(
-            reverse('join_hackspace_success', kwargs={'provider': 'gocardless'}),
-            {'signature': 'test_signature'}
+            reverse('join_hackspace_success', kwargs={'provider': 'gocardless'}), {
+                'resource_id': 'R01',
+                'resource_type': 'subscription',
+                'resource_url': 'https://sandbox.gocardless.com',
+                'signature': 'test_signature'
+            }
         )
 
         setattr(request, 'session', 'session')
