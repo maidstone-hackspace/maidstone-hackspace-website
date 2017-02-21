@@ -113,7 +113,7 @@ class gocardless_provider:
             'amount': subscription.amount,
             'start_date': subscription.created_at,
             'reference': subscription.id,
-            'success': response.success
+            'success': response.get('success', False)
         }
 
     def create_subscription(self, amount, name, redirect_success, redirect_failure, interval_unit='month', interval_length='1'):

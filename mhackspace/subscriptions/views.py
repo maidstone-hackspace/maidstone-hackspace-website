@@ -106,10 +106,6 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
         member.date = result.get('start_date')
         member.status = Membership.lookup_status(name=result.get('status'))
         member.save()
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            'Success your membership should now be active')
         kwargs['username'] = self.request.user.get_username()
 
         # add user to group on success
