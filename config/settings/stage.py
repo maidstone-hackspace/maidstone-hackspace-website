@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Production Configurations
+Stage Configurations
 
-- Use mailgun to send emails
-- Use Redis for cache
 
 
 """
