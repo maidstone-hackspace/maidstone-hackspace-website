@@ -10,8 +10,12 @@ RUN pip install -r /requirements/production.txt \
     && useradd -r -g django django
 
 COPY . /app
-RUN chown -R django /app
-RUN mkdir -p /data/sockets
+
+RUN mkdir -p /var/log/gunicorn/ \
+    && mkdir -p /data/sockets \
+    && chown -R django /app \
+    && chown -R root:django /var/log/gunicorn/ \
+    && chmod -R 770 /var/log/gunicorn/ 
 
 COPY ./compose/django/gunicorn.sh /gunicorn.sh
 COPY ./compose/django/entrypoint.sh /entrypoint.sh

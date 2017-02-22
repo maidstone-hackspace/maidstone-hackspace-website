@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django import template
-from mhackspace.base.models import BannerImages
+from mhackspace.base.models import BannerImage
 
 register = template.Library()
 
 @register.inclusion_tag('partials/banner_list.html')
 def show_banner_images():
-    return {'bannerlist': BannerImages.objects.all(), 'test': 'abc'}
+    return {'bannerlist': BannerImage.objects.all(), 'test': 'abc'}
 
