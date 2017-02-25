@@ -8,7 +8,7 @@ from stdimage.utils import UploadToAutoSlugClassNameDir
 from stdimage.validators import MinSizeValidator
 
 
-class BannerImages(models.Model):
+class BannerImage(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=255)
     displayed = models.BooleanField(default=True)

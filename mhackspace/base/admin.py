@@ -5,9 +5,9 @@ from django.conf.urls import url
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-from mhackspace.base.models import BannerImages
+from mhackspace.base.models import BannerImage
 
 
-@admin.register(BannerImages)
-class BannerImagesAdmin(ModelAdmin):
+@admin.register(BannerImage)
+class BannerImageAdmin(ModelAdmin):
     list_display = ('title', 'url', 'displayed', 'date')

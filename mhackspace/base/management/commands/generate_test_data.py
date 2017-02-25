@@ -1,7 +1,8 @@
 from autofixture import AutoFixture
 from autofixture.generators import ImageGenerator
 from django.core.management.base import BaseCommand
-from mhackspace.base.models import BannerImages
+from django.core.management import call_command
+from mhackspace.base.models import BannerImage
 from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User
 
@@ -13,6 +14,10 @@ class Command(BaseCommand):
     help = 'Build test data for development environment'
 
     def handle(self, *args, **options):
+        # load known data
+        call_command('loaddata', 'mhackspace/users/fixtures/groups.json', verbose=0)
+
+        # random data
         users = AutoFixture(User)
         users.create(10)
 
@@ -22,7 +27,7 @@ class Command(BaseCommand):
         feeds = AutoFixture(Article)
         feeds.create(10)
 
-        banners = ImageFixture(BannerImages)
+        banners = ImageFixture(BannerImage)
         banners.create(10)
         self.stdout.write(
             self.style.SUCCESS(

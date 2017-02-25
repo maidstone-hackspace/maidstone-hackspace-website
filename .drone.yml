@@ -7,22 +7,37 @@ pipeline:
     image: python:3.5
 
     environment:
+      - PYTHONUSERBASE=/drone/src/cache/packages
       - POSTGRES_USER=mhackspace
       - USE_DOCKER=yes
       - DJANGO_SETTINGS_MODULE=config.settings.test
     commands:
       - cp -n env.example .env
-      - pip install -r ./requirements/test.txt
+      - mkdir -p ./cache/packages ./cache/pip
+      - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
       - python manage.py test mhackspace --verbosity 2
 
-  publish:
+  publish-test:
+    pull: True
     image: appleboy/drone-ssh
     host: maidstone-hackspace.org.uk
-    # user: root
-    # password: 1234
+    user: ${SSH_USER}
+    key: "${SSH_KEY}"
     port: 22
     script:
       - echo 'to be added'
+
+  publish-live:
+#    pull: True
+    image: appleboy/drone-ssh
+    user: {SSH_USER}
+    key: {SSH_KEY}
+    host: maidstone-hackspace.org.uk
+    port: 22
+    script:
+      - echo 'to be added'
+    when:
+      event: [ tag ]
 
 services:
   mailhog:

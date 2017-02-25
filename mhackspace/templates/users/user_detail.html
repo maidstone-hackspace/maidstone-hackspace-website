@@ -26,24 +26,25 @@
   </div>
   <div class="col-md-6">
     {% if membership.get_status %}
-    <div id="membercard" class="registered">
-      <div class="date">Joined {{membership.date}}</div>
-      <div class="container">
-        <div class="middle">
-          <p>MHS{{ user.id|stringformat:"05d" }}</p><p>{{user.name}}{{user.last_name}}</p>
-          <a href="/profile/membership/cancel">Cancel Membership</a>
+      <div id="membercard" class="registered">
+        <div class="date">Joined {{membership.date}}</div>
+        <div class="container">
+          <div class="middle">
+            <p>MHS{{ user.id|stringformat:"05d" }}</p><p>{{user.name}}{{user.last_name}}</p>
+          </div>
+          <a href="{% url 'cancel_membership' %}">Cancel Membership</a>
         </div>
       </div>
-    </div>
+    {% else %}
+      <div>
+        <h2>Sign up below</h2>
+        <form method="POST" action="{% url 'join_hackspace' %}" class="contact_us_form">
+          {% csrf_token %}
+          {{ membership_form|crispy }}
+          <button class="btn btn-primary" type="submit" name="action">{% trans "Send" %}</button>
+        </form>
+      </div>
     {% endif %}
-    <div>
-      <h2>Sign up below</h2>
-      <form method="POST" action="{% url 'join_hackspace' %}" class="contact_us_form">
-        {% csrf_token %}
-        {{ membership_form|crispy }}
-        <button class="btn btn-primary" type="submit" name="action">{% trans "Send" %}</button>
-      </form>
-    </div>
   </div>
 </div>
 

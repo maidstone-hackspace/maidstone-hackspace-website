@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Production Configurations
+Stage Configurations
 
-- Use mailgun to send emails
-- Use Redis for cache
 
 
 """
@@ -200,7 +198,7 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'logfile'],
             'level': 'ERROR',
             'propagate': True
         },

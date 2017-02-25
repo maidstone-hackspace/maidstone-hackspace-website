@@ -8,14 +8,6 @@ volumes:
   postgres_backup:
     driver: local
 
-
-# volumes:
-#   sockets:
-#     driver: local
-#   data:
-#     driver: local
-
-
 services:
   postgres:
     build: ./compose/postgres
@@ -32,43 +24,13 @@ services:
     depends_on:
       - postgres
       - redis
-    command: /gunicorn.sh
+    command: /stage-gunicorn-mhackspace.sh
     env_file: .env
     volumes:
       - .:/app
       - sockets:/data/sockets
 
-#  nginx:
-#    build: ./compose/nginx
-#    env_file: .env
-#    depends_on:
-#      - django
-#     - certbot
-#
-#    environment:
-#      - MY_DOMAIN_NAME=test.maidstone-hackspace.org.uk
-#    ports:
-#      - "0.0.0.0:8080:80"
-#    volumes:
-#      - .:/app
-#      - sockets:/data/sockets
-#     - "0.0.0.0:443:443"
-#   volumes:
-#     - /etc/letsencrypt:/etc/letsencrypt
-#     - /var/lib/letsencrypt:/var/lib/letsencrypt
 
-#  certbot:
-#    image: quay.io/letsencrypt/letsencrypt
-#    command: bash -c "sleep 6 && certbot certonly -n --standalone -d maidstone-hackspace.org.uk --text --agree-tos --email support@maidstone-hackspace.org.uk --server https://acme-v01.api.letsencrypt.org/directory --rsa-key-size 4096 --verbose --keep-until-expiring --standalone-supported-challenges http-01"
-#    entrypoint: ""
-#    volumes:
-#      - /etc/letsencrypt:/etc/letsencrypt
-#      - /var/lib/letsencrypt:/var/lib/letsencrypt
-#    ports:
-#      - "80"
-#      - "443"
-#    environment:
-#      - TERM=xterm
 
   node:
     image: node:7-onbuild

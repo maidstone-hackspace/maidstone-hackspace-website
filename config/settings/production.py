@@ -2,15 +2,11 @@
 """
 Production Configurations
 
-- Use Amazon's S3 for storing static files and uploaded media
-- Use mailgun to send emails
-- Use Redis for cache
 
 
 """
 from __future__ import absolute_import, unicode_literals
 
-from boto.s3.connection import OrdinaryCallingFormat
 from django.utils import six
 
 
@@ -55,7 +51,7 @@ X_FRAME_OPTIONS = 'DENY'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['maidstone-hackspace.org.uk'])
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['maidstone-hackspace.org.uk', 'live.maidstone-hackspace.org.uk'])
 ALLOWED_HOSTS.append('127.0.0.1')
 ALLOWED_HOSTS.append('172.18.0.5')
 
@@ -78,7 +74,6 @@ AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = env('DJANGO_AWS_STORAGE_BUCKET_NAME')
 AWS_AUTO_CREATE_BUCKET = True
 AWS_QUERYSTRING_AUTH = False
-AWS_S3_CALLING_FORMAT = OrdinaryCallingFormat()
 
 # AWS cache settings, don't change unless you know what you're doing:
 AWS_EXPIRY = 60 * 60 * 24 * 7
@@ -93,7 +88,7 @@ AWS_HEADERS = {
 
 # URL that handles the media served from MEDIA_ROOT, used for managing
 # stored files.
-MEDIA_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+# MEDIA_URL = ''
 
 
 # Static Assets
@@ -108,17 +103,25 @@ COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 # EMAIL
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
-                         default='Maidstone Hackspace <noreply@maidstone-hackspace.org.uk>')
+                         default='Maidstone Hackspace <no-reply@maidstone-hackspace.org.uk>')
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[Maidstone Hackspace] ')
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
+SERVER_EMAIL_PORT = '587'
+
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+EMAIL_HOST_USER = env('EMAIL_USER')
+EMAIL_PORT = 587
 
 # Anymail with Mailgun
-INSTALLED_APPS += ("anymail", )
-ANYMAIL = {
-    "MAILGUN_API_KEY": env('DJANGO_MAILGUN_API_KEY'),
-    "MAILGUN_SENDER_DOMAIN": env('MAILGUN_SENDER_DOMAIN')
-}
-EMAIL_BACKEND = "anymail.backends.mailgun.MailgunBackend"
+#INSTALLED_APPS += ("anymail", )
+#ANYMAIL = {
+#    "MAILGUN_API_KEY": env('DJANGO_MAILGUN_API_KEY'),
+#    "MAILGUN_SENDER_DOMAIN": env('MAILGUN_SENDER_DOMAIN')
+#}
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # TEMPLATE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -187,23 +190,28 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.FileHandler',
+            'filename': "%s/django.log" % ROOT_DIR,
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'logfile'],
             'level': 'ERROR',
             'propagate': True
         },
         'django.security.DisallowedHost': {
             'level': 'ERROR',
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['logfile', 'console', 'mail_admins'],
             'propagate': True
         }
     }
 }
 
 # Custom Admin URL, use {% url 'admin:index' %}
-ADMIN_URL = env('DJANGO_ADMIN_URL')
+ADMIN_URL = env('DJANGO_ADMIN_URL', default='admin')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
