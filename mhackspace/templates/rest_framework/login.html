@@ -1,0 +1,13 @@
+{% extends "rest_framework/login.html" %}
+{% load static %}
+
+{% block title %}
+  Maidstone Hackspace API
+{% endblock %}
+
+{% block branding %}
+  <a href="{% url "home" %}" style="color: black; text-align: center">
+    <img src="{% static "images/logo.svg" %}" alt="Maidstone Hackspace Logo" class="center-block">
+    <h3>Maidstone Hackspace API</h3>
+  </a>
+{% endblock %}
