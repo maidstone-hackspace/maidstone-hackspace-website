@@ -24,7 +24,7 @@ services:
     depends_on:
       - postgres
       - redis
-    command: /gunicorn.sh
+    command: /live-gunicorn-mhackspace.sh
     env_file: .env
     volumes:
       - .:/app
