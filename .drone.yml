@@ -22,10 +22,13 @@ pipeline:
     image: appleboy/drone-ssh
     host: maidstone-hackspace.org.uk
     user: ${SSH_USER}
-    key: "${SSH_KEY}"
+    key: ${SSH_KEY}
     port: 22
     script:
-      - echo 'to be added'
+      - cd /var/www/stage/maidstone-hackspace-website
+      - git pull
+      - docker-compose down
+      - docker-compose up -d
 
   publish-live:
 #    pull: True
