@@ -8,21 +8,30 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from django.contrib.auth import views as auth_views
+from rest_framework.routers import DefaultRouter
 
 from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
 from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
-from mhackspace.blog.views import blog
+from mhackspace.blog.views import blog, PostViewSet, CategoryViewSet
+from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
+
+router = DefaultRouter()
+router.register(r'posts', PostViewSet)
+router.register(r'categories', CategoryViewSet)
+router.register(r'feeds', FeedViewSet)
+router.register(r'articles', ArticleViewSet)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
     url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
     url(r'^chat/$', TemplateView.as_view(template_name='pages/chat.html'), name='chat'),
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
-
     url(r'^contact/$', contact, name='contact'),
+
+    url(r'^api/v1/', include(router.urls, namespace='v1')),
     url(r'^blog/$', blog, name='contact'),
     url(r'^blog/rss/$', BlogFeed()),
     url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
