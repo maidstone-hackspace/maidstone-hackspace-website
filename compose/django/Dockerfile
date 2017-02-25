@@ -25,7 +25,7 @@ RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /live-gunicorn-mhackspace.sh \
     && chmod +x /entrypoint.sh \
     && chown django /entrypoint.sh \
-    && chmod +x /stage-gunicorn-mahckspace.sh \
+    && chmod +x /stage-gunicorn-mhackspace.sh \
     && chown django /stage-gunicorn-mhackspace.sh \
     && chmod +x /live-gunicorn-mhackspace.sh \
     && chown django /live-gunicorn-mhackspace.sh \
