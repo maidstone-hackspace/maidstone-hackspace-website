@@ -6,6 +6,7 @@ from mhackspace.users.models import User
 from stdimage.models import StdImageField
 from stdimage.utils import UploadToAutoSlugClassNameDir
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
@@ -16,6 +17,7 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog-category', kwargs={'category': self.slug})
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100, unique=True)

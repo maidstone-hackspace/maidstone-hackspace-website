@@ -28,12 +28,7 @@ DJANGO_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'stdimage',
-
-    # Useful template tags:
-    # 'django.contrib.humanize',
-
-    # Admin
+    'django.contrib.humanize',
     'django.contrib.admin',
 )
 THIRD_PARTY_APPS = (
@@ -41,6 +36,8 @@ THIRD_PARTY_APPS = (
     'allauth',  # registration
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
+    'stdimage',
+    'rest_framework',
 )
 
 # Apps specific for this project go here.
@@ -270,30 +267,29 @@ PAYMENT_PROVIDERS = {
         'credentials': {
             'merchant_id': env('BRAINTREE_MERCHANT_ID'),
             'public_key': env('BRAINTREE_PUBLIC_KEY'),
-            'private_key': env('BRAINTREE_PRIVATE_KEY') ,
+            'private_key': env('BRAINTREE_PRIVATE_KEY'),
         }
     },
     'paypal': {
-        "mode": "sandbox", # sandbox or live
+        "mode": "sandbox",  # sandbox or live
         'credentials': {
-            "mode": "sandbox", # sandbox or live
+            "mode": "sandbox",  # sandbox or live
             "client_id": env('PAYPAL_CLIENT_ID'),
             "client_secret": env('PAYPAL_CLIENT_SECRET')}
         },
-    'gocardless':{
+    'gocardless': {
         'environment': 'sandbox',
         'credentials': {
-            'app_id': env('GOCARDLESS_APP_ID') ,
+            'app_id': env('GOCARDLESS_APP_ID'),
             'app_secret': env('GOCARDLESS_APP_SECRET'),
             'access_token': env('GOCARDLESS_ACCESS_TOKEN'),
             'merchant_id': env('GOCARDLESS_MERCHANT_ID'),
         },
-        'redirect_url':'https://test.maidstone-hackspace.org.uk'
+        'redirect_url': 'https://test.maidstone-hackspace.org.uk'
     }
 }
 
 SASS_PRECISION = 8
-
 
 SASS_PROCESSOR_INCLUDE_DIRS = [
     # str(ROOT_DIR),
@@ -306,3 +302,13 @@ SASS_PROCESSOR_ENABLED = True
 SASS_PROCESSOR_AUTO_INCLUDE = True
 
 EMAIL_SUPPORT = 'support@maidstone-hackspace.org.uk'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter'
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50
+}
