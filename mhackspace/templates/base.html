@@ -44,8 +44,8 @@
             aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="/">
-      <img src="/static/images/logo.svg" alt="Maidstone Hackspace Logo" id="navbar-logo">
+    <a class="navbar-brand" href="{% url "home" %}">
+      <img src="{% static "images/logo.svg" %}" alt="Maidstone Hackspace Logo" id="navbar-logo">
       Maidstone Hackspace
     </a>
 

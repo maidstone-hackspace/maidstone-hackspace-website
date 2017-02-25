@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^contact/$', contact, name='contact'),
 
     url(r'^api/v1/', include(router.urls, namespace='v1')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^blog/$', blog, name='contact'),
     url(r'^blog/rss/$', BlogFeed()),
     url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
