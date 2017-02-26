@@ -58,5 +58,7 @@ braintree==3.35.0
 django-autofixture==0.12.1
 
 git+https://github.com/olymk2/scaffold.git
-djangorestframework
+
+djangorestframework==3.5.4
 django-filter==1.0.1
+
