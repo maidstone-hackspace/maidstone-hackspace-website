@@ -18,7 +18,7 @@ RUN mkdir -p /var/log/gunicorn/ \
     && chmod -R 770 /var/log/gunicorn/ 
 
 COPY ./compose/django/live-gunicorn-mhackspace.sh /live-gunicorn-mhackspace.sh
-COPY ./compose/django/live-gunicorn-mhackspace.sh /stage-gunicorn-mhackspace.sh
+COPY ./compose/django/stage-gunicorn-mhackspace.sh /stage-gunicorn-mhackspace.sh
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /stage-gunicorn-mhackspace.sh \
