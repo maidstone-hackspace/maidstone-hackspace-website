@@ -45,6 +45,7 @@ urlpatterns = [
 
     # Django Admin, use {% url 'admin:index' %}
     url(r'{}'.format(settings.ADMIN_URL), admin.site.urls),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
     # User management
     url(r'^users/', include('mhackspace.users.urls', namespace='users')),

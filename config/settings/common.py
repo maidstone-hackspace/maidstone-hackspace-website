@@ -38,6 +38,8 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',  # registration
     'stdimage',
     'rest_framework',
+    'ckeditor',
+    'ckeditor_uploader'
 )
 
 # Apps specific for this project go here.
@@ -320,3 +322,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50
 }
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = 'pillow'
