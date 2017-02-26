@@ -59,4 +59,4 @@ django-autofixture==0.12.1
 
 git+https://github.com/olymk2/scaffold.git
 djangorestframework
-django-filter
+django-filter==1.0.1
