@@ -27,8 +27,9 @@ pipeline:
     script:
       - cd /var/www/stage/maidstone-hackspace-website
       - git pull
-      - docker-compose down
-      - docker-compose up -d
+      - docker-compose -fstage.yml build
+      - docker-compose -fstage.yml down
+      - docker-compose -fstage.yml up -d
 
   publish-live:
 #    pull: True
