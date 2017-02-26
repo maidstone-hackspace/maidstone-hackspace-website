@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY ./requirements /requirements
 
-RUN pip install -r /requirements/production.txt \
+RUN pip install --cache-dir ./cache/pip -r /requirements/production.txt \
     && groupadd -r django \
     && useradd -r -g django django
 
@@ -18,7 +18,7 @@ RUN mkdir -p /var/log/gunicorn/ \
     && chmod -R 770 /var/log/gunicorn/ 
 
 COPY ./compose/django/live-gunicorn-mhackspace.sh /live-gunicorn-mhackspace.sh
-COPY ./compose/django/live-gunicorn-mhackspace.sh /stage-gunicorn-mhackspace.sh
+COPY ./compose/django/stage-gunicorn-mhackspace.sh /stage-gunicorn-mhackspace.sh
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
 RUN sed -i 's/\r//' /entrypoint.sh \
     && sed -i 's/\r//' /stage-gunicorn-mhackspace.sh \
