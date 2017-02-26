@@ -28,7 +28,7 @@ pipeline:
       - cd /var/www/stage/maidstone-hackspace-website
       - git pull
       - docker-compose -fstage.yml build
-      - docker-compose -fstage.yml down
+      - docker-compose -fstage.yml down --remove-orphans 
       - docker-compose -fstage.yml up -d
 
   publish-live:
