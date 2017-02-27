@@ -5,6 +5,7 @@ from django.urls import reverse
 from mhackspace.users.models import User
 from stdimage.models import StdImageField
 from stdimage.utils import UploadToAutoSlugClassNameDir
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Category(models.Model):
@@ -34,7 +35,7 @@ class Post(models.Model):
                 "height": 220,
                 "crop": True}})
 
-    description = models.TextField()
+    description = RichTextUploadingField()
     published_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)
