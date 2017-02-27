@@ -38,6 +38,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',  # registration
     'stdimage',
     'rest_framework',
+    'markdownx',
 )
 
 # Apps specific for this project go here.

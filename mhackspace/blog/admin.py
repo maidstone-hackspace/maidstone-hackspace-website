@@ -1,5 +1,7 @@
 from django.contrib import admin
+from django.db import models
 from django.contrib.admin import ModelAdmin
+from markdownx.widgets import AdminMarkdownxWidget
 
 from mhackspace.blog.models import Post, Category
 
@@ -12,6 +14,9 @@ class PostAdmin(ModelAdmin):
     readonly_fields = ('published_date',)
     filter_horizontal = ('categories',)
     prepopulated_fields = {"slug": ("title",)}
+    formfield_overrides = {
+        models.TextField: {'widget': AdminMarkdownxWidget},
+    }
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
