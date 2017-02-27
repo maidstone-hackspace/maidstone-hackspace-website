@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
+from draceditor.models import DraceditorField
 
 from mhackspace.users.models import User
 from stdimage.models import StdImageField
@@ -34,7 +35,7 @@ class Post(models.Model):
                 "height": 220,
                 "crop": True}})
 
-    description = models.TextField()
+    description = DraceditorField()
     published_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)

@@ -62,4 +62,4 @@ git+https://github.com/olymk2/scaffold.git
 djangorestframework==3.5.4
 django-filter==1.0.1
 
-django-markdownx
+draceditor
