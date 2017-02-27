@@ -195,6 +195,10 @@ STATICFILES_FINDERS = (
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 MEDIA_ROOT = str(APPS_DIR('media'))
+import time
+DRACEDITOR_UPLOAD_PATH = 'images/uploads/{}'.format(time.strftime("%Y/%m/%d/"))
+DRACEDITOR_UPLOAD_URL = '/api/uploader/'  # change to local uploader
+MAX_IMAGE_UPLOAD_SIZE = 5242880  # 5MB
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'

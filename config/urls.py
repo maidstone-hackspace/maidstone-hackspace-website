@@ -15,6 +15,7 @@ from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
 from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
+from mhackspace.base.views import markdown_uploader
 from mhackspace.blog.views import blog, PostViewSet, CategoryViewSet
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 
@@ -34,6 +35,10 @@ urlpatterns = [
     url(r'^api/v1/', include(router.urls, namespace='v1')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^draceditor/', include('draceditor.urls')),
+    url(
+        r'^api/uploader/$',
+        markdown_uploader, name='markdown_uploader_page'
+    ),
     url(r'^blog/$', blog, name='contact'),
     url(r'^blog/rss/$', BlogFeed()),
     url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
