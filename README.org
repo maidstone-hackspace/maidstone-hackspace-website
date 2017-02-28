@@ -3,20 +3,28 @@
 * Maidstone Hackspace website
 [[https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/][https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/shield.svg]]
 
-Repository for the maidstone hackspace website
+Repository for the maidstone hackspace website, feel free to fork this site for your own Hackspace.
 
 
 ** Requirements
 Before getting started make sure you have git, docker and docker-compose installed on your machine.
-The simplest way to setup this site is to use docker-compose so please install that from this site https://docs.docker.com/engine/installation/ and make sure the quick start guide works https://docs.docker.com/machine/get-started/ then you can use the commands below to test and make changes.
+The simplest way to setup this site is to use docker-compose so please install that from this site 
+https://docs.docker.com/engine/installation/ 
+and make sure the quick start guide works 
+https://docs.docker.com/machine/get-started/ 
+then you can use the commands below to test and make changes.
 
 ** Setup
-To get started checkout the project to your machine.
+Steps to get the site running for the first time
+
+*** First clone the project
+To get started checkout the project to your machine, with the command below.
 
 #+BEGIN_SRC sh
-git clone https://github.com/olymk2/maidstone-hackspace.git
+git clone https://github.com/maidstone-hackspace/maidstone-hackspace-website.git
 #+END_SRC
 
+*** Build your containers to install the sites requirements
 Once checked out build your containers locally you only need to do this when first start or if requirements change.
 
 #+BEGIN_SRC sh
@@ -32,20 +40,22 @@ docker-compose -fdev up
 Test django is serving pages
 http://127.0.0.1:8180
 
-
-*** Run migrations and setup admin user
+*** Run migrations to setup the database
 To run django commands just prefix them with =docker-compose -f dev.yml run django=
 #+BEGIN_SRC sh
-docker-compose -f dev.yml run django python manage.py makemigrations
-docker-compose -f dev.yml run django python manage.py migrate
+docker-compose -f dev.yml run --rm django python manage.py makemigrations
+docker-compose -f dev.yml run --rm django python manage.py migrate
 #+END_SRC
-
-Creating an admin user
+*** Create the admin user.
+Once created you can login at http://127.0.0.1:8180/admin
 #+BEGIN_SRC sh
-docker-compose -f dev.yml run django python manage.py createsuperuser
+docker-compose -f dev.yml run --rm django python manage.py createsuperuser
 #+END_SRC
 
-
+*** Generate dummy data
+#+BEGIN_SRC sh
+docker-compose -f dev.yml run --rm django python manage.py generate_test_data
+#+END_SRC
 ** Migrations / Managing default data
 If you want to export some data you entered into the admin area you can use =dumpdata= and =loaddata= to export and import.
 
