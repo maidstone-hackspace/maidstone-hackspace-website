@@ -90,3 +90,5 @@ CAPTCHA = {
     'site': ''
 }
 
+WHITENOISE_AUTOREFRESH = True
+WHITENOISE_USE_FINDERS = True
