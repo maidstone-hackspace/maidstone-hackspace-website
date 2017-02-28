@@ -12,22 +12,35 @@ class BannerImage(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=255)
     displayed = models.BooleanField(default=True)
-    original_image = models.URLField(max_length=255, blank=True, null=True)
-    scaled_image = StdImageField(
+    image = StdImageField(
         upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
-        blank=True,
-        null=True,
         variations={
             'small': {
-                "width": 600,
+                "width": 400,
                 "height": 300,
                 "crop": True},
-            'large': {
-                "width": 1024,
+            'small2x': {
+                "width": 800,
+                "height": 600,
+                "crop": True},
+            'medium': {
+                "width": 800,
                 "height": 300,
+                "crop": True},
+            'medium2x': {
+                "width": 1600,
+                "height": 600,
+                "crop": True},
+            'large': {
+                "width": 1200,
+                "height": 300,
+                "crop": True},
+            'large2x': {
+                "width": 2400,
+                "height": 600,
                 "crop": True}},
         validators=[
-            MinSizeValidator(1200, 300)])
+            MinSizeValidator(2400, 600)])
 
     caption = models.TextField()
     date = models.DateTimeField(default=timezone.now)

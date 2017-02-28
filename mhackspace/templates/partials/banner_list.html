@@ -1,20 +1,21 @@
 {% load static %}
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner" role="listbox" style="height:300px;">
+{% if bannerlist %}
+<div id="carouselExampleSlidesOnly" class="carousel slide mb-4" data-ride="carousel">
+  <div class="carousel-inner" role="listbox">
     {% for banner in bannerlist %}
-      {% if banner.scaled_image%}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
           <picture>
-            <source class="img-fluid" srcset="{{ banner.scaled_image.url }}" media="(min-width: 600px)" />
-            <img class="img-fluid" src="{{ banner.scaled_image.url }}" alt="">
+            <source class="img-fluid" srcset="{{ banner.image.small.url }}, {{ banner.image.small2x.url }} 2x" media="(max-width: 400px)" />
+            <source class="img-fluid" srcset="{{ banner.image.medium.url }}, {{ banner.image.medium2x.url }} 2x" media="(max-width: 768px)" />
+            <source class="img-fluid" srcset="{{ banner.image.large.url }}, {{ banner.image.large2x.url }} 2x" />
+            <img class="img-fluid" src="{{ banner.image.large.url }}" alt="{{ banner.title }}">
           </picture>
           <div class="carousel-caption d-none d-md-block">
             <h3>{{ banner.title }}</h3>
             <p>{{ banner.description |truncatewords:30}}</p>
           </div>
         </div>
-      {% endif %}
     {% endfor %}
   </div>
 </div>
-
+{% endif %}
