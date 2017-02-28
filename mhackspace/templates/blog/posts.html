@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load dractags %}
 {% block title %}Blog Posts{% endblock %}
 
 {% block content %}
@@ -8,7 +8,7 @@
     {% for post in posts %}
     <a href="{{ post.get_absolute_url }}"><h1>{{ post.title }}</h1></a>
     <p>Published: {{ post.published_date }}</p>
-    <p>{{ post.description }}</p>
+    <p>{{ post.description|safe_markdown }}</p>
     {% endfor %}
 
     {% if posts.num_pages > 1 %}

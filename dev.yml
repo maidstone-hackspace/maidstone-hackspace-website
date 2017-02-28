@@ -41,5 +41,5 @@ services:
     command: npm install
     volumes:
       - ./:/usr/src/app
-  redis:
-    image: redis:latest
+  # redis:
+  #   image: redis:latest

@@ -30,14 +30,12 @@ services:
       - .:/app
       - sockets:/data/sockets
 
-
-
   node:
     image: node:7-onbuild
     command: npm install
     volumes:
       - ./:/usr/src/app
 
-  redis:
-    image: redis:latest
+  # redis:
+  #   image: redis:latest
 
