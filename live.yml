@@ -23,7 +23,7 @@ services:
     user: django
     depends_on:
       - postgres
-      - redis
+      # - redis
     command: /live-gunicorn-mhackspace.sh
     env_file: .env
     volumes:
