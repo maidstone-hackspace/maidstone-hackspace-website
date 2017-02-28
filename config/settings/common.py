@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 from __future__ import absolute_import, unicode_literals
 
+import time
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 3  # (mhackspace/config/settings/common.py - 3 = mhackspace/)
@@ -198,7 +199,6 @@ STATICFILES_FINDERS = (
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 MEDIA_ROOT = str(APPS_DIR('media'))
-import time
 DRACEDITOR_UPLOAD_PATH = 'images/uploads/{}'.format(time.strftime("%Y/%m/%d/"))
 DRACEDITOR_UPLOAD_URL = '/api/uploader/'  # change to local uploader
 DRACEDITOR_MARKDOWN_BASE_EMOJI_URL = '/static/images/emojis/'
@@ -266,7 +266,7 @@ INSTALLED_APPS += ("compressor", 'sass_processor',)
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
-ADMIN_URL = '^admin/'
+ADMIN_URL = '^trustee/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
