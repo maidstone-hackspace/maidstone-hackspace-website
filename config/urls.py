@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 from django.views import defaults as default_views
 from django.contrib.auth import views as auth_views
+from django.contrib.sitemaps.views import sitemap
 from rest_framework.routers import DefaultRouter
 
 from mhackspace.contact.views import contact
@@ -17,6 +18,7 @@ from mhackspace.base.feeds import LatestEntriesFeed
 from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
 from mhackspace.base.views import markdown_uploader
 from mhackspace.blog.views import blog, PostViewSet, CategoryViewSet
+from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 
 router = DefaultRouter()
@@ -24,6 +26,11 @@ router.register(r'posts', PostViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'feeds', FeedViewSet)
 router.register(r'articles', ArticleViewSet)
+
+sitemaps = {
+    'posts': PostSitemap,
+    'category': CategorySitemap,
+}
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -44,7 +51,8 @@ urlpatterns = [
     url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', blog, name='blog-category'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category-feed'),
-
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
 
     # need to be logged in for these urls
     url(r'^members/$', MemberListView.as_view(), name='members'),

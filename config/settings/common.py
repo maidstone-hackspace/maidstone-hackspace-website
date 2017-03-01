@@ -28,7 +28,7 @@ DJANGO_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'django.contrib.admin',
@@ -41,6 +41,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount.providers.google',  # registration
     'allauth.socialaccount.providers.github',  # registration
     'allauth.socialaccount.providers.facebook',  # registration
+    'whitenoise.runserver_nostatic',
     'stdimage',
     'rest_framework',
     'draceditor',
