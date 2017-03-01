@@ -169,7 +169,12 @@
   {% compress js %}
     <script src="{% static 'js/project.js' %}"></script>
   {% endcompress %}
-
+  <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};
+    ga('create', 'UA-63373181-1', 'auto');
+    ga('set', 'transport', 'beacon');
+    ga('send', 'pageview');
+  </script>
 {% endblock javascript %}
 </body>
 </html>
