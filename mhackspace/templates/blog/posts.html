@@ -6,9 +6,24 @@
 <div class="row">
   <div class="col-sm-8">
     {% for post in posts %}
-    <a href="{{ post.get_absolute_url }}"><h1>{{ post.title }}</h1></a>
-    <p>Published: {{ post.published_date }}</p>
-    <p>{{ post.description|safe_markdown }}</p>
+    <article itemscope itemtype="http://schema.org/Article">
+    <a href="{{ post.get_absolute_url }}"><h1 itemprop="name">{{ post.title }}</h1></a>
+    <div>
+      Published: <span itemprop="datePublished" content="{{ post.published_date|date:"c" }}">{{ post.published_date }}</span>
+      {% if post.updated_date != post.published_date %}
+      Updated: <span itemprop="dateModified" content="{{ post.updated_date|date:"c" }}">{{ post.updated_date }}</span>
+      {% endif %}
+    </div>
+    {% if post.image %}
+    <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+      <img src="{{ post.image.url }}" class="img-fluid"/>
+      <meta itemprop="url" content="{{ post.image.url }}">
+      <meta itemprop="width" content="{{ post.image.width }}">
+      <meta itemprop="height" content="{{ post.image.height }}">
+    </div>
+    {% endif %}
+    <span itemprop="articleBody">{{ post.description|safe_markdown }}</span>
+    </article>
     {% endfor %}
 
     {% if posts.num_pages > 1 %}

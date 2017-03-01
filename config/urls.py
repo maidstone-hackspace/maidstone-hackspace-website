@@ -39,7 +39,7 @@ urlpatterns = [
         r'^api/uploader/$',
         markdown_uploader, name='markdown_uploader_page'
     ),
-    url(r'^blog/$', blog, name='contact'),
+    url(r'^blog/$', blog, name='blog'),
     url(r'^blog/rss/$', BlogFeed()),
     url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', blog, name='blog-category'),

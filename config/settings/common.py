@@ -305,7 +305,6 @@ PAYMENT_PROVIDERS = {
 SASS_PRECISION = 8
 
 SASS_PROCESSOR_INCLUDE_DIRS = [
-    # str(ROOT_DIR),
     str(APPS_DIR) + '/static/sass',
     str(ROOT_DIR) + '/node_modules',
 ]
