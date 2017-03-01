@@ -9,7 +9,7 @@ class PostSitemap(Sitemap):
         return Post.objects.filter(active=True, members_only=False)
 
     def lastmod(self, obj):
-        return obj.published_date
+        return obj.updated_date
 
 class CategorySitemap(Sitemap):
     changefreq = "monthly"
