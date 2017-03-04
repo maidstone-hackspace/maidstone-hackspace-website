@@ -11,8 +11,10 @@
             <img class="img-fluid" src="{{ banner.image.large.url }}" alt="{{ banner.title }}">
           </picture>
           <div class="carousel-caption d-none d-md-block">
-            <h3>{{ banner.title }}</h3>
-            <p>{{ banner.description |truncatewords:30}}</p>
+            <a href="{{ banner.url }}">
+              <h3>{{ banner.title }}</h3>
+              <p>{{ banner.description |truncatewords:30}}</p>
+            </a>
           </div>
         </div>
     {% endfor %}
