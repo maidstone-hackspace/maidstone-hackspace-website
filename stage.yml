@@ -30,8 +30,6 @@ services:
       - .:/app
       - sockets:/data/sockets
 
-
-
   node:
     image: node:7-onbuild
     command: npm install
