@@ -14,7 +14,8 @@ def contact(request):
                 '[%s] - %s' % (data['enquiry_type'], data['subject']),
                 data['message'],
                 data['contact_email'],
-                to=['contact@maidstone-hackspace.org.uk'])
+                to=['contact@maidstone-hackspace.org.uk'],
+                headers = {'Reply-To': data['contact_email']})
             email.send()
             messages.add_message(request, messages.INFO, 'E-Mail sent')
     else:
