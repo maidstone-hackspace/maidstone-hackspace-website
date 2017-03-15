@@ -8,8 +8,12 @@
       <div class="card">
         <a href="{{ article.url }}">
 
-          {% if article.image %} 
-          <img class="card-img-top img-fluid" alt="{{ article.title }}" src="{{ article.image.url }}">
+          {% if article.image %}
+          <img class="card-img-top img-fluid" alt="{{ article.title }}" src="{{ article.image.home.url }}">
+          {% elif article.feed.image %}
+          <img class="card-img-top img-fluid" alt="{{ article.feed }}" src="{{ article.feed.image.home.url }}">
+          {% else %}
+          <img class="card-img-top img-fluid" alt="Maidstone Hackspace Logo" src="{% static "images/card.png" %}">
           {% endif %}
         </a>
         <div class="card-block">
