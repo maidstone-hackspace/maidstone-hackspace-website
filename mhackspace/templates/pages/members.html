@@ -3,22 +3,34 @@
 
 
 <div class="row">
-  <div class="col-md-4"><h1>Hackspace Members</h1></div>
-  <div class="col-md-4"><a href="#">Total Users <span class="badge badge-default">{{ paginator.count }}</span></a></div>
-  <div class="col-md-4"><a href="#">Total Members <span class="badge badge-success">{{ total }}</span></a></div>
+  <div class="col-md-6"><h1>Hackspace Members</h1></div>
+  <div class="col-md-6">
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">All users <span class="badge badge-default">{{ paginator.count }}</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">All members <span class="badge badge-success">{{ total }}</span></a>
+  </li>
+</ul>
+  </div>
 </div>
 
 <br />
 
-<div class="card-columns" id="feeds">
+<div id="members">
   <div class="card-deck">
     {% for member in members %}
     <div class="card">
       {% if member.image %}
-        <img class="card-img-top img-responsive" src="{{ MEDIA_URL }}{{ member.image }}" alt="Card image cap" style="width:100%">
+        <img class="card-img-top img-fluid" src="{{ MEDIA_URL }}{{ member.image }}" alt="{{ member.name }}">
       {% endif %}
         <div class="card-block">
+          {% if member.name %}
           <h4 class="card-title">{{ member.name }}</h4>
+          {% else %}
+          <h4 class="card-title">{{ member.username }}</h4>
+          {% endif %}
           <p class="card-text">{{ member.users.description }}</p>
           <p class="card-text">{{ member.users.skills }}</p>
           <p class="card-text">{{ member.status }}</p>
