@@ -31,7 +31,7 @@ services:
     user: django
     depends_on:
       - postgres
-      - redis
+#      - redis
     command: /gunicorn.sh
     env_file: .env
     volumes:
