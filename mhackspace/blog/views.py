@@ -1,6 +1,8 @@
+from django.http import Http404
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from rest_framework import filters, viewsets
+from django.utils import timezone
+from rest_framework import viewsets
 from django_filters import DateTimeFromToRangeFilter
 from django_filters.rest_framework import FilterSet
 from django_filters.widgets import RangeWidget
@@ -11,18 +13,16 @@ from mhackspace.blog.serializers import PostSerializer, CategorySerializer
 def blog(request, slug=None, category=None):
     categories = Category.objects.all()
 
-    try:
-        if slug is not None:
-            blog_posts = Post.objects.filter(active=True, slug=slug)
-        elif category is not None:
-            category = Category.objects.filter(slug=category)
-            blog_posts = Post.objects.filter(active=True, categories=category)
-        else:
-            blog_posts = Post.objects.filter(active=True)
-    except Category.DoesNotExist:
-        raise Http404("Category does not exist")
-    except Post.DoesNotExist:
-        raise Http404("Post does not exist")
+    if slug is not None:
+        blog_posts = Post.objects.filter(active=True, slug=slug)
+    elif category is not None:
+        category = Category.objects.filter(slug=category)
+        blog_posts = Post.objects.filter(active=True, categories=category, published_date__lte=timezone.now())
+    else:
+        blog_posts = Post.objects.filter(active=True, published_date__lte=timezone.now())
+
+    if len(blog_posts) < 1:
+        raise Http404("No posts found")
 
     paginator = Paginator(blog_posts, 5)
 

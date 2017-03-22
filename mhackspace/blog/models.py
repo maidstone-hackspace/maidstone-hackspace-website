@@ -48,5 +48,5 @@ class Post(models.Model):
         return reverse('blog-item', kwargs={'slug': self.slug})
 
     class Meta:
-        ordering = ('-updated_date',)
+        ordering = ('-published_date',)
 

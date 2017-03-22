@@ -1,7 +1,8 @@
 from django.contrib.syndication.views import Feed
-from django.urls import reverse
+from django.utils import timezone
 
 from mhackspace.blog.models import Category, Post
+
 
 class BlogFeed(Feed):
     title = "Maidstone Hackspace Blog"
@@ -9,7 +10,7 @@ class BlogFeed(Feed):
     description = "The latest blog posts and news from the Maidstone Hackspace site"
 
     def items(self, category):
-        return Post.objects.select_related('author').filter(active=True, members_only=False)[:20]
+        return Post.objects.select_related('author').filter(active=True, members_only=False, published_date__lte=timezone.now())[:20]
 
     def item_title(self, item):
         return item.title
@@ -33,12 +34,13 @@ class BlogFeed(Feed):
     def item_updateddate(self, item):
         return item.updated_date
 
+
 class BlogCategoryFeed(BlogFeed):
     def get_object(self, request, category):
         return Category.objects.filter(slug=category).first()
 
     def items(self, category):
-        return Post.objects.select_related('author').filter(active=True, members_only=False, categories=category)[:20]
+        return Post.objects.select_related('author').filter(active=True, members_only=False, categories=category, published_date__lte=timezone.now())[:20]
 
     def title(self, category):
         return "Maidstone Hackspace Blog: %s" % category.name
