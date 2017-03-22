@@ -1,0 +1,30 @@
+{% if is_paginated == True %}
+  <nav aria-label="Blog Posts">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="?page={{ page_obj.number }}" tabindex="-1">Previous</a>
+        </li>
+      {% endif %}
+      {% for page in paginator.page_range %}
+        {{ pages }}
+        <li class="page-item {% if page == page_obj.number %}active{% endif %}">
+          <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+        </li>
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}" tabindex="-1">Next</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="?page={{ page_obj.number }}" tabindex="-1">Previous</a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

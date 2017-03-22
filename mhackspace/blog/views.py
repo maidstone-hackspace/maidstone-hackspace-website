@@ -1,7 +1,6 @@
-from django.http import Http404
-from django.shortcuts import render
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.views.generic import ListView, DetailView
 from rest_framework import viewsets
 from django_filters import DateTimeFromToRangeFilter
 from django_filters.rest_framework import FilterSet
@@ -10,31 +9,20 @@ from mhackspace.blog.models import Post, Category
 from mhackspace.blog.serializers import PostSerializer, CategorySerializer
 
 
-def blog(request, slug=None, category=None):
-    categories = Category.objects.all()
+class BlogPost(DetailView):
+    context_object_name = 'post'
+    queryset = Post.objects.filter(active=True, members_only=False)  # todo: check member status here
 
-    if slug is not None:
-        blog_posts = Post.objects.filter(active=True, slug=slug)
-    elif category is not None:
-        category = Category.objects.filter(slug=category)
-        blog_posts = Post.objects.filter(active=True, categories=category, published_date__lte=timezone.now())
-    else:
-        blog_posts = Post.objects.filter(active=True, published_date__lte=timezone.now())
 
-    if len(blog_posts) < 1:
-        raise Http404("No posts found")
+class PostList(ListView):
+    context_object_name = 'posts'
+    paginate_by = 5
 
-    paginator = Paginator(blog_posts, 5)
-
-    page = request.GET.get('page')
-    try:
-        posts = paginator.page(page)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-
-    return render(request, 'blog/posts.html', {'posts': posts, 'categories': categories})
+    def get_queryset(self):
+        if 'category' in self.kwargs:
+            self.category = get_object_or_404(Category, slug=self.kwargs['category'])
+            return Post.objects.filter(active=True, categories=self.category, published_date__lte=timezone.now(), members_only=False)
+        return Post.objects.filter(active=True, published_date__lte=timezone.now(), members_only=False)
 
 
 class PostFilter(FilterSet):

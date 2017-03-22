@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load dractags blog %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-8">
+      <article itemscope itemtype="http://schema.org/Article">
+        <a href="{{ post.get_absolute_url }}"><h1 itemprop="name">{{ post.title }}</h1></a>
+        {% include "blog/post_date.html" %}
+        {% if post.image %}
+          <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+            <img src="{{ post.image.url }}" class="img-fluid"/>
+            <meta itemprop="url" content="{{ post.image.url }}">
+            <meta itemprop="width" content="{{ post.image.width }}">
+            <meta itemprop="height" content="{{ post.image.height }}">
+          </div>
+        {% endif %}
+        <span itemprop="articleBody">{{ post.description|safe_markdown }}</span>
+      </article>
+    </div>
+    {% sidebar %}
+  </div>
+{% endblock content %}

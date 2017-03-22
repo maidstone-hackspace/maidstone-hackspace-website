@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load dractags blog %}
+{% block title %}Blog Posts{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-8">
+      {% for post in posts %}
+        <article itemscope itemtype="http://schema.org/Article">
+          <a href="{{ post.get_absolute_url }}"><h3 itemprop="name">{{ post.title }}</h3></a>
+          {% include "blog/post_date.html" %}
+          {% if post.image %}
+            <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+              <img src="{{ post.image.url }}" class="img-fluid"/>
+              <meta itemprop="url" content="{{ post.image.url }}">
+              <meta itemprop="width" content="{{ post.image.width }}">
+              <meta itemprop="height" content="{{ post.image.height }}">
+            </div>
+          {% endif %}
+          <span itemprop="articleBody">{{ post.description|safe_markdown|striptags|truncatewords:30 }}</span>
+        </article>
+      {% endfor %}
+
+      {% include "base/pagination.html" %}
+    </div>
+    {% sidebar %}
+  </div>
+{% endblock content %}

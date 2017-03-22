@@ -17,7 +17,7 @@ from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
 from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
 from mhackspace.base.views import markdown_uploader
-from mhackspace.blog.views import blog, PostViewSet, CategoryViewSet
+from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostList
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 
@@ -46,10 +46,10 @@ urlpatterns = [
         r'^api/uploader/$',
         markdown_uploader, name='markdown_uploader_page'
     ),
-    url(r'^blog/$', blog, name='blog'),
-    url(r'^blog/rss/$', BlogFeed()),
-    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', blog, name='blog-item'),
-    url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', blog, name='blog-category'),
+    url(r'^blog/$', PostList.as_view(), name='blog'),
+    url(r'^blog/rss/$', BlogFeed(), name='blog-rss'),
+    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogPost.as_view(), name='blog-item'),
+    url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', PostList.as_view(), name='blog-category'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category-feed'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),

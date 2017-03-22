@@ -1,0 +1,12 @@
+<div class="text-muted">
+  Published:
+  <span itemprop="datePublished" content="{{ post.published_date|date:"c" }}">
+    ({{ post.published_date }})
+  </span>
+  {% if post.updated_date != post.published_date %}
+    Updated:
+    <span itemprop="dateModified" content="{{ post.updated_date|date:"c" }}">
+      {{ post.updated_date }}
+    </span>
+  {% endif %}
+</div>
