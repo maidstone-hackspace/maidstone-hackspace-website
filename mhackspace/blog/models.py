@@ -45,8 +45,8 @@ class Post(models.Model):
                 "height": 150,
                 "crop": True},
             'full': {
-                "width": 730,
-                "height": 410,
+                "width": 825,
+                "height": 450,
                 "crop": True}},
         validators=[
             MinSizeValidator(730, 410)])

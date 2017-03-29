@@ -3,22 +3,18 @@
 {% block title %}Blog Posts{% endblock %}
 
 {% block content %}
-  <style>
-  .thumbnail {
-    margin-bottom: 15px;
-  }
-  .title {
-    margin-bottom: 0;
-  }
-  </style>
   <div class="row">
     <div class="col-md-9">
+      {% if view.category %}
+        <h1>{{ view.category.name }}</h1>
+        <p>{{ view.category.description }}</p>
+      {% endif %}
       {% for post in posts %}
         <article class="row post" itemscope itemtype="http://schema.org/Article">
           <div class="col-md-4 thumbnail" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
             <picture>
-              <source class="img-fluid" srcset="{{ post.image.mobilethumb.url }}" media="(max-width: 780px)" />
-              <source class="img-fluid" srcset="{{ post.image.thumbnail.url }}" />
+              <source class="img-fluid" srcset="{{ post.image.mobilethumb.url }}" media="(max-width: 780px)"/>
+              <source class="img-fluid" srcset="{{ post.image.thumbnail.url }}"/>
               <img class="img-fluid" src="{{ post.image.thumbnail.url }}" alt="{{ banner.title }}">
             </picture>
           </div>

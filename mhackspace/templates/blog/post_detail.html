@@ -4,15 +4,15 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-sm-8">
+    <div class="col-md-9">
       <article itemscope itemtype="http://schema.org/Article">
-        <a href="{{ post.get_absolute_url }}"><h1 itemprop="name">{{ post.title }}</h1></a>
+        <a href="{{ post.get_absolute_url }}"><h1 class="title" itemprop="name">{{ post.title }}</h1></a>
         {% include "blog/post_date.html" %}
         <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-          <img src="{{ post.image.url }}" class="img-fluid"/>
-          <meta itemprop="url" content="{{ post.image.url }}">
-          <meta itemprop="width" content="{{ post.image.width }}">
-          <meta itemprop="height" content="{{ post.image.height }}">
+          <img src="{{ post.image.full.url }}" class="img-fluid"/>
+          <meta itemprop="url" content="{{ post.image.full.url }}">
+          <meta itemprop="width" content="{{ post.image.full.width }}">
+          <meta itemprop="height" content="{{ post.image.full.height }}">
         </div>
         <span itemprop="articleBody">{{ post.description|safe_markdown }}</span>
       </article>
