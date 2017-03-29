@@ -3,21 +3,34 @@
 {% block title %}Blog Posts{% endblock %}
 
 {% block content %}
+  <style>
+  .thumbnail {
+    margin-bottom: 15px;
+  }
+  .title {
+    margin-bottom: 0;
+  }
+  </style>
   <div class="row">
-    <div class="col-sm-8">
+    <div class="col-md-9">
       {% for post in posts %}
-        <article itemscope itemtype="http://schema.org/Article">
-          <a href="{{ post.get_absolute_url }}"><h3 itemprop="name">{{ post.title }}</h3></a>
-          {% include "blog/post_date.html" %}
-          {% if post.image %}
-            <div itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-              <img src="{{ post.image.url }}" class="img-fluid"/>
-              <meta itemprop="url" content="{{ post.image.url }}">
-              <meta itemprop="width" content="{{ post.image.width }}">
-              <meta itemprop="height" content="{{ post.image.height }}">
-            </div>
-          {% endif %}
-          <span itemprop="articleBody">{{ post.description|safe_markdown|striptags|truncatewords:30 }}</span>
+        <article class="row post" itemscope itemtype="http://schema.org/Article">
+          <div class="col-md-4 thumbnail" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+            <picture>
+              <source class="img-fluid" srcset="{{ post.image.mobilethumb.url }}" media="(max-width: 780px)" />
+              <source class="img-fluid" srcset="{{ post.image.thumbnail.url }}" />
+              <img class="img-fluid" src="{{ post.image.thumbnail.url }}" alt="{{ banner.title }}">
+            </picture>
+          </div>
+          <div class="col-md-8">
+            <a href="{{ post.get_absolute_url }}"><h3 itemprop="name" class="title">{{ post.title }}</h3></a>
+            {% include "blog/post_date.html" %}
+            {% if post.excerpt %}
+              <span itemprop="articleBody">{{ post.excerpt|striptags|truncatewords:45 }}</span>
+            {% else %}
+              <span itemprop="articleBody">{{ post.description|safe_markdown|striptags|truncatewords:45 }}</span>
+            {% endif %}
+          </div>
         </article>
       {% endfor %}
 

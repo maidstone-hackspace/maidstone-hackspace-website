@@ -1,11 +1,13 @@
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
-from draceditor.models import DraceditorField
 
-from mhackspace.users.models import User
+from draceditor.models import DraceditorField
+from stdimage.validators import MinSizeValidator
 from stdimage.models import StdImageField
 from stdimage.utils import UploadToAutoSlugClassNameDir
+
+from mhackspace.users.models import User
 
 
 class Category(models.Model):
@@ -33,9 +35,24 @@ class Post(models.Model):
             'home': {
                 "width": 530,
                 "height": 220,
-                "crop": True}})
+                "crop": True},
+            'mobilethumb': {
+                "width": 580,
+                "height": 150,
+                "crop": True},
+            'thumbnail': {
+                "width": 250,
+                "height": 150,
+                "crop": True},
+            'full': {
+                "width": 730,
+                "height": 410,
+                "crop": True}},
+        validators=[
+            MinSizeValidator(730, 410)])
 
     description = DraceditorField()
+    excerpt = models.TextField(blank=True, null=True)
     published_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)
