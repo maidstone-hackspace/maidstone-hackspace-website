@@ -5,7 +5,6 @@
 
 Repository for the maidstone hackspace website, feel free to fork this site for your own Hackspace.
 
-
 ** Requirements
 Before getting started make sure you have git, docker and docker-compose installed on your machine.
 The simplest way to setup this site is to use docker-compose so please install that from this site 
@@ -47,7 +46,7 @@ docker-compose -f dev.yml run --rm django python manage.py makemigrations
 docker-compose -f dev.yml run --rm django python manage.py migrate
 #+END_SRC
 *** Create the admin user.
-Once created you can login at http://127.0.0.1:8180/admin
+Once created you can login at http://127.0.0.1:8180/trustee
 #+BEGIN_SRC sh
 docker-compose -f dev.yml run --rm django python manage.py createsuperuser
 #+END_SRC

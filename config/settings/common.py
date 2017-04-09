@@ -80,6 +80,7 @@ THIRD_PARTY_APPS = (
     'whitenoise.runserver_nostatic',
     'stdimage',
     'rest_framework',
+    'django_filters',
     'draceditor',
     'haystack',
     'djconfig',
@@ -138,6 +139,7 @@ LOCAL_APPS = (
     'mhackspace.blog',
     'mhackspace.core',
     'mhackspace.requests',
+    'mhackspace.rfid',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -446,10 +448,12 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
