@@ -3,7 +3,7 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from mhackspace.contact.forms import ContactForm
 
-# add to your views
+
 def contact(request):
     form_class = ContactForm
     if request.method == 'POST':
@@ -15,14 +15,12 @@ def contact(request):
                 data['message'],
                 data['contact_email'],
                 to=['contact@maidstone-hackspace.org.uk'],
-                headers = {'Reply-To': data['contact_email']})
+                headers={'Reply-To': data['contact_email']})
             email.send()
             messages.add_message(request, messages.INFO, 'E-Mail sent')
     else:
         form = form_class()
 
-
     return render(request, 'pages/contact.html', {
         'form': form,
     })
-

@@ -1,38 +1,47 @@
 from django.contrib.syndication.views import Feed
 from django.utils import timezone
 
+from mhackspace.base.feeds import MediaRssFeed
 from mhackspace.blog.models import Category, Post
 
 
 class BlogFeed(Feed):
     title = "Maidstone Hackspace Blog"
     link = "/blog/"
+    feed_type = MediaRssFeed
     description = "The latest blog posts and news from the Maidstone Hackspace site"
 
     def items(self, category):
         return Post.objects.select_related('author').filter(active=True, members_only=False, published_date__lte=timezone.now())[:20]
 
-    def item_title(self, item):
-        return item.title
+    def item_title(self, post):
+        return post.title
 
-    def item_description(self, item):
-        return item.description
+    def item_description(self, post):
+        return post.description
 
-    def item_author_name(self, item):
-        return item.author.name
+    def item_author_name(self, post):
+        return post.author.name
 
-    def item_author_email(self, item):
-        if item.author.public:
-            return item.author.email
+    def item_author_email(self, post):
+        if post.author.public:
+            return post.author.email
 
-    def item_categories(self, item):
-        return item.categories.all()
+    def item_categories(self, post):
+        return post.categories.all()
 
-    def item_pubdate(self, item):
-        return item.published_date
+    def item_pubdate(self, post):
+        return post.published_date
 
-    def item_updateddate(self, item):
-        return item.updated_date
+    def item_updateddate(self, post):
+        return post.updated_date
+
+    def item_extra_kwargs(self, post):
+        return {
+            'thumbnail_url': post.image.full.url,
+            'thumbnail_width': post.image.full.width,
+            'thumbnail_height': post.image.full.height,
+        }
 
 
 class BlogCategoryFeed(BlogFeed):
