@@ -32,6 +32,7 @@ services:
       context: .
       dockerfile: ./compose/django/Dockerfile
     user: django
+    mem_limit: 256m
     depends_on:
       - postgres
 #      - redis
