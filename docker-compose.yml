@@ -19,6 +19,9 @@ volumes:
 services:
   postgres:
     build: ./compose/postgres
+    # limit the ram so thing dont go out of control
+    # database is currently very small so we dont need much
+    mem_limit: 256m
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
