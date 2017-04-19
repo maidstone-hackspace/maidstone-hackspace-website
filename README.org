@@ -69,3 +69,8 @@ docker-compose -fdev.yml run --rm django python manage.py loaddata mhackspace/fe
 #+BEGIN_SRC sh
 docker-compose -fdev.yml run --rm django python manage.py list_subscriptions
 #+END_SRC
+
+*** Render image variations, if you change the images sizes this will be needed
+#+BEGIN_SRC sh
+docker-compose -fdev.yml run --rm django python manage.py rendervariations 'blog.Post.image' --replace
+#+END_SRC
