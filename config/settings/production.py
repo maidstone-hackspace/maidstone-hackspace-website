@@ -213,3 +213,6 @@ ADMIN_URL = env('DJANGO_ADMIN_URL', default='trustee')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'https://maidstone-hackspace.org.uk'
+

@@ -58,6 +58,7 @@ class MembershipJoinView(LoginRequiredMixin, UpdateView):
         payment_provider = 'gocardless'
         provider = select_provider(payment_provider)
         user_code = str(self.request.user.id).zfill(5)
+        # settings.PAYMENT_PROVIDERS[payment_provider]['redirect_url']
 
         form_subscription = MembershipJoinForm(data=self.request.POST)
         form_subscription.is_valid()

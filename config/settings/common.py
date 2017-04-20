@@ -277,7 +277,7 @@ ADMIN_URL = '^trustee/'
 
 PAYMENT_PROVIDERS = {
     'braintree': {
-        'mode': 'sandbox',
+        'mode': env('PAYMENT_ENVIRONMENT'),
         'credentials': {
             'merchant_id': env('BRAINTREE_MERCHANT_ID'),
             'public_key': env('BRAINTREE_PUBLIC_KEY'),
@@ -285,21 +285,21 @@ PAYMENT_PROVIDERS = {
         }
     },
     'paypal': {
-        "mode": "sandbox",  # sandbox or live
+        "mode": env('PAYMENT_ENVIRONMENT'),  # sandbox or live
         'credentials': {
             "mode": "sandbox",  # sandbox or live
             "client_id": env('PAYPAL_CLIENT_ID'),
             "client_secret": env('PAYPAL_CLIENT_SECRET')}
         },
     'gocardless': {
-        'environment': 'sandbox',
+        'environment': env('PAYMENT_ENVIRONMENT'),
         'credentials': {
             'app_id': env('GOCARDLESS_APP_ID'),
             'app_secret': env('GOCARDLESS_APP_SECRET'),
             'access_token': env('GOCARDLESS_ACCESS_TOKEN'),
             'merchant_id': env('GOCARDLESS_MERCHANT_ID'),
         },
-        'redirect_url': 'https://test.maidstone-hackspace.org.uk'
+        'redirect_url': env('PAYMENT_REDIRECT_URL')
     }
 }
 
