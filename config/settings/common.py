@@ -278,6 +278,7 @@ ADMIN_URL = '^trustee/'
 PAYMENT_PROVIDERS = {
     'braintree': {
         'mode': env('PAYMENT_ENVIRONMENT'),
+        'redirect_url': env('PAYMENT_REDIRECT_URL'),
         'credentials': {
             'merchant_id': env('BRAINTREE_MERCHANT_ID'),
             'public_key': env('BRAINTREE_PUBLIC_KEY'),
@@ -286,6 +287,7 @@ PAYMENT_PROVIDERS = {
     },
     'paypal': {
         "mode": env('PAYMENT_ENVIRONMENT'),  # sandbox or live
+        'redirect_url': env('PAYMENT_REDIRECT_URL'),
         'credentials': {
             "mode": "sandbox",  # sandbox or live
             "client_id": env('PAYPAL_CLIENT_ID'),
@@ -293,13 +295,13 @@ PAYMENT_PROVIDERS = {
         },
     'gocardless': {
         'environment': env('PAYMENT_ENVIRONMENT'),
+        'redirect_url': env('PAYMENT_REDIRECT_URL'),
         'credentials': {
             'app_id': env('GOCARDLESS_APP_ID'),
             'app_secret': env('GOCARDLESS_APP_SECRET'),
             'access_token': env('GOCARDLESS_ACCESS_TOKEN'),
             'merchant_id': env('GOCARDLESS_MERCHANT_ID'),
         },
-        'redirect_url': env('PAYMENT_REDIRECT_URL')
     }
 }
 

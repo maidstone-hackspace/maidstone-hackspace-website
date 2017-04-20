@@ -57,6 +57,7 @@ class MembershipJoinView(LoginRequiredMixin, UpdateView):
         app_domain = 'http://test.maidstone-hackspace.org.uk'
         payment_provider = 'gocardless'
         provider = select_provider(payment_provider)
+        app_domain = provider.get_redirect_url()
         user_code = str(self.request.user.id).zfill(5)
         # settings.PAYMENT_PROVIDERS[payment_provider]['redirect_url']
 

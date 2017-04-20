@@ -87,7 +87,7 @@ class gocardless_provider:
         for paying_member in self.client.subscriptions():
             user=paying_member.user()
 
-            #gocardless does not have a reference so we use the id instead
+            # gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
                 'email': user.email,
