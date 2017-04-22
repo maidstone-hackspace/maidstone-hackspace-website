@@ -56,6 +56,7 @@ urlpatterns = [
 
     # need to be logged in for these urls
     url(r'^members/$', MemberListView.as_view(), name='members'),
+    url(r'^members/(?P<status>[a-zA-Z]+)/$', MemberListView.as_view(), name='members_status'),
 
     # Django Admin, use {% url 'admin:index' %}
     url(r'{}'.format(settings.ADMIN_URL), admin.site.urls),

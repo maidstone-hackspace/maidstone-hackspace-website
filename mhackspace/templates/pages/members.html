@@ -7,10 +7,12 @@
   <div class="col-md-6">
 <ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link active" href="#">All users <span class="badge badge-default">{{ paginator.count }}</span></a>
+    <a class="nav-link active" href="{% url 'members_status' 'all' %}">
+      All users <span class="badge badge-default">{{ total_users }}</span></a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">All members <span class="badge badge-success">{{ total }}</span></a>
+    <a class="nav-link" href="{% url 'members_status' 'registered' %}">
+      All members <span class="badge badge-success">{{ total_members }}</span></a>
   </li>
 </ul>
   </div>
