@@ -6,12 +6,18 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.conf.urls import url
 from .models import User, Membership, MEMBERSHIP_STATUS_CHOICES
+
+from mhackspace.subscriptions.management.commands.refresh_subscriptions import update_subscriptions
 
 
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
+
 
 class MyUserCreationForm(UserCreationForm):
     error_message = UserCreationForm.error_messages.update({
@@ -39,6 +45,20 @@ class MyUserAdmin(AuthUserAdmin):
     ) + AuthUserAdmin.fieldsets
     list_display = ('username', 'name', 'is_superuser')
     search_fields = ['name']
+
+    def get_urls(self):
+        urls = super(MyUserAdmin, self).get_urls()
+        my_urls = [
+            url(r'^refresh/payments/$', self.admin_site.admin_view(self.refresh_payments))
+        ]
+        return my_urls + urls
+
+    def refresh_payments(self, request):
+        for user in update_subscriptions(provider_name='gocardless'):
+            continue
+        self.message_user(request, 'Successfully imported refresh users payment status')
+        return HttpResponseRedirect(reverse('admin:feeds_article_changelist'))
+
 
 @admin.register(Membership)
 class MembershipAdmin(ModelAdmin):
