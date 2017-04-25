@@ -8,7 +8,6 @@ class Task(object):
         for field in ('id', 'name', 'owner', 'status'):
             setattr(self, field, kwargs.get(field, None))
 
-
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Device

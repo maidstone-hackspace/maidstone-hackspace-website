@@ -7,8 +7,8 @@ from test_plus.test import TestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import RequestsClient
 
-from mhackspace.rfid.models import Device
-from mhackspace.user.models import User
+from mhackspace.rfid.models import Device, Rfid
+from mhackspace.users.models import User
 
 
 # http://www.django-rest-framework.org/api-guide/testing/
@@ -22,11 +22,15 @@ class MigrationTestCase(TestCase):
         call_command('migrate', 'rfid', stdout=out)
         self.assertIn("... OK\n", out.getvalue())
 
+
 class ApiTests(TestCase):
     def setUp(self):
-        Device(name='device01').save()
-        User(name='User01').save()
-        Rfid(code=1, user=1).save()
+        self.device = Device(name='device01')
+        self.device.save()
+        self.user = User(name='User01')
+        self.user.save()
+        self.rfid = Rfid(code=1, user=self.user)
+        self.rfid.save()
 
     def testAuth(self):
         factory = APIRequestFactory()
@@ -35,12 +39,13 @@ class ApiTests(TestCase):
     def testSamsMadness(self):
         client = RequestsClient()
         response = client.post(
-            'http://127.0.0.1:8180/api/v1/rfidAuth/?format=json',
+            'http://127.0.0.1:8180/api/v1/rfidAuth/',
             data={'rfid':'1', 'device': '1'})
-        print(response)
+        # print(response.json())
         assert response.status_code == 200
-        self.assertEquals(response.json().get('results'), [{'name': 'device01'}])
-
+        self.assertEquals(
+            response.json(),
+            [{'rfid': self.rfid.code, 'name': 'device01', 'device_id': self.device.identification}])
 
     def testAuthUserWithDevice(self):
         client = RequestsClient()
@@ -48,11 +53,9 @@ class ApiTests(TestCase):
         assert response.status_code == 200
         self.assertEquals(response.json().get('results'), [{'name': 'device01'}])
 
-
     def testFetchDeviceList(self):
         client = RequestsClient()
         response = client.get('http://127.0.0.1:8180/api/v1/rfid/?format=json')
         assert response.status_code == 200
         self.assertEquals(response.json().get('results'), [{'name': 'device01'}])
-
 
