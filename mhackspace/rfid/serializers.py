@@ -17,7 +17,8 @@ class DeviceSerializer(serializers.ModelSerializer):
 class AuthSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     rfid = serializers.CharField(max_length=255)
-    device_id = serializers.CharField(max_length=255)
+    # device = serializers.UUIDField(format='hex_verbose')
+    device = serializers.CharField(max_length=255)
 
     # def create(self, validated_data):
     #     return Task(id=None, **validated_data)

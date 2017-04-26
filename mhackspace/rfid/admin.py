@@ -7,7 +7,7 @@ from mhackspace.rfid.models import Device, Rfid
 
 @admin.register(Device)
 class DeviceAdmin(ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'identifier')
 
 @admin.register(Rfid)
 class RfidAdmin(ModelAdmin):

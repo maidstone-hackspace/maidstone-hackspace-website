@@ -24,28 +24,43 @@ class MigrationTestCase(TestCase):
 
 
 class ApiTests(TestCase):
+    maxDiff = None
     def setUp(self):
-        self.device = Device(name='device01')
-        self.device.save()
         self.user = User(name='User01')
         self.user.save()
-        self.rfid = Rfid(code=1, user=self.user)
+        self.device = Device(name='device01', user=self.user)
+        self.device.save()
+        self.rfid = Rfid(code='1', user=self.user)
         self.rfid.save()
 
     def testAuth(self):
         factory = APIRequestFactory()
         request = factory.get('/rfid/')
 
-    def testSamsMadness(self):
+    def testValidAuthCase(self):
         client = RequestsClient()
         response = client.post(
             'http://127.0.0.1:8180/api/v1/rfidAuth/',
-            data={'rfid':'1', 'device': '1'})
-        # print(response.json())
+            data={'rfid': '1', 'device': self.device.identifier})
         assert response.status_code == 200
+        expected_result = {'rfid': self.rfid.code, 'name': 'device01', 'device': str(self.device.identifier)}
         self.assertEquals(
             response.json(),
-            [{'rfid': self.rfid.code, 'name': 'device01', 'device_id': self.device.identification}])
+            expected_result
+            )
+
+    def testInValidAuthCase(self):
+        client = RequestsClient()
+        response = client.post(
+            'http://127.0.0.1:8180/api/v1/rfidAuth/',
+            data={'rfid': '99', 'device': str(self.device.identifier)})
+        assert response.status_code == 404
+
+        # response = client.post(
+        #     'http://127.0.0.1:8180/api/v1/rfidAuth/',
+        #     data={'rfid': '1', 'device': 'test%s' % str(self.device.identifier)[3:]})
+        # assert response.status_code == 404
+
 
     def testAuthUserWithDevice(self):
         client = RequestsClient()
