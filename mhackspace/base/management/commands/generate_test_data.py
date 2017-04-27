@@ -7,6 +7,7 @@ from mhackspace.base.models import BannerImage
 from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User
 from mhackspace.blog.models import Category, Post
+from mhackspace.rfid.models import Device
 
 
 class ImageFixture(AutoFixture):
@@ -37,6 +38,18 @@ class Command(BaseCommand):
             'title': random.choicee(('Mr', 'Mrs', 'Emperor', 'Captain'))
         })
         users.create(10)
+
+        rfid = AutoFixture(Rfid)
+        rfid.create(20)
+
+        device = AutoFixture(Device)
+        device.create(5)
+
+        feed = AutoFixture(Feed)
+        feed.create(10)
+
+        feeds = AutoFixture(Article)
+        feeds.create(10)
 
         banners = ImageFixture(BannerImage)
         banners.create(10)

@@ -7,25 +7,11 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from mhackspace.users.models import Rfid
 # just brainstorming so we can start playing with this,
 # be nice to make this a 3rd party django installable app ?
 
 
-# users rfid card to user mapping, user can have more than one card
-class Rfid(models.Model):
-    code = models.PositiveIntegerField()
-    description = models.CharField(_('Short rfid description'), blank=True, max_length=255)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        null=True, blank=True,
-        # related_name='rfid_user'
-    )
-
-    def __str__(self):
-        return self.description
-
-    def name(self):
-        return self.user.name
 
 
 # description of a device like door, print, laser cutter
@@ -39,11 +25,11 @@ class Device(models.Model):
 
     members = models.ManyToManyField(Rfid, through='DeviceAuth')
 
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        null=True, blank=True,
-        # related_name='rfid_user'
-    )
+    # user = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     null=True, blank=True,
+    #     # related_name='rfid_user'
+    # )
 
     def __str__(self):
         return self.name

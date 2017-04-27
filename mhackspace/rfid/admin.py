@@ -3,17 +3,12 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin
 from django.forms.models import ModelChoiceField
 
-from mhackspace.rfid.models import Device, Rfid, DeviceAuth
+from mhackspace.rfid.models import Device, DeviceAuth
 
 
 @admin.register(Device)
 class DeviceAdmin(ModelAdmin):
     list_display = ('name', 'identifier')
-
-
-@admin.register(Rfid)
-class RfidAdmin(ModelAdmin):
-    list_display = ('code', 'description')
 
 
 # Probably need to look at this again

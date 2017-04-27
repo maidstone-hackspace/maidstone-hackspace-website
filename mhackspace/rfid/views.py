@@ -2,7 +2,8 @@ import logging
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import status
-from mhackspace.rfid.models import Device,  Rfid, DeviceAuth
+from mhackspace.users.models import Rfid
+from mhackspace.rfid.models import Device, DeviceAuth
 from mhackspace.rfid.serializers import DeviceSerializer, AuthSerializer
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 

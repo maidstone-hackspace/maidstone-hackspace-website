@@ -7,8 +7,8 @@ from test_plus.test import TestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import RequestsClient
 
-from mhackspace.rfid.models import Device, Rfid, DeviceAuth
-from mhackspace.users.models import User
+from mhackspace.rfid.models import Device, DeviceAuth
+from mhackspace.users.models import User, Rfid
 
 
 # http://www.django-rest-framework.org/api-guide/testing/

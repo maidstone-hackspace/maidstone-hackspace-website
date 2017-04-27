@@ -90,3 +90,20 @@ class Membership(models.Model):
 
     def __str__(self):
         return self.reference
+
+
+# users rfid card to user mapping, user can have more than one card
+class Rfid(models.Model):
+    code = models.PositiveIntegerField()
+    description = models.CharField(_('Short rfid description'), blank=True, max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True,
+        # related_name='rfid_user'
+    )
+
+    def __str__(self):
+        return self.description
+
+    def name(self):
+        return self.user.name

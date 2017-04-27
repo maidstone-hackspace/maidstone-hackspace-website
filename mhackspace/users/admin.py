@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf.urls import url
-from .models import User, Membership, MEMBERSHIP_STATUS_CHOICES
+from .models import User, Rfid, Membership, MEMBERSHIP_STATUS_CHOICES
 
 from mhackspace.subscriptions.management.commands.update_membership_status import update_subscriptions
 
@@ -64,3 +64,9 @@ class MyUserAdmin(AuthUserAdmin):
 class MembershipAdmin(ModelAdmin):
     list_display = ('user', 'payment', 'date', 'status')
     list_filter = ('status',)
+
+
+@admin.register(Rfid)
+class RfidAdmin(ModelAdmin):
+    list_display = ('code', 'description')
+
