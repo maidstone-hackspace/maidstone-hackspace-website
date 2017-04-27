@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mhackspace.rfid.models import Device
+from mhackspace.rfid.models import Device, DeviceAuth
 
 
 class Task(object):
@@ -8,10 +8,11 @@ class Task(object):
         for field in ('id', 'name', 'owner', 'status'):
             setattr(self, field, kwargs.get(field, None))
 
+
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Device
-        fields = ('name', )
+        model = DeviceAuth
+        fields = ('__all__')
 
 
 class AuthSerializer(serializers.Serializer):

@@ -7,7 +7,7 @@ from test_plus.test import TestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import RequestsClient
 
-from mhackspace.rfid.models import Device, Rfid
+from mhackspace.rfid.models import Device, Rfid, DeviceAuth
 from mhackspace.users.models import User
 
 
@@ -32,6 +32,8 @@ class ApiTests(TestCase):
         self.device.save()
         self.rfid = Rfid(code='1', user=self.user)
         self.rfid.save()
+        self.auth = DeviceAuth(rfid=self.rfid, device=self.device)
+        self.save()
 
     def testAuth(self):
         factory = APIRequestFactory()

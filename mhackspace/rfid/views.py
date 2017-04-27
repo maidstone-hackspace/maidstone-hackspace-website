@@ -2,9 +2,9 @@ import logging
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import status
-from mhackspace.rfid.models import Device,  Rfid
+from mhackspace.rfid.models import Device,  Rfid, DeviceAuth
 from mhackspace.rfid.serializers import DeviceSerializer, AuthSerializer
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -20,18 +20,20 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
     serializer_class = AuthSerializer
 
     def list(self, request):
-        serializer = AuthSerializer(
-            instance={'name': '1', 'rfid': '1', 'device': '1'})
+        serializer = DeviceSerializer(
+            DeviceAuth.objects.all(), many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
         try:
             rfid = Rfid.objects.get(code=request.data.get('rfid'))
-            device = Device.objects.get(user=rfid.user, identifier=request.data.get('device'))
+            device = Device.objects.get(identifier=request.data.get('device'))
+            deviceAuth = DeviceAuth.objects.get(device=device.identifier, rfid=rfid.id)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        except:
-            logger.exception("An error occurred")
+        except ValidationError:
+        # except:
+        #     logger.exception("An error occurred")
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = AuthSerializer(
             instance={'name': device.name, 'rfid': rfid.code, 'device': device.identifier})
