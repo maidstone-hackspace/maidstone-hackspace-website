@@ -21,7 +21,7 @@ django-stdimage==2.4.0
 django-model-utils==3.0.0
 
 # Images
-Pillow==4.1.0
+Pillow==4.1.1
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
