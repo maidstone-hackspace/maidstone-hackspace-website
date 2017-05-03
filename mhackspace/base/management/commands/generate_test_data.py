@@ -33,6 +33,8 @@ class Command(BaseCommand):
         # load known data
         call_command('loaddata', 'mhackspace/users/fixtures/groups.json', verbose=0)
 
+        autofixture.autodiscover()
+
         # random data
         users = AutoFixture(User, field_values={
             'title': random.choicee(('Mr', 'Mrs', 'Emperor', 'Captain'))
@@ -44,6 +46,9 @@ class Command(BaseCommand):
 
         device = AutoFixture(Device)
         device.create(5)
+
+        deviceauth = AutoFixture(DeviceAuth)
+        deviceauth.create(5)
 
         feed = AutoFixture(Feed)
         feed.create(10)

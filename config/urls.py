@@ -30,12 +30,12 @@ from django_nyt.urls import get_pattern as get_nyt_pattern
 from rest_framework_jwt.views import obtain_jwt_token
 
 router = DefaultRouter()
-router.register(r'posts', PostViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'feeds', FeedViewSet)
-router.register(r'articles', ArticleViewSet)
-router.register(r'rfid', DeviceViewSet)
-router.register(r'rfidAuth', AuthUserWithDeviceViewSet, base_name='device')
+router.register(r'posts', PostViewSet, 'posts')
+router.register(r'categories', CategoryViewSet, base_name='categories')
+router.register(r'feeds', FeedViewSet, 'feeds')
+router.register(r'articles', ArticleViewSet, base_name='articles')
+router.register(r'rfid', DeviceViewSet, base_name='rfid_device')
+router.register(r'rfidAuth', AuthUserWithDeviceViewSet, base_name='device_auth')
 
 
 sitemaps = {
