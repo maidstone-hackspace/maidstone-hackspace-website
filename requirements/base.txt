@@ -60,7 +60,7 @@ django-autofixture==0.12.1
 git+https://github.com/olymk2/scaffold.git
 
 djangorestframework==3.6.2
-django-filter==1.0.2
+django-filter==1.0.4
 
 #git+https://github.com/olymk2/dracos-markdown-editor.git
 draceditor==1.1.8
