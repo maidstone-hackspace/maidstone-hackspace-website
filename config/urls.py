@@ -15,7 +15,7 @@ from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
-from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
+from mhackspace.blog.feeds import RssFeed, BlogFeed, BlogCategoryFeed
 from mhackspace.base.views import markdown_uploader
 from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostList
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
@@ -48,7 +48,8 @@ urlpatterns = [
     ),
     url(r'^blog/$', PostList.as_view(), name='blog'),
     url(r'^blog/rss/$', BlogFeed(), name='blog-rss'),
-    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogPost.as_view(), name='blog-item'),
+    url(r'^rss.xml$', RssFeed(), name='main-rss'),
+    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogPost.as_view, name='blog-item'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', PostList.as_view(), name='blog-category'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category-feed'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},

@@ -5,6 +5,7 @@ from django.core.management import call_command
 from mhackspace.base.models import BannerImage
 from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User
+from mhackspace.blog.models import Category, Post
 
 class ImageFixture(AutoFixture):
     class Values:
@@ -14,6 +15,17 @@ class Command(BaseCommand):
     help = 'Build test data for development environment'
 
     def handle(self, *args, **options):
+        feeds = AutoFixture(Article)
+        feeds.create(10)
+        feed = AutoFixture(Feed)
+        feed.create(10)
+
+        post = AutoFixture(Post)
+        post.create(10)
+
+        categorys = AutoFixture(Category)
+        categorys.create(10)
+
         # load known data
         call_command('loaddata', 'mhackspace/users/fixtures/groups.json', verbose=0)
 
@@ -21,11 +33,6 @@ class Command(BaseCommand):
         users = AutoFixture(User)
         users.create(10)
 
-        feed = AutoFixture(Feed)
-        feed.create(10)
-
-        feeds = AutoFixture(Article)
-        feeds.create(10)
 
         banners = ImageFixture(BannerImage)
         banners.create(10)
