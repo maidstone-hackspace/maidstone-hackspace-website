@@ -67,5 +67,9 @@ draceditor==1.1.8
 django-djconfig
 django-haystack
 git+https://github.com/nitely/Spirit.git
-# git+https://github.com/olymk2/django-xforwardedfor-middleware.git
 django-xforwardedfor-middleware==2.0
+
+# Application queue celery
+celery==4.1
+django-celery-results
+django-celery-beat

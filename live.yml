@@ -37,6 +37,29 @@ services:
     volumes:
       - ./:/usr/src/app
 
-  # redis:
-  #   image: redis:latest
+  redis:
+    image: redis:latest
 
+  celeryworker:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp worker -l INFO
+
+  celerybeat:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp beat -l INFO

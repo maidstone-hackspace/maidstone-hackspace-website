@@ -75,6 +75,6 @@ services:
 #      - TERM=xterm
 
 
-  # redis:
-  #   image: redis:latest
+  redis:
+    image: redis:latest
 

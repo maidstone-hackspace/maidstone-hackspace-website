@@ -14,7 +14,6 @@ import os
 import time
 import environ
 
-
 # from spirit.settings import *
 ROOT_DIR = environ.Path(__file__) - 3  # (mhackspace/config/settings/common.py - 3 = mhackspace/)
 APPS_DIR = ROOT_DIR.path('mhackspace')
@@ -341,6 +340,17 @@ LOGIN_URL = 'account_login'
 
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
+
+########## CELERY
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='django://')
+if CELERY_BROKER_URL == 'django://':
+    CELERY_RESULT_BACKEND = 'redis://'
+else:
+    CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+INSTALLED_APPS += ('django_celery_results','django_celery_beat',)
+########## END CELERY
+
 # django-compressor
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += ("compressor", 'sass_processor',)

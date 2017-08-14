@@ -43,7 +43,6 @@ class TestPaymentGatewaysGocardless(TestCase):
         self.assertEqual(result.get('reference'), '01')
         self.assertEqual(result.get('success'), 'success')
 
-    # @patch('mhackspace.subscriptions.payments.gocardless.request.requests.get', autospec=True)
     @patch('mhackspace.subscriptions.payments.gocardless.client.subscription', autospec=True)
     @patch('mhackspace.subscriptions.payments.gocardless.client.confirm_resource', autospec=True)
     def test_confirm_subscription_callback(self, mock_confirm, mock_subscription):
