@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.conf.urls import url
 from .models import User, Membership, MEMBERSHIP_STATUS_CHOICES
 
-from mhackspace.subscriptions.management.commands.refresh_subscriptions import update_subscriptions
+from mhackspace.subscriptions.management.commands.update_membership_status import update_subscriptions
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -41,7 +41,7 @@ class MyUserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     fieldsets = (
-            ('User Profile', {'fields': ('name', 'image')}),
+            ('User Profile', {'fields': ('name', '_image')}),
     ) + AuthUserAdmin.fieldsets
     list_display = ('username', 'name', 'is_superuser')
     search_fields = ['name']

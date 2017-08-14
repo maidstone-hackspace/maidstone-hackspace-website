@@ -1,0 +1,3 @@
+* cache folder
+
+Store things like pip cache here so wee dont have to download every time wee build.

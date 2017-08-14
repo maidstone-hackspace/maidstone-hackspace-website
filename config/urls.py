@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
@@ -21,6 +20,7 @@ from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostLi
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 
+# import spirit.urls
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
 router.register(r'categories', CategoryViewSet)
@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
     url(r'^contact/$', contact, name='contact'),
 
+    url(r'^discuss/', include('spirit.urls')),
     url(r'^api/v1/', include(router.urls, namespace='v1')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^draceditor/', include('draceditor.urls')),
@@ -78,6 +79,7 @@ urlpatterns = [
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

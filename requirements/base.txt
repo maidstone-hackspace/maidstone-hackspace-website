@@ -52,7 +52,7 @@ lxml==3.7.3
 # Your custom requirements go here
 mock==2.0.0
 
-gocardless
+gocardless_pro
 braintree==3.37.2
 
 django-autofixture==0.12.1
@@ -62,5 +62,10 @@ git+https://github.com/olymk2/scaffold.git
 djangorestframework==3.6.3
 django-filter==1.0.2
 
-#git+https://github.com/olymk2/dracos-markdown-editor.git
 draceditor==1.1.8
+# django-spirit
+django-djconfig
+django-haystack
+git+https://github.com/nitely/Spirit.git
+# git+https://github.com/olymk2/django-xforwardedfor-middleware.git
+django-xforwardedfor-middleware==2.0

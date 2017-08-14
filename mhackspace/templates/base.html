@@ -27,11 +27,12 @@
   <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
   <meta name="theme-color" content="#008080">
 
+  <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
   {% block css %}
-    <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
   {% endblock %}
 
+  {% block head-extra %}{% endblock head-extra %}
   <script type="application/ld+json">
   {
     "@context": "http://schema.org",
@@ -45,7 +46,7 @@
     "@type": "PostalAddress",
       "streetAddress": "Maidstone Hackspace, Maidstone Community Support Centre",
       "addressLocality": "Maidstone",
-      "addressRegion": "FLKent",
+      "addressRegion": "Kent",
       "postalCode": "ME14 1HH",
     "addressCountry": "UK"
   },
@@ -66,6 +67,7 @@
 </head>
 
 <body>
+
 <div>
   <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse mb-4">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"

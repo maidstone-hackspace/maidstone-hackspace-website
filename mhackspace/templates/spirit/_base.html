@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load sass_tags %}
+{% load static i18n %}
+{% block title %}Members{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'spirit/stylesheets/styles.all.min.css' %}">
+    <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
+  {{ super.block }}
+{% endblock css %}
+
+{% block head-extra %}
+
+    <script src="{% static "spirit/scripts/all.min.js" %}"></script>
+
+    <script>
+	$( document ).ready(function() {
+        $.tab();
+        $( 'a.js-post' ).postify( {
+            csrfToken: "{{ csrf_token }}",
+        } );
+        $('.js-messages').messages();
+        {% if user.is_authenticated %}
+            $.notification( {
+                notificationUrl: "{% url "spirit:topic:notification:index-ajax" %}",
+                notificationListUrl: "{% url "spirit:topic:notification:index-unread" %}",
+                mentionTxt: "{% trans "{user} has mention you on {topic}" %}",
+                commentTxt: "{% trans "{user} has commented on {topic}" %}",
+                showAll: "{% trans "Show all" %}",
+                empty: "{% trans "No new notifications, yet" %}",
+                unread: "{% trans "unread" %}",
+            } );
+        {% endif %}
+	});
+	</script>
+{% endblock head-extra %}
+
+{% block content %}
+<div class="container">
+  <h2>Users</h2>
+
+  <div class="list-group">
+    {% for user in user_list %}
+      <a href="{% url 'users:detail' user.username %}" class="list-group-item">
+        <h4 class="list-group-item-heading">{{ user.username }}</h4>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

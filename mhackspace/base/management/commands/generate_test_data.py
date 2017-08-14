@@ -1,3 +1,4 @@
+import random
 from autofixture import AutoFixture
 from autofixture.generators import ImageGenerator
 from django.core.management.base import BaseCommand
@@ -7,9 +8,11 @@ from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User
 from mhackspace.blog.models import Category, Post
 
+
 class ImageFixture(AutoFixture):
     class Values:
         scaled_image = ImageGenerator(width=800, height=300, sizes=((1280, 300),))
+
 
 class Command(BaseCommand):
     help = 'Build test data for development environment'
@@ -30,9 +33,10 @@ class Command(BaseCommand):
         call_command('loaddata', 'mhackspace/users/fixtures/groups.json', verbose=0)
 
         # random data
-        users = AutoFixture(User)
+        users = AutoFixture(User, field_values={
+            'title': random.choicee(('Mr', 'Mrs', 'Emperor', 'Captain'))
+        })
         users.create(10)
-
 
         banners = ImageFixture(BannerImage)
         banners.create(10)

@@ -1,18 +1,13 @@
 from pprint import pprint
 import pytz
-import gocardless
+import gocardless_pro as gocardless
 import braintree
+import logging
 
 from django.conf import settings
 payment_providers = settings.PAYMENT_PROVIDERS
-
-# import gocardless_pro
+logger = logging.getLogger(__name__)
 # import paypalrestsdk as paypal
-
-# from website.config import settings
-# from website.config.import app_domain
-
-# from website.config.logger import log
 
 PROVIDER_ID = {'gocardless':1, 'braintree': 2}
 PROVIDER_NAME = {1: 'gocardless', 2: 'braintree'}
@@ -26,19 +21,17 @@ def select_provider(type):
     assert 0, "No Provider for " + type
 
 class gocardless_provider:
+    """
+    gocardless test account details 20-00-00, 55779911
+    """
     form_remote = True
     client = None
 
     def __init__(self):
         # gocardless are changing there api, not sure if we can switch yet
-        # self.client = gocardless_pro.Client(
-        #     access_token=payment_providers['gocardless']['credentials']['access_token'],
-        #     environment=payment_providers['gocardless']['environment'])
-
-        print(payment_providers.keys)
-        gocardless.environment = payment_providers['gocardless']['environment']
-        gocardless.set_details(**payment_providers['gocardless']['credentials'])
-        self.client = gocardless.client.merchant()
+        self.client = gocardless.Client(
+            access_token=payment_providers['gocardless']['credentials']['access_token'],
+            environment=payment_providers['gocardless']['environment'])
 
     def subscribe_confirm(self, args):
         response = gocardless.client.confirm_resource(args)
@@ -50,49 +43,33 @@ class gocardless_provider:
             'success': response.success
         }
 
-
-
     def fetch_customers(self):
-        merchant = gocardless.client.merchant()
-        for customer in merchant.bills():
-            user = customer.user()
-            # print(dir(customer))
-            # print(dir(customer.reference_fields))
-            # print(customer.reference_fields)
-            # print(customer.payout_id)
-            # print(customer.reference_fields.payout_id)
-            result = {
-                'user_id': user.id,
-                'email': user.email,
-                'status': customer.status,
-                'payment_id': customer.id,
-                'payment_type': customer.source_type,
-                'payment_date': customer.created_at,
-                'amount': customer.amount
-            }
-            yield result #customer
+        """Fetch list of customers payments"""
+        for customer in self.client.customers.list().records:
+            for payment in self.client.payments.list(params={"customer": customer.id}).records:
+                yield {
+                    'user_reference': customer.id,
+                    'email': customer.email,
+                    'status': payment.status,
+                    'payment_id': payment.links.subscription,
+                    'payment_type': 'subscription' if payment.links.subscription else 'payment',
+                    'payment_date': payment.created_at,
+                    'amount': payment.amount
+                }
 
-
-
-        # for customer in self.client.users():
-        #     result = {
-        #         'email': customer.email,
-        #         'created_date': customer.created_at,
-        #         'first_name': customer.first_name,
-        #         'last_name': customer.last_name
-        #     }
-        #     yield customer
 
     def fetch_subscriptions(self):
-        for paying_member in self.client.subscriptions():
-            user=paying_member.user()
+        # for paying_member in self.client.mandates.list().records:
+        for paying_member in self.client.subscriptions.list().records:
+            mandate=self.client.mandates.get(paying_member.links.mandate)
+            user=self.client.customers.get(mandate.links.customer)
 
             # gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
                 'email': user.email,
                 'start_date': paying_member.created_at,
-                'reference': paying_member.id,
+                'reference': mandate.id,
                 'amount': paying_member.amount}
 
     def get_redirect_url(self):
@@ -116,25 +93,61 @@ class gocardless_provider:
             'success': response.get('success', False)
         }
 
-    def create_subscription(self, amount, name, redirect_success, redirect_failure, interval_unit='month', interval_length='1'):
-        return gocardless.client.new_subscription_url(
-            amount=float(amount),
-            interval_length=interval_length,
-            interval_unit=interval_unit,
-            name=name,
-            redirect_uri=redirect_success)
+    def create_subscription(self, user, session, amount,
+                            name, redirect_success, redirect_failure,
+                            interval_unit='monthly', interval_length='1'):
+        return self.client.redirect_flows.create(params={
+            "description": name,
+            "session_token": session,
+            "success_redirect_url": redirect_success,
+            "prefilled_customer": {
+                "given_name": user.first_name,
+                "family_name": user.last_name,
+                "email": user.email
+            }
+        })
 
-    def confirm_subscription(self, provider_response):
-        response = gocardless.client.confirm_resource(provider_response)
-        subscription = gocardless.client.subscription(provider_response.get('resource_id'))
-        user = subscription.user()
+
+    def confirm_subscription(self, membership, session, provider_response,
+                             name, interval_unit='monthly', interval_length='1'):
+        r = provider_response.get('redirect_flow_id')
+
+        # response = self.client.redirect_flows.complete(r, params={
+        #     "session_token": session
+        # })
+        response = self.client.redirect_flows.get(r)
+        # response = self.client.redirect_flows.get(provider_response.get('redirect_flow_id'))
+
+        # response = gocardless.client.confirm_resource(provider_response)
+        # subscription = gocardless.client.subscription(provider_response.get('resource_id'))
+        user_id = response.links.customer
+        mandate_id = response.links.mandate
+        # user = subscription.user()
+        user = self.client.customers.get(response.links.customer)
+        mandate = self.client.mandates.get(response.links.mandate)
+        logging.debug(user)
+        logging.debug(mandate)
+
+        #  for some reason go cardless is in pence, so 20.00 needs to be sent as 2000
+        #  what genious decided that was a good idea, now looks like i am charging £2000 :p
+        #  the return is the same so you need to convert on send and receive
+        subscription_response = self.client.subscriptions.create(
+            params={
+                'amount': str(membership.payment).replace('.', ''),
+                'currency': 'GBP',
+                'interval_unit': interval_unit,
+                'name': name,
+                # 'metadata': {'reference': },
+                'links': {'mandate': mandate_id}
+            })
         return {
-            'amount': subscription.amount,
+            'amount': membership.payment,
             'email': user.email,
-            'start_date': subscription.created_at,
-            'reference': subscription.id,
-            'success': response.get('success')
+            'start_date': subscription_response.created_at,
+            'reference': mandate_id,
+            'success': subscription_response.api_response.status_code
         }
+
 
 class braintree_provider:
     form_remote = False
@@ -189,6 +202,7 @@ class braintree_provider:
 
 class payment:
     """
+    https://developer.gocardless.com/api-reference/#redirect-flows-create-a-redirect-flow
     paypal reference = https://github.com/paypal/PayPal-Python-SDK
     gocardless reference = https://github.com/paypal/PayPal-Python-SDK
     """

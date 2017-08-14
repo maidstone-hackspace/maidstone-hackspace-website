@@ -10,14 +10,51 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 from __future__ import absolute_import, unicode_literals
 
+import os
 import time
 import environ
 
+
+# from spirit.settings import *
 ROOT_DIR = environ.Path(__file__) - 3  # (mhackspace/config/settings/common.py - 3 = mhackspace/)
 APPS_DIR = ROOT_DIR.path('mhackspace')
 
 env = environ.Env()
 env.read_env('%s/.env' % ROOT_DIR)
+
+ST_TOPIC_PRIVATE_CATEGORY_PK = 1
+ST_RATELIMIT_ENABLE = True
+ST_RATELIMIT_CACHE_PREFIX = 'srl'
+ST_RATELIMIT_CACHE = 'default'
+ST_RATELIMIT_SKIP_TIMEOUT_CHECK = False
+ST_NOTIFICATIONS_PER_PAGE = 20
+ST_COMMENT_MAX_LEN = 3000
+ST_MENTIONS_PER_COMMENT = 30
+ST_DOUBLE_POST_THRESHOLD_MINUTES = 30
+ST_YT_PAGINATOR_PAGE_RANGE = 3
+ST_SEARCH_QUERY_MIN_LEN = 3
+ST_USER_LAST_SEEN_THRESHOLD_MINUTES = 1
+ST_PRIVATE_FORUM = False
+ST_ALLOWED_UPLOAD_IMAGE_FORMAT = ('jpeg', 'png', 'gif')
+ST_ALLOWED_URL_PROTOCOLS = {
+    'http', 'https', 'mailto', 'ftp', 'ftps',
+    'git', 'svn', 'magnet', 'irc', 'ircs'}
+
+ST_UNICODE_SLUGS = True
+ST_UNIQUE_EMAILS = True
+ST_CASE_INSENSITIVE_EMAILS = True
+
+# Tests helpers
+ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
+ST_BASE_DIR = os.path.dirname(__file__)
+
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'search', 'whoosh_index'),
+    },
+}
 
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -40,11 +77,41 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',  # registration
     'allauth.socialaccount.providers.google',  # registration
     'allauth.socialaccount.providers.github',  # registration
-    'allauth.socialaccount.providers.facebook',  # registration
+    # 'allauth.socialaccount.providers.facebook',  # registration
     'whitenoise.runserver_nostatic',
     'stdimage',
     'rest_framework',
     'draceditor',
+
+    'haystack',
+    'djconfig',
+    'spirit.core',
+    'spirit.admin',
+    'spirit.search',
+
+    'spirit.user',
+    'spirit.user.admin',
+    'spirit.user.auth',
+
+    'spirit.category',
+    'spirit.category.admin',
+
+    'spirit.topic',
+    'spirit.topic.admin',
+    'spirit.topic.favorite',
+    'spirit.topic.moderate',
+    'spirit.topic.notification',
+    'spirit.topic.poll',  # todo: remove in Spirit v0.6
+    'spirit.topic.private',
+    'spirit.topic.unread',
+
+    'spirit.comment',
+    'spirit.comment.bookmark',
+    'spirit.comment.flag',
+    'spirit.comment.flag.admin',
+    'spirit.comment.history',
+    'spirit.comment.like',
+    'spirit.comment.poll',
 )
 
 # Apps specific for this project go here.
@@ -74,6 +141,16 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    #fix for ip logging behind a proxy
+    'x_forwarded_for.middleware.XForwardedForMiddleware',
+    'djconfig.middleware.DjConfigMiddleware',
+
+    'spirit.user.middleware.TimezoneMiddleware',
+    'spirit.user.middleware.LastIPMiddleware',
+    'spirit.user.middleware.LastSeenMiddleware',
+    'spirit.user.middleware.ActiveUserMiddleware',
+    'spirit.core.middleware.PrivateForumMiddleware',
 )
 
 # MIGRATIONS CONFIGURATION
@@ -171,6 +248,7 @@ TEMPLATES = [
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
                 # Your stuff: custom template context processors go here
+                'djconfig.context_processors.config',
             ],
         },
     },

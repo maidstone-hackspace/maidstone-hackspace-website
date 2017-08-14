@@ -11,16 +11,27 @@ from stdimage.models import StdImageField
 
 class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=True, max_length=255)
-    public = models.BooleanField(default=False, help_text='If the users email is public on post feeds')
-    image = StdImageField(
+    public = models.BooleanField(
+        default=False, help_text='If the users email is public on post feeds')
+    _image = StdImageField(
         upload_to='avatars/',
         blank=True,
         null=True,
+        db_column='image',
         variations={
             'profile': {
                 "width": 256,
                 "height": 256,
                 "crop": True}})
+
+    # https://github.com/pennersr/django-allauth/issues/520
+    @property
+    def image(self):
+        return self._image
+
+    @image.setter
+    def image(self, value):
+        self._image = value
 
     def __str__(self):
         return self.username
@@ -50,6 +61,7 @@ MEMBERSHIP_STRING = {
 }
 
 MEMBERSHIP_STATUS = {
+    'signup': 0,  # This means the user has not completed signup
     'active': 1,
     'cancelled': 2
 }

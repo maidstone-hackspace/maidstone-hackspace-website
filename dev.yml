@@ -20,9 +20,10 @@ services:
     command: /start-dev.sh
     depends_on:
       - postgres
-    environment:
-      - POSTGRES_USER=mhackspace
-      - USE_DOCKER=yes
+    env_file: .env
+    # environment:
+    #   - POSTGRES_USER=mhackspace
+    #   - USE_DOCKER=yes
     volumes:
       - .:/app
     ports:

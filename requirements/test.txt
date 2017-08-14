@@ -11,3 +11,10 @@ factory-boy==2.8.1
 # pytest
 pytest-django==3.1.2
 pytest-sugar==0.8.0
+
+django-test-plus==1.0.18
+# improved REPL
+ipdb==0.10.3
+
+pytest-django==3.1.2
+pytest-sugar==0.8.0

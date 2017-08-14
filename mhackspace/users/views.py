@@ -26,6 +26,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['membership_form'] = MembershipJoinForm(initial={'amount': 20.00})
         return context
 
+
 class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False
 
@@ -35,7 +36,7 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
-    fields = ['name', 'image', ]
+    fields = ['name', '_image', ]
     model = User
 
     # send the user back to their own page after a successful update
