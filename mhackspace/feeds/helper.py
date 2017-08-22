@@ -6,9 +6,10 @@ from urllib.request import urlretrieve
 from django.core.files import File
 from django.utils.timezone import make_aware
 from django.core.management import call_command
+from stdimage.utils import render_variations
 from scaffold.readers.rss_reader import feed_reader
 
-from mhackspace.feeds.models import Feed, Article
+from mhackspace.feeds.models import Feed, Article, image_variations
 
 logger = logging.getLogger(__name__)
 
@@ -49,16 +50,10 @@ def download_remote_images():
                 os.path.basename(article.original_image.__str__()),
                 File(open(result[0], 'rb'))
             )
+            render_variations(result[0], image_variations, replace=True)
             article.save()
         except:
             logger.exception('Unable to download remote image for %s' % article.original_image)
-    render_images()
-
-
-
-def render_images():
-    # todo: extract logic and manually render images
-    call_command('rendervariations', 'feeds.Article.image', '--replace')
 
 
 def get_active_feeds(feed=False):

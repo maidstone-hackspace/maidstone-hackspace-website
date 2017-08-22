@@ -124,6 +124,7 @@ LOCAL_APPS = (
     'mhackspace.contact',
     'mhackspace.members',
     'mhackspace.blog',
+    'mhackspace.requests',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -342,13 +343,18 @@ LOGIN_URL = 'account_login'
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
 ########## CELERY
-CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='django://')
-if CELERY_BROKER_URL == 'django://':
-    CELERY_RESULT_BACKEND = 'redis://'
-else:
-    CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+# CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://')
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://redis:6379/0')
+#if CELERY_BROKER_URL == 'django://':
+# CELERY_RESULT_BACKEND = 'redis://'
+#else:
+CELERY_RESULT_BACKEND = 'django-cache'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 INSTALLED_APPS += ('django_celery_results','django_celery_beat',)
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 ########## END CELERY
 
 # django-compressor

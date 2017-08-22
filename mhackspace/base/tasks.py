@@ -1,10 +1,10 @@
 from celery import shared_task
+from mhackspace.feeds.helper import import_feeds
 
 
 @shared_task
 def update_homepage_feeds():
-    pass
-    # import_feeds()
+    return import_feeds()
 
 # @task(bind=True)
 # @app.on_after_configure.connect

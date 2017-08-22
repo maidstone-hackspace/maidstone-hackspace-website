@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load recapture %}
+
+{% block content %}
+  <h2>Requests</h2>
+
+  Make a request for equipment you would like to see in the space, request training on equipment or ak a member to run a workshop or talk on something.
+  <br />
+
+  {% if form %}
+    <form method="POST" action="{% url 'requests_form' %}" class="requests_form">
+      {% csrf_token %}
+      {{ form|crispy }}
+      {{ google_capture }}
+      <button class="btn btn-primary" type="submit" name="action">{% trans "Send" %}</button>
+    </form>
+  {% endif %}
+
+    <table>
+{% for request in requests %}
+      <tr>
+        <td>
+          {{ request.type }}
+        </td>
+        <td>
+          {{ request.description }}
+        </td>
+      </tr>
+
+{% endfor %}
+    </table>
+
+{% endblock content %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}

@@ -5,7 +5,7 @@
 wheel==0.29.0
 
 # Bleeding edge Django
-django==1.11.3
+django==1.11.4
 
 # Configuration
 django-environ==0.4.3
@@ -70,6 +70,7 @@ git+https://github.com/nitely/Spirit.git
 django-xforwardedfor-middleware==2.0
 
 # Application queue celery
-celery==4.1
-django-celery-results
-django-celery-beat
+celery==4.1.0
+django-celery-results==1.0.1
+django-celery-beat==1.0.1
+

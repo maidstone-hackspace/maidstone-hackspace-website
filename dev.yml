@@ -38,13 +38,14 @@ services:
     command: npm install
     volumes:
       - ./:/usr/src/app
+
   redis:
     image: redis:latest
 
   celeryworker:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     env_file: .env
     volumes:
       - .:/app
@@ -56,12 +57,13 @@ services:
   celerybeat:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     env_file: .env
     volumes:
       - .:/app
     depends_on:
       - postgres
       - redis
-    command: celery -A mhackspace.celeryapp beat -l debug 
+    command: celery -A mhackspace.celeryapp beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    #command: sleep 1h 
 

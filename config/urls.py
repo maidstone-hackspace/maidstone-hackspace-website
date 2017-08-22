@@ -19,6 +19,8 @@ from mhackspace.base.views import markdown_uploader
 from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostList
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
+from mhackspace.requests.views import RequestsForm, RequestsList
+
 
 # import spirit.urls
 router = DefaultRouter()
@@ -38,6 +40,8 @@ urlpatterns = [
     url(r'^chat/$', TemplateView.as_view(template_name='pages/chat.html'), name='chat'),
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
     url(r'^contact/$', contact, name='contact'),
+    url(r'^requests/$', RequestsList.as_view(), name='requests'),
+    url(r'^requests/create$', RequestsForm.as_view(), name='requests_form'),
 
     url(r'^discuss/', include('spirit.urls')),
     url(r'^api/v1/', include(router.urls, namespace='v1')),
