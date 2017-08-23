@@ -1,4 +1,5 @@
 #!/bin/sh
+rm -R /app/staticfiles/*
 python /app/manage.py collectstatic --noinput
 python /app/manage.py compilescss
 
