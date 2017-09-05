@@ -6,17 +6,36 @@ from django.utils import timezone
 
 
 REQUEST_TYPES = (
-    (1, 'Equipment request'),
-    (2, 'Educational request'),
-    (3, 'Training request'))
+    (0, 'Equipment request'),
+    (1, 'Educational request'),
+    (2, 'Training request'))
 
 
 class UserRequests(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name='+')
-    request_type = models.IntegerField(choices=REQUEST_TYPES)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='+'
+    )
+    request_type = models.IntegerField(choices=REQUEST_TYPES, null=False)
+    cost = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        help_text='Leave blank, if no associated cost, or add estimated cost if not sure.'
+    )
     description = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ('pk',)
+        ordering = ('cost',)
+
+    def request_type_string(self):
+        return REQUEST_TYPES[self.request_type][1]
+
+# class UserRequestComments(models.Model):
+#     user = models.OneToOneField(
+#         settings.AUTH_USER_MODEL, related_name='+')
+#     comment = models.TextField()
+#     created_date = models.DateTimeField(default=timezone.now)
+
+#     class Meta:
+#         ordering = ('created_date',)

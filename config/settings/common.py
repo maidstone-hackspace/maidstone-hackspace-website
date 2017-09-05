@@ -81,9 +81,11 @@ THIRD_PARTY_APPS = (
     'stdimage',
     'rest_framework',
     'draceditor',
-
     'haystack',
     'djconfig',
+
+    'corsheaders',
+
     'spirit.core',
     'spirit.admin',
     'spirit.search',
@@ -111,6 +113,16 @@ THIRD_PARTY_APPS = (
     'spirit.comment.history',
     'spirit.comment.like',
     'spirit.comment.poll',
+
+    'django_nyt',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
+    'wiki.plugins.macros',
 )
 
 # Apps specific for this project go here.
@@ -124,6 +136,7 @@ LOCAL_APPS = (
     'mhackspace.contact',
     'mhackspace.members',
     'mhackspace.blog',
+    'mhackspace.core',
     'mhackspace.requests',
 )
 
@@ -136,6 +149,7 @@ MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -247,6 +261,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai',
                 # Your stuff: custom template context processors go here
                 'djconfig.context_processors.config',
             ],
@@ -429,3 +444,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50
 }
+
+# Deprecated need removing, sorl plugin still expects TEMPLATE_DEBUG so for now we need it just for this plugin
+TEMPLATE_DEBUG = False
+CORS_ORIGIN_WHITELIST = (
+    'matrix.org'
+)

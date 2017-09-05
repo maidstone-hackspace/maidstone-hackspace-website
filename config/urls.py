@@ -21,8 +21,9 @@ from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 from mhackspace.requests.views import RequestsForm, RequestsList
 
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_nyt.urls import get_pattern as get_nyt_pattern
 
-# import spirit.urls
 router = DefaultRouter()
 router.register(r'posts', PostViewSet)
 router.register(r'categories', CategoryViewSet)
@@ -54,7 +55,7 @@ urlpatterns = [
     url(r'^blog/$', PostList.as_view(), name='blog'),
     url(r'^blog/rss/$', BlogFeed(), name='blog-rss'),
     url(r'^rss.xml$', RssFeed(), name='main-rss'),
-    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogPost.as_view(), name='blog-item'),
+    url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogPost.as_view, name='blog-item'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', PostList.as_view(), name='blog-category'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category-feed'),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
@@ -84,7 +85,10 @@ urlpatterns = [
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
+urlpatterns += [
+    url(r'^notifications/', get_nyt_pattern()),
+    url(r'^wiki/', get_wiki_pattern(), name='wiki')
+]
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.

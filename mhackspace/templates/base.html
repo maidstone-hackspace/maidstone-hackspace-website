@@ -1,6 +1,7 @@
 {% load sass_tags %}
 {% load i18n compress %}
 {% load static from staticfiles %}
+{% load sekizai_tags i18n wiki_tags static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,7 +84,7 @@
     <div class="collapse navbar-collapse" id="navbarMainMenu">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Home</a>
+          <a class="nav-link" href="{% url 'home' %}"><span class="fa fa-home" >Home</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'about' %}">About</a>
@@ -95,6 +96,12 @@
           <a class="nav-link" href="{% url 'blog' %}">Blog</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'wiki:root' %}">Wiki</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'spirit:index' %}">Forum</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'contact' %}">Contact</a>
         </li>
         <li class="nav-item">
@@ -104,17 +111,15 @@
 
       <ul class="nav navbar-nav pull-xs-right">
         {% if request.user.is_authenticated %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Member Area
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="{% url 'members' %}">Members</a>
-          <a class="dropdown-item" href="{# url 'equipment' #}">Equipment</a>
-        </div>
-      </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Member Area
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+              <a class="dropdown-item" href="{% url 'members' %}">Members</a>
+              <a class="dropdown-item" href="{% url 'requests' %}">Equipment</a>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
@@ -148,6 +153,7 @@
 
 <footer class="footer">
   <div class="container">
+    {% block footer-left %}{% endblock footer-left %}
     <span class="text-muted">&copy; {% now "Y" %} Maidstone Hackspace</span>
     <div class="float-right">
       <a href="https://github.com/maidstone-hackspace/" target="_blank"><i class="fa fa-github"></i></a>
@@ -181,7 +187,8 @@
     ga('send', 'pageview');
   </script>
   <script async src="https://www.google-analytics.com/analytics.js"></script>
-{% endblock javascript %}
+  {% endblock javascript %}
+  {% render_block "js" %}
 </body>
 </html>
 
