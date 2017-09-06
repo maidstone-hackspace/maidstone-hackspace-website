@@ -75,4 +75,5 @@ celery==4.1.0
 django-celery-results==1.0.1
 django-celery-beat==1.0.1
 
+argon2-cffi
 django-cors-headers

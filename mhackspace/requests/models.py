@@ -16,13 +16,14 @@ class UserRequests(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='+'
     )
+    title = models.CharField(max_length=255, help_text='Whats being requested ?')
     request_type = models.IntegerField(choices=REQUEST_TYPES, null=False)
     cost = models.DecimalField(
         max_digits=4,
         decimal_places=2,
         help_text='Leave blank, if no associated cost, or add estimated cost if not sure.'
     )
-    description = models.TextField()
+    description = models.TextField(help_text="detail of what's being requested and where it can be purchased")
     created_date = models.DateTimeField(default=timezone.now)
 
     class Meta:

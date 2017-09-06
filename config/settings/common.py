@@ -331,6 +331,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# PASSWORD HASHING
+# ------------------------------------------------------------------------------
+# Use fast password hasher so tests run faster
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)
+
 # AUTHENTICATION CONFIGURATION
 # ------------------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = (
@@ -448,5 +457,7 @@ REST_FRAMEWORK = {
 # Deprecated need removing, sorl plugin still expects TEMPLATE_DEBUG so for now we need it just for this plugin
 TEMPLATE_DEBUG = False
 CORS_ORIGIN_WHITELIST = (
-    'matrix.org'
+    'matrix.org',
+    'vector.im',
+    'riot.im'
 )
