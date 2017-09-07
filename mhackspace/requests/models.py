@@ -3,6 +3,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.db.models.signals import post_save
+from mhackspace.base.tasks import matrix_message
 
 
 REQUEST_TYPES = (
@@ -40,3 +42,10 @@ class UserRequests(models.Model):
 
 #     class Meta:
 #         ordering = ('created_date',)
+
+
+def send_topic_update_email(sender, instance, **kwargs):
+    matrix_message.delay('[MH] New Request - %s' % instance.title)
+
+
+post_save.connect(send_topic_update_email, sender=UserRequests)

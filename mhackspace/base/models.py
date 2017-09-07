@@ -11,6 +11,8 @@ from spirit.comment.models import Comment
 # from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.db.models.signals import post_save
+from mhackspace.base.tasks import matrix_message
+
 
 class BannerImage(models.Model):
     url = models.URLField()
@@ -65,6 +67,7 @@ def send_topic_update_email(sender, instance, **kwargs):
             to=[user_email],
             headers={'Reply-To': 'no-reply@maidstone-hackspace.org.uk'})
         email.send()
+    matrix_message.delay('[MH] %s' % instance.topic.title)
 
 
 post_save.connect(send_topic_update_email, sender=Comment)
