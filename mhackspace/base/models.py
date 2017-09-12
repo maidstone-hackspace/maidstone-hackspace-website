@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
+from django.contrib.sites.models import Site
 
 from django.db import models
 from django.utils import timezone
@@ -8,9 +9,12 @@ from stdimage.utils import UploadToAutoSlugClassNameDir
 from stdimage.validators import MinSizeValidator
 
 from spirit.comment.models import Comment
+from wiki.models.article import ArticleRevision
 # from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
 from django.db.models.signals import post_save
+from mhackspace.base.tasks import matrix_message
+
 
 class BannerImage(models.Model):
     url = models.URLField()
@@ -65,6 +69,16 @@ def send_topic_update_email(sender, instance, **kwargs):
             to=[user_email],
             headers={'Reply-To': 'no-reply@maidstone-hackspace.org.uk'})
         email.send()
+    matrix_message.delay('https://%s%s' % (
+        Site.objects.get_current().domain,
+        instance.topic.get_absolute_url()))
 
 
+def wiki_article_updated(sender, instance, **kwargs):
+    matrix_message.delay('https://%s%s' % (
+        Site.objects.get_current().domain,
+        instance.article.get_absolute_url()))
+
+
+post_save.connect(wiki_article_updated, sender=ArticleRevision)
 post_save.connect(send_topic_update_email, sender=Comment)
