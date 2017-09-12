@@ -30,12 +30,18 @@
 
   <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  {% block css %}
-  {% endblock %}
 
-  {% block head-extra %}{% endblock head-extra %}
+  {% block css %}{% endblock %}
+
+  {% block head-extra %}
+  <meta property="og:title" content="Maidstone Hackspace" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/logo.svg" />
+  {% endblock head-extra %}
+
   <script type="application/ld+json">
-  {
+  i{
     "@context": "http://schema.org",
     "@type": "Organization",
     "name": "Maidstone Hackspace",
