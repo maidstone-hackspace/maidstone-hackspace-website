@@ -10,8 +10,9 @@ class Task(object):
 
 
 class DeviceSerializer(serializers.ModelSerializer):
+    added_date = serializers.DateTimeField(format='iso-8601')
     class Meta:
-        model = DeviceAuth
+        model = Device
         fields = ('__all__')
 
 

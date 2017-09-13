@@ -11,25 +11,14 @@ from mhackspace.users.models import Rfid
 # just brainstorming so we can start playing with this,
 # be nice to make this a 3rd party django installable app ?
 
-
-
-
 # description of a device like door, print, laser cutter
 class Device(models.Model):
     # user = models.ManyToMany(settings.AUTH_USER_MODEL)
-    identifier = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
     name = models.CharField(_('Device name'), max_length=255)
+    identifier = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     description = models.CharField(_('Short description of what the device does'), blank=True, max_length=255)
     added_date = models.DateTimeField(default=timezone.now, editable=False)
-
     members = models.ManyToManyField(Rfid, through='DeviceAuth')
-
-    # user = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     null=True, blank=True,
-    #     # related_name='rfid_user'
-    # )
 
     def __str__(self):
         return self.name
