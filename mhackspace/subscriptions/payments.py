@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 PROVIDER_ID = {'gocardless':1, 'braintree': 2}
 PROVIDER_NAME = {1: 'gocardless', 2: 'braintree'}
 
+
 def select_provider(type):
     if type == "gocardless": return gocardless_provider()
     if type == "braintree": return braintree_provider()
@@ -19,6 +20,7 @@ def select_provider(type):
 
     log.exception('[scaffold] - "No Provider for ' + type)
     assert 0, "No Provider for " + type
+
 
 class gocardless_provider:
     """

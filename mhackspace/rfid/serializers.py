@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from mhackspace.rfid.models import Device, DeviceAuth
+from mhackspace.rfid.models import Device
 
 
 class Task(object):
@@ -11,6 +10,7 @@ class Task(object):
 
 class DeviceSerializer(serializers.ModelSerializer):
     added_date = serializers.DateTimeField(format='iso-8601')
+
     class Meta:
         model = Device
         fields = ('__all__')
@@ -22,13 +22,3 @@ class AuthSerializer(serializers.Serializer):
     # device = serializers.UUIDField(format='hex_verbose')
     device = serializers.CharField(max_length=255)
 
-    # def create(self, validated_data):
-    #     return Task(id=None, **validated_data)
-
-    # def update(self, instance, validated_data):
-    #     for field, value in validated_data.items():
-    #         setattr(instance, field, value)
-    #     return instance
-
-    # class Meta:
-    #     fields = ('name', )

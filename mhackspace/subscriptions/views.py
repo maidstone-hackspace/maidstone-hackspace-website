@@ -99,9 +99,10 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         payment_provider = 'gocardless'
         provider = select_provider(payment_provider)
+        print(self.request.user)
         membership = Membership.objects.get(user=self.request.user)
 
-        name="Membership your membership id is MH%s" % membership.reference
+        name = "Membership your membership id is MH%s" % membership.reference
         result = provider.confirm_subscription(
             membership=membership,
             session=self.request.session.session_key,

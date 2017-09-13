@@ -6,12 +6,13 @@ from mock import patch, Mock
 
 from mhackspace.subscriptions.payments import payment, gocardless_provider, braintree_provider
 
+
 class TestPaymentGatewaysGocardless(TestCase):
 
     def setUp(self):
         self.auth_gocardless()
 
-    @patch('mhackspace.subscriptions.payments.gocardless.request.requests.get', autospec=True)
+    @patch('mhackspace.subscriptions.payments.gocardless_pro.request.requests.get', autospec=True)
     def auth_gocardless(self, mock_request):
         # mock braintree initalisation request
         mock_request.return_value = Mock(ok=True)
@@ -27,7 +28,7 @@ class TestPaymentGatewaysGocardless(TestCase):
         return self.provider #self.provider
 
     @skip("Need to implement")
-    @patch('mhackspace.subscriptions.payments.gocardless.client.subscription', autospec=True)
+    @patch('mhackspace.subscriptions.payments.gocardless_pro.client.subscription', autospec=True)
     def test_unsubscribe(self, mock_subscription):
         mock_subscription.return_value = Mock(success='success')
         mock_subscription.cancel.return_value = Mock(
@@ -43,8 +44,8 @@ class TestPaymentGatewaysGocardless(TestCase):
         self.assertEqual(result.get('reference'), '01')
         self.assertEqual(result.get('success'), 'success')
 
-    @patch('mhackspace.subscriptions.payments.gocardless.client.subscription', autospec=True)
-    @patch('mhackspace.subscriptions.payments.gocardless.client.confirm_resource', autospec=True)
+    @patch('mhackspace.subscriptions.payments.gocardless_pro.client.subscription', autospec=True)
+    @patch('mhackspace.subscriptions.payments.gocardless_pro.client.confirm_resource', autospec=True)
     def test_confirm_subscription_callback(self, mock_confirm, mock_subscription):
         mock_confirm.return_value = Mock(success='success')
         mock_subscription.return_value = Mock(

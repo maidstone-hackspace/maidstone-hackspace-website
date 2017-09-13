@@ -28,11 +28,11 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
     def post(self, request, format=None):
         try:
             rfid = Rfid.objects.get(code=request.data.get('rfid'))
-            # device = Device.objects.get(identifier=request.data.get('device'))
+            device = Device.objects.get(identifier=request.data.get('device'))
             deviceAuth = DeviceAuth.objects.get(device=device.identifier, rfid=rfid.id)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        except ValidationError:
+        except ValidationError as e:
         # except:
         #     logger.exception("An error occurred")
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
