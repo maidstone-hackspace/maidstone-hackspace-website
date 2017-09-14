@@ -20,11 +20,11 @@ class DeviceAuthAdmin(ModelAdmin):
         def label_from_instance(self, obj):
             return obj.description + ' - ' + str(obj.user)
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "rfid":
-            return self.CustomModelChoiceField(
-                Rfid.objects.all(),
-                initial=request.user)
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == "rfid":
+    #         return self.CustomModelChoiceField(
+    #             Rfid.objects.all(),
+    #             initial=request.user)
 
-        return super(DeviceAuthAdmin, self).formfield_for_foreignkey(
-            db_field, request, **kwargs)
+    #     return super(DeviceAuthAdmin, self).formfield_for_foreignkey(
+    #         db_field, request, **kwargs)

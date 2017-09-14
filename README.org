@@ -73,3 +73,20 @@ docker-compose -fdev.yml run --rm django python manage.py list_subscriptions
 #+BEGIN_SRC sh
 docker-compose -fdev.yml run --rm django python manage.py rendervariations 'blog.Post.image' --replace
 #+END_SRC
+** Api
+#+BEGIN_SRC python
+import coreapi
+
+url = 'http://127.0.0.1:8180/api/v1/rfidAuth/'
+data = {
+  'rfid': '49960',
+  'device': '7bff6053-77ef-4250-ac11-8a119fd05a0e'
+}
+
+client = coreapi.Client()
+client.get(url)
+client.post(url, data)
+
+#requests.get(url)
+
+#+END_SRC

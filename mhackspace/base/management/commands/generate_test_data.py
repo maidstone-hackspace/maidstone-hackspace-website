@@ -1,13 +1,13 @@
 import random
 from autofixture import AutoFixture
-from autofixture.generators import ImageGenerator
+from autofixture.generators import ImageGenerator, IntegerGenerator, ChoicesGenerator
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from mhackspace.base.models import BannerImage
 from mhackspace.feeds.models import Article, Feed
-from mhackspace.users.models import User
+from mhackspace.users.models import User, Rfid
 from mhackspace.blog.models import Category, Post
-from mhackspace.rfid.models import Device
+from mhackspace.rfid.models import Device, DeviceAuth
 
 
 class ImageFixture(AutoFixture):
@@ -33,18 +33,23 @@ class Command(BaseCommand):
         # load known data
         call_command('loaddata', 'mhackspace/users/fixtures/groups.json', verbose=0)
 
-        autofixture.autodiscover()
+        # AutoFixture.autodiscover()
 
         # random data
         users = AutoFixture(User, field_values={
-            'title': random.choicee(('Mr', 'Mrs', 'Emperor', 'Captain'))
+            'title': ChoicesGenerator(('Mr', 'Mrs', 'Emperor', 'Captain'))
         })
         users.create(10)
 
-        rfid = AutoFixture(Rfid)
+        Rfid.objects.all().delete()
+        Device.objects.all().delete()
+        DeviceAuth.objects.all().delete()
+        rfid = AutoFixture(Rfid, field_values={'code': IntegerGenerator(1, 100000)})
         rfid.create(20)
 
-        device = AutoFixture(Device)
+        device = AutoFixture(Device, field_values={
+            'name': ChoicesGenerator(('Door', 'Printer', 'Laser Cutter', ''))
+        })
         device.create(5)
 
         deviceauth = AutoFixture(DeviceAuth)
@@ -61,3 +66,4 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 'Finished creating test data'))
+
