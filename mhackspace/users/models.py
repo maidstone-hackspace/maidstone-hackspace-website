@@ -94,7 +94,7 @@ class Membership(models.Model):
 
 # users rfid card to user mapping, user can have more than one card
 class Rfid(models.Model):
-    code = models.PositiveIntegerField()
+    code = models.CharField(max_length=7)
     description = models.CharField(_('Short rfid description'), blank=True, max_length=255)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

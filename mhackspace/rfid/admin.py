@@ -11,20 +11,12 @@ class DeviceAdmin(ModelAdmin):
     list_display = ('name', 'identifier')
 
 
-# Probably need to look at this again
 @admin.register(DeviceAuth)
 class DeviceAuthAdmin(ModelAdmin):
-    list_display = ('rfid', 'device')
+    list_display = ('device', 'rfid_code', 'rfid_user')
 
-    class CustomModelChoiceField(ModelChoiceField):
-        def label_from_instance(self, obj):
-            return obj.description + ' - ' + str(obj.user)
+    def rfid_code(self, x):
+        return x.rfid.code
 
-    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
-    #     if db_field.name == "rfid":
-    #         return self.CustomModelChoiceField(
-    #             Rfid.objects.all(),
-    #             initial=request.user)
-
-    #     return super(DeviceAuthAdmin, self).formfield_for_foreignkey(
-    #         db_field, request, **kwargs)
+    def rfid_user(self, x):
+        return x.rfid.user

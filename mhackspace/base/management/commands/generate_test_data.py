@@ -1,6 +1,12 @@
+import uuid
 import random
 from autofixture import AutoFixture
-from autofixture.generators import ImageGenerator, IntegerGenerator, ChoicesGenerator
+from autofixture.generators import (
+    ImageGenerator,
+    IntegerGenerator,
+    ChoicesGenerator,
+    Generator,
+    LoremWordGenerator)
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from mhackspace.base.models import BannerImage
@@ -13,6 +19,16 @@ from mhackspace.rfid.models import Device, DeviceAuth
 class ImageFixture(AutoFixture):
     class Values:
         scaled_image = ImageGenerator(width=800, height=300, sizes=((1280, 300),))
+
+
+def RfidFixture():
+    while True:
+        yield str(uuid.uuid4())[0:4]
+
+
+class RfidGenerator(Generator):
+    def generate(self):
+        return str(uuid.uuid4())[0:4]
 
 
 class Command(BaseCommand):
@@ -37,18 +53,23 @@ class Command(BaseCommand):
 
         # random data
         users = AutoFixture(User, field_values={
-            'title': ChoicesGenerator(('Mr', 'Mrs', 'Emperor', 'Captain'))
+            'title': ChoicesGenerator(values=('Mr', 'Mrs', 'Emperor', 'Captain'))
         })
         users.create(10)
 
         Rfid.objects.all().delete()
         Device.objects.all().delete()
         DeviceAuth.objects.all().delete()
-        rfid = AutoFixture(Rfid, field_values={'code': IntegerGenerator(1, 100000)})
+
+        rfid = AutoFixture(
+            Rfid,
+            field_values={
+                'code': RfidGenerator(),
+                'description': LoremWordGenerator()})
         rfid.create(20)
 
         device = AutoFixture(Device, field_values={
-            'name': ChoicesGenerator(('Door', 'Printer', 'Laser Cutter', ''))
+            'name': ChoicesGenerator(values=('Door', 'Printer', 'Laser Cutter', ''))
         })
         device.create(5)
 

@@ -75,7 +75,7 @@ docker-compose -fdev.yml run --rm django python manage.py rendervariations 'blog
 #+END_SRC
 ** Api
 #+BEGIN_SRC python
-import coreapi
+import requests 
 
 url = 'http://127.0.0.1:8180/api/v1/rfidAuth/'
 data = {
@@ -83,10 +83,14 @@ data = {
   'device': '7bff6053-77ef-4250-ac11-8a119fd05a0e'
 }
 
-client = coreapi.Client()
-client.get(url)
-client.post(url, data)
-
+# client = RequestsClient()
+response = requests.post(
+    'http://127.0.0.1:8180/api/v1/rfidAuth/',
+    data={'rfid': 'fa14', 'device': 'e571eee1-7bf7-4453-980e-7519e2a83de6'})
 #requests.get(url)
+return response.status_code
 
 #+END_SRC
+
+#+RESULTS:
+: 404
