@@ -31,10 +31,13 @@
   <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+
+  {% block head-open-graph %}
   <meta property="og:title" content="Maidstone Hackspace" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
   <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+  {% endblock head-open-graph %}
 
   {% block css %}{% endblock %}
 
@@ -125,7 +128,10 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
               <a class="dropdown-item" href="{% url 'members' %}">Members</a>
-              <a class="dropdown-item" href="{% url 'requests' %}">Equipment</a>
+              <a class="dropdown-item" href="{% url 'requests' %}">Requests</a>
+              {% if request.user.is_superuser %}
+                  <a class="dropdown-item" href="{% url 'spirit:admin:index' %}">Forum Admin</a>
+              {% endif %}
             </div>
           </li>
           <li class="nav-item">

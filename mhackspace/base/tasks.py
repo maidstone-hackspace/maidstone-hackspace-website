@@ -8,6 +8,7 @@ from mhackspace.feeds.helper import import_feeds
 def update_homepage_feeds():
     return import_feeds()
 
+
 matrix_url = "https://matrix.org/_matrix/client/r0"
 matrix_login_url = matrix_url + "/login"
 matrix_join_room_alias_url = matrix_url + "/join/{room}?access_token={access_token}"
@@ -16,10 +17,26 @@ matrix_send_msg_url = matrix_url + "/rooms/%21{room}/send/m.room.message?access_
 
 
 @shared_task
+def send_email(email_to,
+               message,
+               email_from='no-reply@maidstone-hackspace.org.uk',
+               reply_to='no-reply@maidstone-hackspace.org.uk'):
+
+    if settings.EMAIL_NOTIFY is False:
+        return
+    email = EmailMessage(
+        '[%s] - %s' % (settings.MSG_PREFIX, instance.topic.title),
+        'A topic you have interacted with has been updated click link to see new comments %s' % instance.get_absolute_url(),
+        'no-reply@maidstone-hackspace.org.uk',
+        to=[email_to],
+        headers={'Reply-To': 'no-reply@maidstone-hackspace.org.uk'})
+    email.send()
+
+@shared_task
 def matrix_message(message):
     # we dont rely on theses, so ignore if it goes wrong
     # TODO at least log that something has gone wrong
-    try: 
+    try:
         # login
         details = {
             "type":"m.login.password",
@@ -42,9 +59,8 @@ def matrix_message(message):
         url = matrix_send_msg_url.format(**url_params)
         details = {
             "msgtype": "m.text",
-            "body": "%s %s" % (settings.MSG_PREFIX, message)}
+            "body": "[%s] %s" % (settings.MSG_PREFIX, message)}
         r2 = requests.post(url, json=details)
     except:
         pass
     return True
-

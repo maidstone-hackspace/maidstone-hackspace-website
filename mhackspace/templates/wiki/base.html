@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 {% load sekizai_tags i18n wiki_tags static %}
 
+{% block head-open-graph %}
+  <meta property="og:title" content="{{ article.current_revision.title }}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+{% endblock head-open-graph %}
 
 {% block content %}
 {% block wiki_body %}

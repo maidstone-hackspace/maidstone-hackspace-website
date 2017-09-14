@@ -3,6 +3,13 @@
 {% load static i18n %}
 {% block title %}Members{% endblock %}
 
+{% block head-open-graph %}
+  <meta property="og:title" content="{{ topic.title }}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+{% endblock head-open-graph %}
+
 {% block css %}
   <link rel="stylesheet" href="{% static 'spirit/stylesheets/styles.all.min.css' %}">
     <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
