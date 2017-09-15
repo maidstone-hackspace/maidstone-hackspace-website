@@ -68,6 +68,7 @@ MEMBERSHIP_STATUS = {
     'cancelled': 4
 }
 
+
 class Membership(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,

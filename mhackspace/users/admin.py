@@ -62,7 +62,7 @@ class MyUserAdmin(AuthUserAdmin):
 
 @admin.register(Membership)
 class MembershipAdmin(ModelAdmin):
-    list_display = ('user', 'payment', 'date', 'status')
+    list_display = ('user_id', 'user', 'payment', 'date', 'status')
     list_filter = ('status',)
 
 

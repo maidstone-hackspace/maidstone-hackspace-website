@@ -12,7 +12,7 @@ from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from mhackspace.base.models import BannerImage
 from mhackspace.feeds.models import Article, Feed
-from mhackspace.users.models import User, Rfid
+from mhackspace.users.models import User, Rfid, Membership, MEMBERSHIP_STATUS_CHOICES
 from mhackspace.blog.models import Category, Post
 from mhackspace.rfid.models import Device, DeviceAuth
 
@@ -53,6 +53,7 @@ class Command(BaseCommand):
 
 
         User.objects.all().delete()
+        Membership.objects.all().delete()
         users = AutoFixture(User, field_values={
             'title': ChoicesGenerator(values=('Mr', 'Mrs', 'Emperor', 'Captain')),
             'password': make_password('autofixtures'),
@@ -69,6 +70,13 @@ class Command(BaseCommand):
             'is_active': True
         }, generate_fk=True)
         users.create(1)
+
+        user_list = User.objects.all()
+        members = AutoFixture(Membership, field_values={
+            'status': ChoicesGenerator(MEMBERSHIP_STATUS_CHOICES),
+            'user': ChoicesGenerator(values=user_list)
+        })
+        members.create(8)
 
         Rfid.objects.all().delete()
         Device.objects.all().delete()
