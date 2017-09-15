@@ -1,5 +1,6 @@
 import uuid
 import random
+from django.contrib.auth.hashers import make_password
 from autofixture import AutoFixture
 from autofixture.generators import (
     ImageGenerator,
@@ -35,8 +36,9 @@ class Command(BaseCommand):
     help = 'Build test data for development environment'
 
     def handle(self, *args, **options):
-        feeds = AutoFixture(Article)
+        feeds = AutoFixture(Article, generate_fk=True)
         feeds.create(10)
+
         feed = AutoFixture(Feed)
         feed.create(10)
 
@@ -49,13 +51,24 @@ class Command(BaseCommand):
         # load known data
         call_command('loaddata', 'mhackspace/users/fixtures/groups.json', verbose=0)
 
-        # AutoFixture.autodiscover()
 
-        # random data
+        User.objects.all().delete()
         users = AutoFixture(User, field_values={
-            'title': ChoicesGenerator(values=('Mr', 'Mrs', 'Emperor', 'Captain'))
-        })
-        users.create(10)
+            'title': ChoicesGenerator(values=('Mr', 'Mrs', 'Emperor', 'Captain')),
+            'password': make_password('autofixtures'),
+            'active': True,
+            'username': ChoicesGenerator(values=('Bob', 'Jane', 'Adam', 'Alice', 'Bill', 'Jill', 'Sam', 'Oly'))
+        }, generate_fk=True)
+        users.create(8)
+        users = AutoFixture(User, field_values={
+            'title': 'Mr',
+            'username': 'admin',
+            'password': make_password('autofixtures'),
+            'is_superuser': True,
+            'is_staff': True,
+            'is_active': True
+        }, generate_fk=True)
+        users.create(1)
 
         Rfid.objects.all().delete()
         Device.objects.all().delete()

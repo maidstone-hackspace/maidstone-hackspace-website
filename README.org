@@ -79,18 +79,18 @@ import requests
 
 url = 'http://127.0.0.1:8180/api/v1/rfidAuth/'
 data = {
-  'rfid': '49960',
+  'rfid': '4996',
   'device': '7bff6053-77ef-4250-ac11-8a119fd05a0e'
 }
 
 # client = RequestsClient()
 response = requests.post(
     'http://127.0.0.1:8180/api/v1/rfidAuth/',
-    data={'rfid': 'fa14', 'device': 'e571eee1-7bf7-4453-980e-7519e2a83de6'})
+    data={'rfid': '238e', 'device': 'e8f27231-8093-4477-8906-e5ae1b12dbd6'})
 #requests.get(url)
 return response.status_code
 
 #+END_SRC
 
 #+RESULTS:
-: 404
+: 200

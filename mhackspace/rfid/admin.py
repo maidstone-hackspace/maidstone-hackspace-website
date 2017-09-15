@@ -13,7 +13,7 @@ class DeviceAdmin(ModelAdmin):
 
 @admin.register(DeviceAuth)
 class DeviceAuthAdmin(ModelAdmin):
-    list_display = ('device', 'rfid_code', 'rfid_user')
+    list_display = ('device', 'rfid_code', 'rfid_user', 'device_id')
 
     def rfid_code(self, x):
         return x.rfid.code

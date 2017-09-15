@@ -57,13 +57,15 @@ MEMBERSHIP_STATUS_CHOICES = (
 MEMBERSHIP_STRING = {
     0: 'Guest user',
     1: 'Active membership',
-    3: 'Membership Expired'
+    3: 'Membership Expired',
+    4: 'Membership Cancelled'
 }
 
 MEMBERSHIP_STATUS = {
     'signup': 0,  # This means the user has not completed signup
     'active': 1,
-    'cancelled': 2
+    'expired': 3,
+    'cancelled': 4
 }
 
 class Membership(models.Model):
