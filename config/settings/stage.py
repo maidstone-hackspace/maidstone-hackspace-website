@@ -43,7 +43,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = True
 #disabledd so csrf works with ajax
 CSRF_COOKIE_HTTPONLY = False
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # SITE CONFIGURATION
 # ------------------------------------------------------------------------------
