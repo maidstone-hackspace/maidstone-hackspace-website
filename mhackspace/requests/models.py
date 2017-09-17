@@ -45,7 +45,7 @@ class UserRequests(models.Model):
 
 
 def send_topic_update_email(sender, instance, **kwargs):
-    matrix_message.delay('New Request - %s' % instance.title)
+    matrix_message.delay(prefix=' - REQUEST', message=instance.title)
 
 
 post_save.connect(send_topic_update_email, sender=UserRequests)

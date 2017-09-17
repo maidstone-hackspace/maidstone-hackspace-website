@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
-from django.contrib import messages
 from django.contrib.auth.models import Group
+from django.utils.dateparse import parse_datetime
 from mhackspace.users.models import Membership
 
 
 def create_or_update_membership(user, signup_details, complete=False):
     try:
-        member = Membership.objects.get(user=user)
+        member = Membership.objects.get(email=signup_details.get('email'))
+        # Only update if newer than last record, this way we only get the latest status
+        # cancellation and changed payment will not be counted against current status
+        start_date = parse_datetime(signup_details.get('start_date'))
+        if start_date < member.date:
+            return True
     except Membership.DoesNotExist:
         member = Membership()
         member.user = user
@@ -25,6 +30,7 @@ def create_or_update_membership(user, signup_details, complete=False):
         return False  # sign up not completed
 
     # add user to group on success
-    group = Group.objects.get(name='members')
-    user.groups.add(group)
+    if user:
+        group = Group.objects.get(name='members')
+        user.groups.add(group)
     return True  # Sign up finished

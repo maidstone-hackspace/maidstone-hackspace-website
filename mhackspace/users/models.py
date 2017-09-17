@@ -70,17 +70,18 @@ MEMBERSHIP_STATUS = {
 
 
 class Membership(models.Model):
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         null=True, blank=True,
         default=None,
-        related_name='user'
+        related_name='user',
+        unique=True
     )
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     date = models.DateTimeField() 
     reference = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(default=0, choices=MEMBERSHIP_STATUS_CHOICES)
-    email = models.CharField(max_length=255)
+    email = models.CharField(max_length=255, unique=True)
 
     @property
     def get_status(self):

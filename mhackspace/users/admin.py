@@ -11,7 +11,8 @@ from django.urls import reverse
 from django.conf.urls import url
 from .models import User, Rfid, Membership, MEMBERSHIP_STATUS_CHOICES
 
-from mhackspace.subscriptions.management.commands.update_membership_status import update_subscriptions
+# from mhackspace.subscriptions.management.commands.update_membership_status import update_subscriptions
+from mhackspace.users.tasks import update_users_memebership_status
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -46,27 +47,27 @@ class MyUserAdmin(AuthUserAdmin):
     list_display = ('username', 'name', 'is_superuser')
     search_fields = ['name']
 
+
+@admin.register(Membership)
+class MembershipAdmin(ModelAdmin):
+    list_display = ('user_id', 'email', 'payment', 'date', 'status')
+    list_filter = ('status',)
+
     def get_urls(self):
-        urls = super(MyUserAdmin, self).get_urls()
+        urls = super(MembershipAdmin, self).get_urls()
         my_urls = [
             url(r'^refresh/payments/$', self.admin_site.admin_view(self.refresh_payments))
         ]
         return my_urls + urls
 
     def refresh_payments(self, request):
-        for user in update_subscriptions(provider_name='gocardless'):
-            continue
-        self.message_user(request, 'Successfully imported refresh users payment status')
-        return HttpResponseRedirect(reverse('admin:feeds_article_changelist'))
-
-
-@admin.register(Membership)
-class MembershipAdmin(ModelAdmin):
-    list_display = ('user_id', 'user', 'payment', 'date', 'status')
-    list_filter = ('status',)
+        update_users_memebership_status()
+        # for user in update_subscriptions(provider_name='gocardless'):
+        #     continue
+        self.message_user(request, 'Successfully triggered user payment refresh')
+        return HttpResponseRedirect(reverse('admin:index'))
 
 
 @admin.register(Rfid)
 class RfidAdmin(ModelAdmin):
     list_display = ('code', 'description')
-
