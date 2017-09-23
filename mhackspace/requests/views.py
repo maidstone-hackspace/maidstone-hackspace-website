@@ -30,7 +30,7 @@ class RequestsForm(FormView):
 
         return super(FormView, self).form_valid(form)
 
-
+@method_decorator(login_required, name='dispatch')
 class RequestsList(ListView):
     template_name = 'pages/requests.html'
     model = UserRequests
