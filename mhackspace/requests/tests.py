@@ -1,5 +1,6 @@
 from django.test import TestCase
 from mhackspace.requests.views import RequestsList, RequestForm
+from mhackspace.users.models import User
 
 # Create your tests here.
 
@@ -16,7 +17,30 @@ from mhackspace.requests.views import RequestsList, RequestForm
         #     'is_active': True
         # }, generate_fk=True)
 
+def all_user_types():
+    users = AutoFixture(User, field_values={
+        'title': 'Mr',
+        'username': 'admin',
+        'password': make_password('autofixtures'),
+    }, generate_fk=True)
+    yield users.create(1)
 
+    users = AutoFixture(User, field_values={
+        'title': 'Mr',
+        'username': 'admin',
+        'password': make_password('autofixtures'),
+        'is_staff': True,
+    }, generate_fk=True)
+    yield users.create(1)
+
+    users = AutoFixture(User, field_values={
+        'title': 'Mr',
+        'username': 'admin',
+        'password': make_password('autofixtures'),
+        'is_superuser': True,
+        'is_staff': True,
+    }, generate_fk=True)
+    yield users.create(1)
 
 class BaseUserTestCase(TestCase):
 
@@ -25,10 +49,11 @@ class BaseUserTestCase(TestCase):
         self.factory = RequestFactory()
 
     def testRequestView(self):
-        view = RequestsList()
-        request = self.factory.get('/fake-url')
-        request.user = self.user
-        view.request = request
+        for user in all_user_types()
+            view = RequestsList()
+            request = self.factory.get('/fake-url')
+            request.user = user
+            view.request = request
 
 
 # class TestUserUpdateView(BaseUserTestCase):
