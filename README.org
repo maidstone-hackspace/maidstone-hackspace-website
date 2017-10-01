@@ -5,7 +5,6 @@
 
 Repository for the maidstone hackspace website, feel free to fork this site for your own Hackspace.
 
-
 ** Requirements
 Before getting started make sure you have git, docker and docker-compose installed on your machine.
 The simplest way to setup this site is to use docker-compose so please install that from this site 
@@ -47,7 +46,7 @@ docker-compose -f dev.yml run --rm django python manage.py makemigrations
 docker-compose -f dev.yml run --rm django python manage.py migrate
 #+END_SRC
 *** Create the admin user.
-Once created you can login at http://127.0.0.1:8180/admin
+Once created you can login at http://127.0.0.1:8180/trustee
 #+BEGIN_SRC sh
 docker-compose -f dev.yml run --rm django python manage.py createsuperuser
 #+END_SRC
@@ -74,3 +73,24 @@ docker-compose -fdev.yml run --rm django python manage.py list_subscriptions
 #+BEGIN_SRC sh
 docker-compose -fdev.yml run --rm django python manage.py rendervariations 'blog.Post.image' --replace
 #+END_SRC
+** Api
+#+BEGIN_SRC python
+import requests 
+
+url = 'http://127.0.0.1:8180/api/v1/rfidAuth/'
+data = {
+  'rfid': '4996',
+  'device': '7bff6053-77ef-4250-ac11-8a119fd05a0e'
+}
+
+# client = RequestsClient()
+response = requests.post(
+    'http://127.0.0.1:8180/api/v1/rfidAuth/',
+    data={'rfid': '238e', 'device': 'e8f27231-8093-4477-8906-e5ae1b12dbd6'})
+#requests.get(url)
+return response.status_code
+
+#+END_SRC
+
+#+RESULTS:
+: 200

@@ -57,27 +57,31 @@ MEMBERSHIP_STATUS_CHOICES = (
 MEMBERSHIP_STRING = {
     0: 'Guest user',
     1: 'Active membership',
-    3: 'Membership Expired'
+    3: 'Membership Expired',
+    4: 'Membership Cancelled'
 }
 
 MEMBERSHIP_STATUS = {
     'signup': 0,  # This means the user has not completed signup
     'active': 1,
-    'cancelled': 2
+    'expired': 3,
+    'cancelled': 4
 }
 
+
 class Membership(models.Model):
-    user = models.ForeignKey(
+    user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         null=True, blank=True,
         default=None,
-        related_name='user'
+        related_name='user',
+        unique=True
     )
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     date = models.DateTimeField() 
     reference = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(default=0, choices=MEMBERSHIP_STATUS_CHOICES)
-    email = models.CharField(max_length=255)
+    email = models.CharField(max_length=255, unique=True)
 
     @property
     def get_status(self):
@@ -90,3 +94,20 @@ class Membership(models.Model):
 
     def __str__(self):
         return self.reference
+
+
+# users rfid card to user mapping, user can have more than one card
+class Rfid(models.Model):
+    code = models.CharField(max_length=7)
+    description = models.CharField(_('Short rfid description'), blank=True, max_length=255)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True, blank=True,
+        # related_name='rfid_user'
+    )
+
+    def __str__(self):
+        return self.description
+
+    def name(self):
+        return self.user.name

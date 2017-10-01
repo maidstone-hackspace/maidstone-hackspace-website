@@ -6,8 +6,8 @@ from mhackspace.feeds.helper import import_feeds
 
 @shared_task
 def update_homepage_feeds():
-    return import_feeds()
-
+    import_feeds()
+    return {'result': 'Homepage feeds imported'}
 
 matrix_url = "https://matrix.org/_matrix/client/r0"
 matrix_login_url = matrix_url + "/login"
@@ -31,9 +31,10 @@ def send_email(email_to,
         to=[email_to],
         headers={'Reply-To': 'no-reply@maidstone-hackspace.org.uk'})
     email.send()
+    return {'result', 'Email sent to %s' % email_to}
 
 @shared_task
-def matrix_message(message):
+def matrix_message(message, prefix=''):
     # we dont rely on theses, so ignore if it goes wrong
     # TODO at least log that something has gone wrong
     try:
@@ -59,8 +60,8 @@ def matrix_message(message):
         url = matrix_send_msg_url.format(**url_params)
         details = {
             "msgtype": "m.text",
-            "body": "[%s] %s" % (settings.MSG_PREFIX, message)}
+            "body": "[%s%s] %s" % (settings.MSG_PREFIX, prefix, message)}
         r2 = requests.post(url, json=details)
     except:
         pass
-    return True
+    return {'result', 'Matrix message sent successfully'}

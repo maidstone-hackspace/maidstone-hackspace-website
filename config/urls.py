@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
@@ -9,6 +10,7 @@ from django.views import defaults as default_views
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
 from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
 
 from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
@@ -20,20 +22,27 @@ from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostLi
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 from mhackspace.requests.views import RequestsForm, RequestsList
+from mhackspace.rfid.views import DeviceViewSet, AuthUserWithDeviceViewSet
+
 
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_nyt.urls import get_pattern as get_nyt_pattern
+from rest_framework_jwt.views import obtain_jwt_token
 
 router = DefaultRouter()
-router.register(r'posts', PostViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'feeds', FeedViewSet)
-router.register(r'articles', ArticleViewSet)
+router.register(r'posts', PostViewSet, 'posts')
+router.register(r'categories', CategoryViewSet, base_name='categories')
+router.register(r'feeds', FeedViewSet, 'feeds')
+router.register(r'articles', ArticleViewSet, base_name='articles')
+router.register(r'rfid', DeviceViewSet, base_name='rfid_device')
+router.register(r'rfidAuth', AuthUserWithDeviceViewSet, base_name='device_auth')
+
 
 sitemaps = {
     'posts': PostSitemap,
     'category': CategorySitemap,
 }
+
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -67,6 +76,9 @@ urlpatterns = [
 
     # Django Admin, use {% url 'admin:index' %}
     url(r'{}'.format(settings.ADMIN_URL), admin.site.urls),
+
+    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api/docs/', include_docs_urls(title='Hackspace API')),
 
     # User management
     url(r'^users/', include('mhackspace.users.urls', namespace='users')),

@@ -21,7 +21,7 @@ class UserRequests(models.Model):
     title = models.CharField(max_length=255, help_text='Whats being requested ?')
     request_type = models.IntegerField(choices=REQUEST_TYPES, null=False)
     cost = models.DecimalField(
-        max_digits=4,
+        max_digits=6,
         decimal_places=2,
         help_text='Leave blank, if no associated cost, or add estimated cost if not sure.'
     )
@@ -45,7 +45,7 @@ class UserRequests(models.Model):
 
 
 def send_topic_update_email(sender, instance, **kwargs):
-    matrix_message.delay('New Request - %s' % instance.title)
+    matrix_message.delay(prefix=' - REQUEST', message=instance.title)
 
 
 post_save.connect(send_topic_update_email, sender=UserRequests)
