@@ -45,27 +45,28 @@ class Blurb(models.Model):
     skills = models.CharField(max_length=255)
     description = models.TextField()
 
-MEMBERSHIP_CANCELLED = 0
+MEMBERSHIP_ACTIVE = 4
+MEMBERSHIP_CANCELLED = 4
 
 MEMBERSHIP_STATUS_CHOICES = (
     (0, 'Guest user'),
-    (1, 'Active membership'),
+    (MEMBERSHIP_ACTIVE, 'Active membership'),
     (3, 'Membership Expired'),
-    (4, 'Membership Cancelled')
+    (MEMBERSHIP_CANCELLED, 'Membership Cancelled')
 )
 
 MEMBERSHIP_STRING = {
     0: 'Guest user',
-    1: 'Active membership',
+    MEMBERSHIP_ACTIVE: 'Active membership',
     3: 'Membership Expired',
-    4: 'Membership Cancelled'
+    MEMBERSHIP_CANCELLED: 'Membership Cancelled'
 }
 
 MEMBERSHIP_STATUS = {
     'signup': 0,  # This means the user has not completed signup
-    'active': 1,
+    'active': MEMBERSHIP_ACTIVE,
     'expired': 3,
-    'cancelled': 4
+    'cancelled': MEMBERSHIP_CANCELLED
 }
 
 
@@ -86,6 +87,11 @@ class Membership(models.Model):
     @property
     def get_status(self):
         return MEMBERSHIP_STRING[self.status]
+
+    def is_active(self):
+        if self.status is MEMBERSHIP_ACTIVE:
+            return True
+        return False
 
     def lookup_status(name):
         if not name:

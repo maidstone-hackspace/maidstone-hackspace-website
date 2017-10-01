@@ -3,6 +3,7 @@ from __future__ import unicode_literals, absolute_import
 from django.contrib.auth.models import Group
 from django.utils.dateparse import parse_datetime
 from mhackspace.users.models import Membership
+from mhackspace.users.models import MEMBERSHIP_CANCELLED
 
 
 def create_or_update_membership(user, signup_details, complete=False):
@@ -34,3 +35,13 @@ def create_or_update_membership(user, signup_details, complete=False):
         group = Group.objects.get(name='members')
         user.groups.add(group)
     return True  # Sign up finished
+
+
+def cancel_membership(user):
+    member = Membership.objects.get(user=user)
+    member.status = MEMBERSHIP_CANCELLED
+    member.save()
+
+    group = Group.objects.get(name='members')
+    user.groups.remove(group)
+    return True

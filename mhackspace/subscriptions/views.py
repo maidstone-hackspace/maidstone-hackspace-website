@@ -14,7 +14,7 @@ from mhackspace.users.models import User, Membership
 from mhackspace.users.models import MEMBERSHIP_CANCELLED
 from mhackspace.users.forms import MembershipJoinForm
 from mhackspace.subscriptions.payments import select_provider
-from mhackspace.subscriptions.helper import create_or_update_membership
+from mhackspace.subscriptions.helper import create_or_update_membership, cancel_membership
 
 
 class MembershipCancelView(LoginRequiredMixin, RedirectView):
@@ -28,21 +28,16 @@ class MembershipCancelView(LoginRequiredMixin, RedirectView):
         member = Membership.objects.filter(user=self.request.user).first()
 
         result = provider.cancel_subscription(
+            user=self.request.user,
             reference=member.reference
         )
-        if result.get('success') is True:
-            # set membership to cancelled on success
-            member.status = MEMBERSHIP_CANCELLED
-            member.save()
 
-
-            # remove user from group on success
-            group = Group.objects.get(name='members')
-            self.request.user.groups.remove(group)
-            messages.add_message(
-                self.request,
-                messages.SUCCESS,
-                'Your membership has now been cancelled')
+        # if result.get('success') is True:
+        cancel_membership(user=self.request.user)
+        messages.add_message(
+            self.request,
+            messages.SUCCESS,
+            'Your membership has now been cancelled')
         kwargs['username'] =  self.request.user.get_username()
         return super(MembershipCancelView, self).get_redirect_url(*args, **kwargs)
 

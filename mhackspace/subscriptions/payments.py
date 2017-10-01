@@ -35,16 +35,6 @@ class gocardless_provider:
             access_token=payment_providers['gocardless']['credentials']['access_token'],
             environment=payment_providers['gocardless']['environment'])
 
-    # def subscribe_confirm(self, args):
-    #     response = gocardless_pro.client.confirm_resource(args)
-    #     subscription = gocardless_pro.client.subscription(args.get('resource_id'))
-    #     return {
-    #         'amount': subscription.amount,
-    #         'start_date': subscription.created_at,
-    #         'reference': subscription.id,
-    #         'success': response.success
-    #     }
-
     def fetch_customers(self):
         """Fetch list of customers payments"""
         for customer in self.client.customers.list().records:
@@ -80,11 +70,18 @@ class gocardless_provider:
     def get_token(self):
         return 'N/A'
 
-    def cancel_subscription(self, reference):
+    def cancel_subscription(self, user, reference):
         try:
-            subscription = gocardless_pro.client.subscription(reference)
-            response = subscription.cancel()
-        except  gocardless_pro.exceptions.ClientError:
+            subscription = self.client.subscriptions.get(reference)
+            response = self.client.subscriptions.cancel(reference)
+        except gocardless_pro.errors.InvalidApiUsageError as e:
+            if e.code is 404:
+                logger.info('Cancel subscription failed user not found %s %s' % (e.code, e))
+            return {
+                'success': False
+            }
+        except Exception as e:
+            logger.info('Cancel subscription failed unknown reason code %s %s' % (e.code, e))
             return {
                 'success': False
             }
@@ -92,7 +89,7 @@ class gocardless_provider:
             'amount': subscription.amount,
             'start_date': subscription.created_at,
             'reference': subscription.id,
-            'success': response.get('success', False)
+            'success': True if response.get('status_code') is '200' else False
         }
 
     def create_subscription(self, user, session, amount,
