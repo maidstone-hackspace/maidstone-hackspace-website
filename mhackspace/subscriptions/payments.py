@@ -36,8 +36,8 @@ class gocardless_provider:
             environment=payment_providers['gocardless']['environment'])
 
     # def subscribe_confirm(self, args):
-    #     response = gocardless_proclient.confirm_resource(args)
-    #     subscription = gocardless_proclient.subscription(args.get('resource_id'))
+    #     response = gocardless_pro.client.confirm_resource(args)
+    #     subscription = gocardless_pro.client.subscription(args.get('resource_id'))
     #     return {
     #         'amount': subscription.amount,
     #         'start_date': subscription.created_at,
@@ -82,9 +82,9 @@ class gocardless_provider:
 
     def cancel_subscription(self, reference):
         try:
-            subscription = gocardless_proclient.subscription(reference)
+            subscription = gocardless_pro.client.subscription(reference)
             response = subscription.cancel()
-        except  gocardless_proexceptions.ClientError:
+        except  gocardless_pro.exceptions.ClientError:
             return {
                 'success': False
             }
@@ -120,8 +120,8 @@ class gocardless_provider:
         response = self.client.redirect_flows.get(r)
         # response = self.client.redirect_flows.get(provider_response.get('redirect_flow_id'))
 
-        # response = gocardless_proclient.confirm_resource(provider_response)
-        # subscription = gocardless_proclient.subscription(provider_response.get('resource_id'))
+        # response = gocardless_pro.client.confirm_resource(provider_response)
+        # subscription = gocardless_pro.client.subscription(provider_response.get('resource_id'))
         user_id = response.links.customer
         mandate_id = response.links.mandate
         # user = subscription.user()
@@ -180,8 +180,8 @@ class braintree_provider:
 
     def confirm_subscription(self, args):
         if self.provider == 'gocardless':
-            response = gocardless_proclient.confirm_resource(args)
-            subscription = gocardless_proclient.subscription(args.get('resource_id'))
+            response = gocardless_pro.client.confirm_resource(args)
+            subscription = gocardless_pro.client.subscription(args.get('resource_id'))
             return {
                 'amount': subscription.amount,
                 'start_date': subscription.created_at,

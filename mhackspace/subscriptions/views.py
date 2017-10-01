@@ -68,7 +68,7 @@ class MembershipJoinView(LoginRequiredMixin, UpdateView):
         result = {
             'email': self.request.user.email,
             'reference': user_code,
-            'amount': form_subscription.cleaned_data.get('amount', 20.00) * 0.01,
+            'amount': form_subscription.cleaned_data.get('amount', 20.00),
             'start_date': timezone.now()
         }
 
