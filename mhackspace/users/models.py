@@ -45,7 +45,7 @@ class Blurb(models.Model):
     skills = models.CharField(max_length=255)
     description = models.TextField()
 
-MEMBERSHIP_ACTIVE = 4
+MEMBERSHIP_ACTIVE = 1
 MEMBERSHIP_CANCELLED = 4
 
 MEMBERSHIP_STATUS_CHOICES = (

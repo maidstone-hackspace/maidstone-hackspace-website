@@ -106,6 +106,8 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
         )
 
         #  if something went wrong return to profile with an error
+
+        result['start_date'] = timezone.now()
         if result.get('success') is False:
             messages.add_message(
                 self.request,

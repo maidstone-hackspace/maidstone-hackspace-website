@@ -114,14 +114,11 @@ class gocardless_provider:
         # response = self.client.redirect_flows.complete(r, params={
         #     "session_token": session
         # })
-        response = self.client.redirect_flows.get(r)
+        response = self.client.redirect_flows.complete(r, params={'session_token': session})
         # response = self.client.redirect_flows.get(provider_response.get('redirect_flow_id'))
 
-        # response = gocardless_pro.client.confirm_resource(provider_response)
-        # subscription = gocardless_pro.client.subscription(provider_response.get('resource_id'))
         user_id = response.links.customer
         mandate_id = response.links.mandate
-        # user = subscription.user()
         user = self.client.customers.get(response.links.customer)
         mandate = self.client.mandates.get(response.links.mandate)
 
