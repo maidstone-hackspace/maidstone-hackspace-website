@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
+import logging
 from datetime import datetime
 from django.contrib.auth.models import Group
 from django.utils.dateparse import parse_datetime
 from mhackspace.users.models import Membership
 from mhackspace.users.models import MEMBERSHIP_CANCELLED, MEMBERSHIP_ACTIVE
+
+logger = logging.getLogger(__name__)
 
 
 def create_or_update_membership(user, signup_details, complete=False):
@@ -34,9 +37,13 @@ def create_or_update_membership(user, signup_details, complete=False):
         return False  # sign up not completed
 
     # add user to group on success
+
     if user:
-        group = Group.objects.get(name='members')
-        user.groups.add(group)
+        try:
+            group = Group.objects.get(name='members')
+            user.groups.add(group)
+        except:
+            logger.error('Members group does not exist')
     return True  # Sign up finished
 
 

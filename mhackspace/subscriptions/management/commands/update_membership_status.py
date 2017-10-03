@@ -14,7 +14,6 @@ def update_subscriptions(provider_name):
     provider = select_provider('gocardless')
 
     Membership.objects.all().delete()
-    subscriptions = []
 
     group = Group.objects.get(name='members')
 
@@ -26,10 +25,10 @@ def update_subscriptions(provider_name):
         except User.DoesNotExist:
             user_model = None
 
-        create_or_update_membership(user=user_model,
-                                    signup_details=sub,
-                                    complete=True)
-        yield model_to_dict(subscriptions[-1])
+        create_or_update_membership(
+            user=user_model,
+            signup_details=sub,
+            complete=True)
 
 
 class Command(BaseCommand):
