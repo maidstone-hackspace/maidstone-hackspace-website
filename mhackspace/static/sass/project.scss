@@ -9,6 +9,7 @@
 @import "components/feeds";
 
 @import "components/blog";
+@import "components/wiki";
 
 ////////////////////////////////
 		//Django Toolbar//
@@ -20,4 +21,10 @@
 
 [hidden][style="display: block;"] {
   display: block !important;
+}
+
+.imgfit {
+    width:100%;
+    height: auto;
+    overflow: hidden;
 }

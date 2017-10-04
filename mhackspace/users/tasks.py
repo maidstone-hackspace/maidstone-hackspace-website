@@ -4,5 +4,4 @@ from mhackspace.subscriptions.management.commands.update_membership_status impor
 
 @shared_task
 def update_users_memebership_status():
-    for user in update_subscriptions(provider_name='gocardless'):
-        continue
+    update_subscriptions(provider_name='gocardless')

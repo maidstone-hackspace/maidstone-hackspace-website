@@ -61,7 +61,10 @@ git+https://github.com/olymk2/scaffold.git
 git+git://github.com/django-wiki/django-wiki.git
 
 djangorestframework==3.6.3
+djangorestframework-jwt
 django-filter==1.0.2
+coreapi
+# api libraries end
 
 draceditor==1.1.8
 # django-spirit

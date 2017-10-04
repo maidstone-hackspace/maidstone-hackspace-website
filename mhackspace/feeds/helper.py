@@ -53,6 +53,8 @@ def download_remote_images():
             render_variations(result[0], image_variations, replace=True)
             article.save()
         except:
+            logger.exception(result)
+            logger.exception(result[0])
             logger.exception('Unable to download remote image for %s' % article.original_image)
 
 

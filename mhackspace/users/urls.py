@@ -26,4 +26,9 @@ urlpatterns = [
         view=views.UserUpdateView.as_view(),
         name='update'
     ),
+    url(
+        regex=r'^-access-cards$',
+        view=views.RfidCardsUpdateView.as_view(),
+        name='access_cards'
+    ),
 ]

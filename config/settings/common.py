@@ -82,6 +82,7 @@ THIRD_PARTY_APPS = (
     'whitenoise.runserver_nostatic',
     'stdimage',
     'rest_framework',
+    'django_filters',
     'draceditor',
     'haystack',
     'djconfig',
@@ -140,7 +141,7 @@ LOCAL_APPS = (
     'mhackspace.blog',
     'mhackspace.core',
     'mhackspace.requests',
-    'mhackspace.register',
+    'mhackspace.rfid',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -376,7 +377,12 @@ CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://redis:6379/0')
 #if CELERY_BROKER_URL == 'django://':
 # CELERY_RESULT_BACKEND = 'redis://'
 #else:
-CELERY_RESULT_BACKEND = 'django-cache'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_IGNORE_RESULT = False
+CELERY_REDIS_HOST = "redis"
+CELERY_REDIS_PORT = 6379
+CELERY_REDIS_DB = 0
+
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 INSTALLED_APPS += ('django_celery_results','django_celery_beat',)
 CELERY_TIMEZONE = 'UTC'
@@ -449,10 +455,12 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -472,3 +480,4 @@ MATRIX_USER=env('MATRIX_USERNAME')
 MATRIX_PASSWORD=env('MATRIX_PASSWORD')
 MATRIX_ROOM=env('MATRIX_ROOM')
 MSG_PREFIX = 'MH'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
