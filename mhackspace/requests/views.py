@@ -1,5 +1,4 @@
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from mhackspace.requests.forms import UserRequestForm
@@ -8,8 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
 
-@method_decorator(login_required, name='dispatch')
-class RequestsForm(FormView):
+class RequestsForm(LoginRequiredMixin, FormView):
     template_name = 'pages/requests.html'
     form_class = UserRequestForm
     success_url = '/requests'
@@ -30,8 +28,8 @@ class RequestsForm(FormView):
 
         return super(FormView, self).form_valid(form)
 
-@method_decorator(login_required, name='dispatch')
-class RequestsList(ListView):
+
+class RequestsList(LoginRequiredMixin, ListView):
     template_name = 'pages/requests.html'
     model = UserRequests
     context_object_name = 'requests'
