@@ -369,25 +369,21 @@ LOGIN_URL = 'account_login'
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 
-########## CELERY
-# CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://')
+# CELERY
 CELERY_BROKER_URL = env('CELERY_BROKER_URL', default='redis://redis:6379/0')
-#if CELERY_BROKER_URL == 'django://':
-# CELERY_RESULT_BACKEND = 'redis://'
-#else:
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
 CELERY_IGNORE_RESULT = False
 CELERY_REDIS_HOST = "redis"
 CELERY_REDIS_PORT = 6379
 CELERY_REDIS_DB = 0
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-INSTALLED_APPS += ('django_celery_results','django_celery_beat',)
+INSTALLED_APPS += ('django_celery_results', 'django_celery_beat',)
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-########## END CELERY
+# END CELERY
 
 # django-compressor
 # ------------------------------------------------------------------------------
