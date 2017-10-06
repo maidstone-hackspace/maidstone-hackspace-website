@@ -1,4 +1,5 @@
 from django.views.generic.edit import FormView
+
 from mhackspace.register.forms import RegisteredUserForm
 from mhackspace.register.models import RegisteredUser
 
@@ -9,22 +10,16 @@ class RegisterForm(FormView):
     success_url = '/register/success'
 
     def get(self, request, *args, **kwargs):
-        name = request.POST.get('name')
-        if RegisteredUser.objects.is_registered(name):
-            return self.form_valid()
-
         if request.user.is_authenticated():
-            form_kwargs = self.get_form_kwargs()
-            form_kwargs['data'] = {
-                'user': request.user,
-                'name': request.user.name
-            }
-            form = self.get_form_class(**form_kwargs)
-            return self.form_valid(form)
+            if not RegisteredUser.objects.is_registered(request.user):
+                registered_user = RegisteredUser.objects.create(user=request.user, name=request.user.username)
+                registered_user.save()
+            return super(RegisterForm, self).form_valid(None)
 
         return super(RegisterForm, self).get(self, request, *args, **kwargs)
 
+    def form_valid(self, form):
+        if form.is_valid():
+            form.save()
 
-    # Need to prevent a user registering twice
-    # Need to think of a way to prevent people registering multiple times with different names
-
+        return super(RegisterForm, self).form_valid(form)

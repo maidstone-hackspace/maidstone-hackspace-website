@@ -141,6 +141,7 @@ LOCAL_APPS = (
     'mhackspace.blog',
     'mhackspace.core',
     'mhackspace.requests',
+    'mhackspace.register',
     'mhackspace.rfid',
 )
 
