@@ -24,6 +24,7 @@ from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 from mhackspace.requests.views import RequestsForm, RequestsList
 from mhackspace.rfid.views import DeviceViewSet, AuthUserWithDeviceViewSet
 
+from mhackspace.register.views import RegisterForm
 
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_nyt.urls import get_pattern as get_nyt_pattern
@@ -95,6 +96,9 @@ urlpatterns = [
     url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+
+    url(r'^register/$', RegisterForm.as_view(), name='register_form'),
+    url(r'^register/success$', TemplateView.as_view(template_name='pages/register.html'), name='register_success'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [

@@ -42,6 +42,8 @@ ST_ALLOWED_URL_PROTOCOLS = {
 ST_UNICODE_SLUGS = True
 ST_UNIQUE_EMAILS = True
 ST_CASE_INSENSITIVE_EMAILS = True
+ST_UPLOAD_IMAGE_ENABLED = True
+ST_UPLOAD_FILE_ENABLED = True
 
 # Tests helpers
 ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
@@ -139,6 +141,7 @@ LOCAL_APPS = (
     'mhackspace.blog',
     'mhackspace.core',
     'mhackspace.requests',
+    'mhackspace.register',
     'mhackspace.rfid',
 )
 

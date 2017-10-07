@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load recapture %}
+
+
+{% block head-open-graph %}
+  <meta property="og:title" content="Register attendance" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+{% endblock head-open-graph %}
+
+{% block content %}
+  <h2>Register</h2>
+
+  {% if form %}
+    <form method="POST" action="{% url 'register_form' %}" class="register_form">
+      {% csrf_token %}
+      {{ form|crispy }}
+      {{ google_capture }}
+      <button class="btn btn-primary " type="submit" name="action">
+        <span class="fa fa-submit" ></span>
+        {% trans "Send" %}</button>
+    </form>
+  {% else %}
+  <div class="row">
+    <div class="col">
+        Thanks for registering!
+    </div>
+  </div>
+  {% endif %}
+{% endblock content %}
