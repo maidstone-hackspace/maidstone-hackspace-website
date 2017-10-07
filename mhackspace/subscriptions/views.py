@@ -32,12 +32,12 @@ class MembershipCancelView(LoginRequiredMixin, RedirectView):
             reference=member.reference
         )
 
-        # if result.get('success') is True:
-        cancel_membership(user=self.request.user)
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            'Your membership has now been cancelled')
+        if result.get('success') is True:
+            cancel_membership(user=self.request.user)
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                'Your membership has now been cancelled')
         kwargs['username'] =  self.request.user.get_username()
         return super(MembershipCancelView, self).get_redirect_url(*args, **kwargs)
 

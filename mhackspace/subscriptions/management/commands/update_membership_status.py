@@ -14,14 +14,9 @@ def update_subscriptions(provider_name):
     provider = select_provider('gocardless')
 
     Membership.objects.all().delete()
-
-    group = Group.objects.get(name='members')
-
     for sub in provider.fetch_subscriptions():
         try:
             user_model = User.objects.get(email=sub.get('email'))
-            if sub.get('status') == 'active':
-                user_model.groups.add(group)
         except User.DoesNotExist:
             user_model = None
 

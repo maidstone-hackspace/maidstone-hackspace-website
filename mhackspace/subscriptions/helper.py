@@ -25,7 +25,9 @@ def create_or_update_membership(user, signup_details, complete=False):
         member.user = user
 
     if complete is True:
-        member.status = MEMBERSHIP_ACTIVE
+        member.status = MEMBERSHIP_CANCELLED
+        if signup_details.get('status') == 'active':
+            member.status = MEMBERSHIP_ACTIVE
     member.email = signup_details.get('email')
     member.reference = signup_details.get('reference')
     member.payment = signup_details.get('amount')

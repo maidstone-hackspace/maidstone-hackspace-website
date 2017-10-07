@@ -53,16 +53,16 @@ class gocardless_provider:
     def fetch_subscriptions(self):
         # for paying_member in self.client.mandates.list().records:
         for paying_member in self.client.subscriptions.list().records:
-            mandate=self.client.mandates.get(paying_member.links.mandate)
-            user=self.client.customers.get(mandate.links.customer)
+            mandate = self.client.mandates.get(paying_member.links.mandate)
+            user = self.client.customers.get(mandate.links.customer)
 
             # gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
                 'email': user.email,
                 'start_date': paying_member.created_at,
-                'reference': mandate.id,
-                'amount': paying_member.amount}
+                'reference': paying_member.id,
+                'amount': paying_member.amount * 0.01}
 
     def get_redirect_url(self):
         return payment_providers['gocardless']['redirect_url']
@@ -89,7 +89,7 @@ class gocardless_provider:
             'amount': subscription.amount,
             'start_date': subscription.created_at,
             'reference': subscription.id,
-            'success': True if response.get('status_code') is '200' else False
+            'success': True if response.status == 'cancelled' else False
         }
 
     def create_subscription(self, user, session, amount,
@@ -110,12 +110,7 @@ class gocardless_provider:
     def confirm_subscription(self, membership, session, provider_response,
                              name, interval_unit='monthly', interval_length='1'):
         r = provider_response.get('redirect_flow_id')
-
-        # response = self.client.redirect_flows.complete(r, params={
-        #     "session_token": session
-        # })
         response = self.client.redirect_flows.complete(r, params={'session_token': session})
-        # response = self.client.redirect_flows.get(provider_response.get('redirect_flow_id'))
 
         user_id = response.links.customer
         mandate_id = response.links.mandate
@@ -138,7 +133,8 @@ class gocardless_provider:
             'amount': membership.payment,
             'email': user.email,
             'start_date': subscription_response.created_at,
-            'reference': mandate_id,
+            'reference': subscription_response.id,
+            'status': subscription_response.status,
             'success': subscription_response.api_response.status_code
         }
 
