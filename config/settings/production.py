@@ -43,7 +43,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = True
 #disabledd so csrf works with ajax
 CSRF_COOKIE_HTTPONLY = False
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # SITE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -151,6 +151,11 @@ CACHES = {
             'IGNORE_EXCEPTIONS': True,  # mimics memcache behavior.
                                         # http://niwinz.github.io/django-redis/latest/#_memcached_exceptions_behavior
         }
+    },
+    'st_rate_limit': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'spirit_rl_cache',
+        'TIMEOUT': None
     }
 }
 
@@ -179,7 +184,7 @@ LOGGING = {
     },
     'handlers': {
         'mail_admins': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },
@@ -213,3 +218,6 @@ ADMIN_URL = env('DJANGO_ADMIN_URL', default='trustee')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'https://maidstone-hackspace.org.uk'
+

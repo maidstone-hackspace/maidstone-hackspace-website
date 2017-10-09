@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load recapture %}
+
+
+{% block head-open-graph %}
+  <meta property="og:title" content="New request made" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+{% endblock head-open-graph %}
+
+{% block content %}
+  <h2>Requests</h2>
+
+  <div class="row">
+    <div class="col">
+  Make a request for equipment you would like to see in the space, request training on equipment or ask a member to run a workshop or talk on something.
+    </div>
+  </div>
+
+
+  {% if form %}
+    <form method="POST" action="{% url 'requests_form' %}" class="requests_form">
+      {% csrf_token %}
+      {{ form|crispy }}
+      {{ google_capture }}
+      <button class="btn btn-primary " type="submit" name="action">
+        <span class="fa fa-submit" ></span>
+        {% trans "Send" %}</button>
+    </form>
+  {% else %}
+  <div class="row">
+    <div class="col mt-4">
+      <ul class="nav navbar-nav float-right">
+        <li class="pull-xs-right" >
+          <a href="{% url 'requests_form' %}" class="btn btn-primary btn-lg active pull-xs-right" role="button" aria-pressed="true">Request Equipment or Talk</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      {% for request in requests %}
+      <tr>
+        <th scope="row"> {{ forloop.counter }} </th>
+        <td>
+          {{ request.request_type_string }}
+        </td>
+        <td>
+          {{ request.created_date }}
+        </td>
+        <td>
+          {{ request.title }}
+        </td>
+        <td>
+          <button data-toggle="collapse" data-target="#expand{{forloop.counter}}" class="fa fa-expand ml-auto" ></button>
+        </td>
+      </tr>
+      <tr>
+        <td id="expand{{forloop.counter}}" colspan="5" class="collapse">{{ request.description }}</td>
+      </tr>
+
+      {% endfor %}
+    </table>
+  {% endif %}
+{% endblock content %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}

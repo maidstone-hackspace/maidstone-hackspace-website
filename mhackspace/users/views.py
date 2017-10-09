@@ -2,10 +2,11 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.core.urlresolvers import reverse
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView, CreateView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .models import Rfid
 from .models import User
 from .models import Blurb
 from .models import Membership
@@ -26,6 +27,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context['membership_form'] = MembershipJoinForm(initial={'amount': 20.00})
         return context
 
+
 class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False
 
@@ -35,7 +37,7 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
-    fields = ['name', 'image', ]
+    fields = ['name', '_image', ]
     model = User
 
     # send the user back to their own page after a successful update
@@ -63,6 +65,18 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             blurb_model.save()
 
         return super(UserUpdateView, self).form_valid(form)
+
+
+class RfidCardsUpdateView(LoginRequiredMixin, CreateView):
+    fields = ['user', 'code', 'description', ]
+    model = Rfid
+
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        return super(RfidCardsUpdateView, self).form_valid(form)
+
+
 
 class UserListView(LoginRequiredMixin, ListView):
     model = User

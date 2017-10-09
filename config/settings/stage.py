@@ -17,7 +17,7 @@ from .common import *  # noqa
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Raises ImproperlyConfigured exception if DJANGO_SECRET_KEY not in os.environ
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-
+SITE_ID = 2
 
 # This ensures that Django will be able to detect a secure connection
 # properly on Heroku.
@@ -43,7 +43,7 @@ SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SECURE = True
 #disabledd so csrf works with ajax
 CSRF_COOKIE_HTTPONLY = False
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # SITE CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -113,6 +113,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_HOST_USER = env('EMAIL_USER')
 EMAIL_PORT = 587
+EMAIL_NOTIFY = False
 
 # Anymail with Mailgun
 #INSTALLED_APPS += ("anymail", )
@@ -152,6 +153,11 @@ CACHES = {
             'IGNORE_EXCEPTIONS': True,  # mimics memcache behavior.
                                         # http://niwinz.github.io/django-redis/latest/#_memcached_exceptions_behavior
         }
+    },
+    'st_rate_limit': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'spirit_rl_cache',
+        'TIMEOUT': None
     }
 }
 
@@ -180,7 +186,7 @@ LOGGING = {
     },
     'handlers': {
         'mail_admins': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         },

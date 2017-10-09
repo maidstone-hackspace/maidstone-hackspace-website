@@ -1,0 +1,54 @@
+{% load i18n wiki_tags %}
+
+{% with selected_tab as selected %}
+
+<div class="col-sm-2 pull-xs-right{% if selected == "settings" %} active{% endif %} list-inline-item">
+  {% if not user.is_anonymous %}
+  <a class="nav-link" href="{% url 'wiki:settings' article_id=article.id path=urlpath.path %}" role="button">
+    <span class="fa fa-wrench"></span>
+    <span class="hidden-xs">{% trans "Settings" %}</span>
+  </a>
+  {% endif %}
+</div>
+
+{% for plugin in article_tabs %}
+  <div class="col-sm-2 pull-xs-right{% if selected == plugin.slug %} active{% endif %} list-inline-item">
+    <a class="nav-link" href="{% url 'wiki:plugin' slug=plugin.slug article_id=article.id path=urlpath.path %}" role="button">
+      <span class="{{ plugin.article_tab.1 }}"></span>
+      <span class="hidden-xs">{{ plugin.article_tab.0 }}</span>
+    </a>
+  </div>
+{% endfor %}
+
+<div class="col-sm-2 pull-xs-right{% if selected == "history" %} active{% endif %} list-inline-item">
+  <a class="nav-link" href="{% url 'wiki:history' article_id=article.id path=urlpath.path %}" role="button">
+    <span class="fa fa-clock-o"></span>
+    <span class="hidden-xs">{% trans "Changes" %}</span>
+  </a>
+</div>
+
+{% if article|can_write:user and not article.current_revision.locked %}
+<div class="col-sm-2 pull-xs-right{% if selected == "edit" %} active{% endif %} list-inline-item">
+  <a class="nav-link" href="{% url 'wiki:edit' article_id=article.id path=urlpath.path %}" role="button">
+    <span class="fa fa-edit"></span>
+    <span class="hidden-xs">{% trans "Edit" %}</span>
+  </a>
+</div>
+{% else %}
+<div class="col-sm-2 pull-xs-right{% if selected == "source" %} active{% endif %} list-inline-item">
+  <a class="nav-link" href="{% url 'wiki:source' article_id=article.id path=urlpath.path %}" role="button">
+    <span class="fa fa-lock"></span>
+    <span class="hidden-xs">{% trans "View Source" %}</span>
+  </a>
+</div>
+{% endif %}
+
+<div class="col-sm-2 pull-xs-right{% if selected == "view" %} active{% endif %} list-inline-item">
+  <a class="nav-link" href="{% url 'wiki:get' article_id=article.id path=urlpath.path %}" role="button">
+    <span class="fa fa-home"></span>
+    <span class="hidden-xs">{% trans "View" %}</span>
+  </a>
+</div>
+
+
+{% endwith %}

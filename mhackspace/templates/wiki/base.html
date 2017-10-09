@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load sekizai_tags i18n wiki_tags static %}
+
+{% block head-open-graph %}
+  <meta property="og:title" content="{{ article.current_revision.title }}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+{% endblock head-open-graph %}
+
+{% block content %}
+{% block wiki_body %}
+<form class="navbar-form navbar-right" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
+  <div class="input-group">
+    <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search wiki..." %}" />
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">
+        <span class="fa fa-search"></span>
+      </button>
+    </span>
+  </div><!-- /input-group -->
+</form>
+{% block wiki_navbar %}
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div id="wiki-navbar">
+    <div class="navbar-right">
+      {% if user.is_authenticated %}
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <ul class="dropdown-menu">
+            {% if "wiki.plugins.notifications"|plugin_enabled %}
+              {% include "wiki/plugins/notifications/menubaritem.html" %}
+            {% endif %}
+            {% if "wiki.plugins.globalhistory"|plugin_enabled %}
+              {% include "wiki/plugins/globalhistory/menubaritem.html" %}
+            {% endif %}
+          </ul>
+        </li>
+      </ul>
+      {% endif %}
+    </div>
+    {% block wiki_header_navlinks %}{% endblock %}
+  </div>
+</div>
+{% endblock %}
+
+      <!-- Reserved for breadcrumbs -->
+      {% block wiki_breadcrumbs %}{% endblock %}
+
+      <!-- Main page contents go here -->
+      {% block wiki_contents %}{% endblock %}
+
+      <footer id="wiki-footer">
+        <hr />
+        {% block wiki_footer_prepend %}{% endblock %}
+      </footer>
+{% endblock wiki_body %}
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static "wiki/js/core.js" %}"></script>
+{% endblock javascript %}

@@ -10,8 +10,7 @@ services:
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
       - postgres_backup_dev:/backups
-    environment:
-      - POSTGRES_USER=mhackspace
+    env_file: .env
 
   django:
     build:
@@ -20,9 +19,7 @@ services:
     command: /start-dev.sh
     depends_on:
       - postgres
-    environment:
-      - POSTGRES_USER=mhackspace
-      - USE_DOCKER=yes
+    env_file: .env
     volumes:
       - .:/app
     ports:
@@ -41,5 +38,32 @@ services:
     command: npm install
     volumes:
       - ./:/usr/src/app
-  # redis:
-  #   image: redis:latest
+
+  redis:
+    image: redis:latest
+
+  celeryworker:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp worker -l INFO
+
+  celerybeat:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    #command: sleep 1h 
+

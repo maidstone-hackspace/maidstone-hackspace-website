@@ -15,7 +15,7 @@ pipeline:
       - cp -n env.example .env
       - mkdir -p ./cache/packages ./cache/pip
       - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
-      - python manage.py test mhackspace --verbosity 2
+      - python manage.py test mhackspace --keepdb --verbosity 2
 
   publish-test:
     pull: True
@@ -24,11 +24,12 @@ pipeline:
     user: ${SSH_USER}
     key: ${SSH_KEY}
     port: 22
+    command_timeout: 480
     script:
       - cd /var/www/stage/maidstone-hackspace-website
       - git pull
-      - docker-compose -fstage.yml build
       - docker-compose -fstage.yml down --remove-orphans 
+      - docker-compose -fstage.yml build
       - docker-compose -fstage.yml up -d
 
   publish-live:
@@ -38,6 +39,7 @@ pipeline:
     key: {SSH_KEY}
     host: maidstone-hackspace.org.uk
     port: 22
+    command_timeout: 480
     script:
       - echo 'to be added'
     when:

@@ -5,10 +5,10 @@
 wheel==0.29.0
 
 # Bleeding edge Django
-django==1.11
+django==1.11.4
 
 # Configuration
-django-environ==0.4.1
+django-environ==0.4.3
 whitenoise==3.2.3
 
 
@@ -18,14 +18,14 @@ django-crispy-forms==1.6.1
 
 # Models
 django-stdimage==2.4.0
-django-model-utils==2.6
+django-model-utils==3.0.0
 
 # Images
-Pillow==4.1.0
+Pillow==4.2.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.31.0
+django-allauth==0.32.0
 
 
 # Python-PostgreSQL Database Adapter
@@ -38,29 +38,45 @@ awesome-slugify==1.6.5
 pytz==2017.2
 
 # Redis support
-django-redis==4.7.0
+django-redis==4.8.0
 redis>=2.10.5
 
 
 rcssmin==1.0.6
 django-compressor==2.1.1
 django-sass-processor==0.5.4
-libsass==0.12.3
+libsass==0.13.2
 lxml==3.7.3
 
 
 # Your custom requirements go here
 mock==2.0.0
 
-gocardless
-braintree==3.35.0
+gocardless_pro
+braintree==3.37.2
 
 django-autofixture==0.12.1
 
 git+https://github.com/olymk2/scaffold.git
+git+git://github.com/django-wiki/django-wiki.git
 
-djangorestframework==3.6.2
+djangorestframework==3.6.3
+djangorestframework-jwt
 django-filter==1.0.2
+coreapi
+# api libraries end
 
-git+https://github.com/olymk2/dracos-markdown-editor.git
-# draceditor
+draceditor==1.1.8
+# django-spirit
+django-djconfig
+django-haystack
+git+https://github.com/nitely/Spirit.git
+django-xforwardedfor-middleware==2.0
+
+# Application queue celery
+celery==4.1.0
+django-celery-results==1.0.1
+django-celery-beat==1.0.1
+
+argon2-cffi
+django-cors-headers

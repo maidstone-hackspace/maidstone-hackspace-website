@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals, absolute_import
 
+from django.utils import timezone
 from django.conf import settings
 from django.shortcuts import redirect
 from django.views.generic import UpdateView, RedirectView
@@ -13,6 +14,7 @@ from mhackspace.users.models import User, Membership
 from mhackspace.users.models import MEMBERSHIP_CANCELLED
 from mhackspace.users.forms import MembershipJoinForm
 from mhackspace.subscriptions.payments import select_provider
+from mhackspace.subscriptions.helper import create_or_update_membership, cancel_membership
 
 
 class MembershipCancelView(LoginRequiredMixin, RedirectView):
@@ -26,17 +28,12 @@ class MembershipCancelView(LoginRequiredMixin, RedirectView):
         member = Membership.objects.filter(user=self.request.user).first()
 
         result = provider.cancel_subscription(
+            user=self.request.user,
             reference=member.reference
         )
+
         if result.get('success') is True:
-            # set membership to cancelled on success
-            member.status = MEMBERSHIP_CANCELLED
-            member.save()
-
-
-            # remove user from group on success
-            group = Group.objects.get(name='members')
-            self.request.user.groups.remove(group)
+            cancel_membership(user=self.request.user)
             messages.add_message(
                 self.request,
                 messages.SUCCESS,
@@ -54,24 +51,40 @@ class MembershipJoinView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
     def form_valid(self, form):
-        app_domain = 'http://test.maidstone-hackspace.org.uk'
         payment_provider = 'gocardless'
         provider = select_provider(payment_provider)
+        app_domain = provider.get_redirect_url()
         user_code = str(self.request.user.id).zfill(5)
+        # settings.PAYMENT_PROVIDERS[payment_provider]['redirect_url']
 
         form_subscription = MembershipJoinForm(data=self.request.POST)
         form_subscription.is_valid()
 
+        result = {
+            'email': self.request.user.email,
+            'reference': user_code,
+            'amount': form_subscription.cleaned_data.get('amount', 20.00),
+            'start_date': timezone.now()
+        }
+
+        create_or_update_membership(
+            user=self.request.user,
+            signup_details=result,
+            complete=False
+        )
+
         success_url = '%s/membership/%s/success' % (app_domain, payment_provider)
         failure_url = '%s/membership/%s/failure' % (app_domain, payment_provider)
         url = provider.create_subscription(
+            user=self.request.user,
+            session=self.request.session.session_key,
             amount=form_subscription.cleaned_data.get('amount', 20.00),
             name="Membership your membership id is MH%s" % user_code,
             redirect_success=success_url,
             redirect_failure=failure_url
         )
 
-        return redirect(url)
+        return redirect(url.redirect_url)
 
 
 class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
@@ -81,11 +94,20 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         payment_provider = 'gocardless'
         provider = select_provider(payment_provider)
+        print(self.request.user)
+        membership = Membership.objects.get(user=self.request.user)
+
+        name = "Membership your membership id is MH%s" % membership.reference
         result = provider.confirm_subscription(
-            provider_response=self.request.GET
+            membership=membership,
+            session=self.request.session.session_key,
+            provider_response=self.request.GET,
+            name=name
         )
 
-        #if something went wrong return to profile with an error
+        #  if something went wrong return to profile with an error
+
+        result['start_date'] = timezone.now()
         if result.get('success') is False:
             messages.add_message(
                 self.request,
@@ -94,27 +116,15 @@ class MembershipJoinSuccessView(LoginRequiredMixin, RedirectView):
             return super(MembershipJoinSuccessView, self).get_redirect_url(*args, **kwargs)
 
         del(kwargs['provider'])
-        try:
-            member = Membership.objects.get(user=self.request.user)
-        except Membership.DoesNotExist:
-            member = Membership()
 
-        member.user = self.request.user
-        member.email = result.get('email')
-        member.reference = result.get('reference')
-        member.payment = result.get('amount')
-        member.date = result.get('start_date')
-        member.status = Membership.lookup_status(name=result.get('status'))
-        member.save()
+        if create_or_update_membership(user=self.request.user,
+                                       signup_details=result,
+                                       complete=True) is True:
+            messages.add_message(
+                self.request,
+                messages.SUCCESS,
+                'Success your membership should now be active')
         kwargs['username'] = self.request.user.get_username()
-
-        # add user to group on success
-        group = Group.objects.get(name='members')
-        self.request.user.groups.add(group)
-        messages.add_message(
-            self.request,
-            messages.SUCCESS,
-            'Success your membership should now be active')
         return super(MembershipJoinSuccessView, self).get_redirect_url(*args, **kwargs)
 
 

@@ -36,6 +36,11 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': ''
+    },
+    'st_rate_limit': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'spirit_rl_cache',
+        'TIMEOUT': None
     }
 }
 
@@ -62,5 +67,8 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [
 ]
 
 DATABASES = {
-    'default': {'ENGINE': 'django.db.backends.sqlite3'}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(str(ROOT_DIR), 'cache/test_database.db'),
+        }
 }

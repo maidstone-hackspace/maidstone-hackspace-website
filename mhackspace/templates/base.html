@@ -1,6 +1,7 @@
 {% load sass_tags %}
 {% load i18n compress %}
 {% load static from staticfiles %}
+{% load sekizai_tags i18n wiki_tags static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,13 +28,24 @@
   <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
   <meta name="theme-color" content="#008080">
 
+  <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  {% block css %}
-    <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
-  {% endblock %}
+
+
+  {% block head-open-graph %}
+  <meta property="og:title" content="Maidstone Hackspace" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+  {% endblock head-open-graph %}
+
+  {% block css %}{% endblock %}
+
+  {% block head-extra %}
+  {% endblock head-extra %}
 
   <script type="application/ld+json">
-  {
+  i{
     "@context": "http://schema.org",
     "@type": "Organization",
     "name": "Maidstone Hackspace",
@@ -45,7 +57,7 @@
     "@type": "PostalAddress",
       "streetAddress": "Maidstone Hackspace, Maidstone Community Support Centre",
       "addressLocality": "Maidstone",
-      "addressRegion": "FLKent",
+      "addressRegion": "Kent",
       "postalCode": "ME14 1HH",
     "addressCountry": "UK"
   },
@@ -66,6 +78,7 @@
 </head>
 
 <body>
+
 <div>
   <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse mb-4">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
@@ -81,7 +94,7 @@
     <div class="collapse navbar-collapse" id="navbarMainMenu">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'home' %}">Home</a>
+          <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'about' %}">About</a>
@@ -93,6 +106,12 @@
           <a class="nav-link" href="{% url 'blog' %}">Blog</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'wiki:root' %}">Wiki</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'spirit:index' %}">Forum</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'contact' %}">Contact</a>
         </li>
         <li class="nav-item">
@@ -102,17 +121,18 @@
 
       <ul class="nav navbar-nav pull-xs-right">
         {% if request.user.is_authenticated %}
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Member Area
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="{% url 'members' %}">Members</a>
-          <a class="dropdown-item" href="{# url 'equipment' #}">Equipment</a>
-        </div>
-      </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Member Area
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+              <a class="dropdown-item" href="{% url 'members' %}">Members</a>
+              <a class="dropdown-item" href="{% url 'requests' %}">Requests</a>
+              {% if request.user.is_superuser %}
+                  <a class="dropdown-item" href="{% url 'spirit:admin:index' %}">Forum Admin</a>
+              {% endif %}
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
@@ -146,7 +166,9 @@
 
 <footer class="footer">
   <div class="container">
+    {% block footer-left %}{% endblock footer-left %}
     <span class="text-muted">&copy; {% now "Y" %} Maidstone Hackspace</span>
+    <span><a href="https://maidstone-hackspace.org.uk/wiki/maidstone-hackspace-constitution/">Constitution</a></span>
     <div class="float-right">
       <a href="https://github.com/maidstone-hackspace/" target="_blank"><i class="fa fa-github"></i></a>
       <a href="https://github.com/maidstone-hackspace/" target="_blank"><i class="fa fa-twitter"></i></a>
@@ -179,7 +201,8 @@
     ga('send', 'pageview');
   </script>
   <script async src="https://www.google-analytics.com/analytics.js"></script>
-{% endblock javascript %}
+  {% endblock javascript %}
+  {% render_block "js" %}
 </body>
 </html>
 

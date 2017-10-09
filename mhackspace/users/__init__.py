@@ -1,1 +1,3 @@
-# -*- coding: utf-8 -*-
+from mhackspace.celeryapp import app as celery_app
+
+__all__ = ['celery_app']

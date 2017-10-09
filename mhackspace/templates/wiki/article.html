@@ -1,0 +1,51 @@
+{% extends "wiki/base.html" %}
+{% load wiki_tags i18n sekizai_tags %}
+
+
+{% block wiki_pagetitle %}{{ article.current_revision.title }}{% endblock %}
+
+{% block wiki_breadcrumbs %}
+    {% include "wiki/includes/breadcrumbs.html" %}
+{% endblock %}
+
+{% block wiki_contents %}
+    <div id="article-container" class="container-fluid">
+        <div class="row inline-group" id="article-title">
+            <div class="col-sm-2 float-left" id="article-title-li">
+                <h1 id="article-title">
+                    {{ article.current_revision.title }}
+                    <small style="font-size: 14px;">
+                        {% if urlpath.parent %}
+                            <a href="{% url 'wiki:get' path=urlpath.path %}"><span
+                                    class="fa fa-bookmark"></span> {{ urlpath.slug }}</a>
+                        {% endif %}
+                        {% if article.current_revision.locked %}
+                            <span class="fa fa-lock"></span> {% trans "locked" %}
+                        {% endif %}
+                    </small>
+                </h1>
+            </div>
+
+        </div>
+
+        <div class="row inline-group" id="article-contents">
+            <div class="col-sm-2 float-left" id="article-contents-li">
+                {% block wiki_contents_tab %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
+    <div class="row inline-group" id="article-menu">
+        <div class="col-sm-12 float-left" id="article-contents-li">
+            {% include "wiki/includes/article_menu.html" %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block wiki_footer_prepend %}
+    <p style="margin-bottom: 10px;">
+        <em>{% trans "This article was last modified:" %} {{ article.current_revision.modified }}</em></p>
+{% endblock %}

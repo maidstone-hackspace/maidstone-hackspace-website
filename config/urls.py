@@ -10,27 +10,40 @@ from django.views import defaults as default_views
 from django.contrib.auth import views as auth_views
 from django.contrib.sitemaps.views import sitemap
 from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
 
 from mhackspace.contact.views import contact
 from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
-from mhackspace.blog.feeds import BlogFeed, BlogCategoryFeed
+from mhackspace.blog.feeds import RssFeed, BlogFeed, BlogCategoryFeed
 from mhackspace.base.views import markdown_uploader
 from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostList
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
+from mhackspace.requests.views import RequestsForm, RequestsList
+from mhackspace.rfid.views import DeviceViewSet, AuthUserWithDeviceViewSet
+
+from mhackspace.register.views import RegisterForm
+
+from wiki.urls import get_pattern as get_wiki_pattern
+from django_nyt.urls import get_pattern as get_nyt_pattern
+from rest_framework_jwt.views import obtain_jwt_token
 
 router = DefaultRouter()
-router.register(r'posts', PostViewSet)
-router.register(r'categories', CategoryViewSet)
-router.register(r'feeds', FeedViewSet)
-router.register(r'articles', ArticleViewSet)
+router.register(r'posts', PostViewSet, 'posts')
+router.register(r'categories', CategoryViewSet, base_name='categories')
+router.register(r'feeds', FeedViewSet, 'feeds')
+router.register(r'articles', ArticleViewSet, base_name='articles')
+router.register(r'rfid', DeviceViewSet, base_name='rfid_device')
+router.register(r'rfidAuth', AuthUserWithDeviceViewSet, base_name='device_auth')
+
 
 sitemaps = {
     'posts': PostSitemap,
     'category': CategorySitemap,
 }
+
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
@@ -38,7 +51,10 @@ urlpatterns = [
     url(r'^chat/$', TemplateView.as_view(template_name='pages/chat.html'), name='chat'),
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
     url(r'^contact/$', contact, name='contact'),
+    url(r'^requests/$', RequestsList.as_view(), name='requests'),
+    url(r'^requests/create$', RequestsForm.as_view(), name='requests_form'),
 
+    url(r'^discuss/', include('spirit.urls')),
     url(r'^api/v1/', include(router.urls, namespace='v1')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^draceditor/', include('draceditor.urls')),
@@ -48,6 +64,7 @@ urlpatterns = [
     ),
     url(r'^blog/$', PostList.as_view(), name='blog'),
     url(r'^blog/rss/$', BlogFeed(), name='blog-rss'),
+    url(r'^rss.xml$', RssFeed(), name='main-rss'),
     url(r'^blog/(?P<slug>[0-9A-Za-z_\-]+)/$', BlogPost.as_view(), name='blog-item'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/$', PostList.as_view(), name='blog-category'),
     url(r'^blog/category/(?P<category>[0-9A-Za-z_\-]+)/rss/$', BlogCategoryFeed(), name='blog-category-feed'),
@@ -56,9 +73,13 @@ urlpatterns = [
 
     # need to be logged in for these urls
     url(r'^members/$', MemberListView.as_view(), name='members'),
+    url(r'^members/(?P<status>[a-zA-Z]+)/$', MemberListView.as_view(), name='members_status'),
 
     # Django Admin, use {% url 'admin:index' %}
     url(r'{}'.format(settings.ADMIN_URL), admin.site.urls),
+
+    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api/docs/', include_docs_urls(title='Hackspace API')),
 
     # User management
     url(r'^users/', include('mhackspace.users.urls', namespace='users')),
@@ -75,8 +96,15 @@ urlpatterns = [
     url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
     url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+
+    url(r'^register/$', RegisterForm.as_view(), name='register_form'),
+    url(r'^register/success$', TemplateView.as_view(template_name='pages/register.html'), name='register_success'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += [
+    url(r'^notifications/', get_nyt_pattern()),
+    url(r'^wiki/', get_wiki_pattern(), name='wiki')
+]
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.

@@ -22,20 +22,16 @@ class Command(BaseCommand):
 
         payment_objects = []
         for customer in provider.fetch_customers():
-            # self.stdout.write(str(dir(customer)))
-            # self.stdout.write(str(customer))
-
+            user = User.objects.get(email=customer.get('email')) 
             payment_objects.append(Payments(
-                user=None,
-                user_reference=customer.get('user_id'),
+                user=user,
+                user_reference=customer.get('user_reference'),
                 user_email=customer.get('email'),
                 reference=customer.get('payment_id'),
                 amount=customer.get('amount'),
                 type=Payments.lookup_payment_type(customer.get('payment_type')),
                 date=customer.get('payment_date')
             ))
-            # self.stdout.write(str(customer.email))
-            # self.stdout.write(str(dir(customer['email']())))
             self.stdout.write(
                 self.style.SUCCESS(
                     '\t{reference} - {amount} - {type} - {user_email}'.format(**model_to_dict(payment_objects[-1]))))

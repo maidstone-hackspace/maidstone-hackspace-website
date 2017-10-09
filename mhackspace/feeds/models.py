@@ -7,7 +7,12 @@ from django.utils.encoding import python_2_unicode_compatible
 from stdimage.models import StdImageField
 from stdimage.utils import UploadToAutoSlugClassNameDir
 
-from mhackspace.users.models import User
+
+image_variations = {
+    'home': {
+        "width": 530,
+        "height": 220,
+        "crop": True}}
 
 
 @python_2_unicode_compatible
@@ -21,11 +26,7 @@ class Feed(models.Model):
         upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
         blank=True,
         null=True,
-        variations={
-            'home': {
-                "width": 530,
-                "height": 220,
-                "crop": True}})
+        variations=image_variations)
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
@@ -41,11 +42,7 @@ class Article(models.Model):
         upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
         blank=True,
         null=True,
-        variations={
-            'home': {
-                "width": 530,
-                "height": 220,
-                "crop": True}})
+        variations=image_variations)
 
     description = models.TextField()
     displayed = models.BooleanField(default=True)
