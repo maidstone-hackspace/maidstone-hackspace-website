@@ -39,7 +39,7 @@
         <div class="date">Joined {{membership.date}}</div>
         <div class="container">
           <div class="middle">
-            <p>MHS{{ user.id|stringformat:"05d" }}</p><p>{{user.name}}{{user.last_name}}</p>
+            <p>MHS{{ user.id|stringformat:"05d" }}</p><p>{{user.name}}</p>
           </div>
           <a href="{% url 'cancel_membership' %}">Cancel Membership</a>
         </div>
