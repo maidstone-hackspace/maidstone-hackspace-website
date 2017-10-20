@@ -25,7 +25,13 @@ class UserRequests(models.Model):
         decimal_places=2,
         help_text='Leave blank, if no associated cost, or add estimated cost if not sure.'
     )
-    description = models.TextField(help_text="detail of what's being requested and where it can be purchased")
+    quantity = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        help_text='Add number required.',
+        default=1
+    )
+    description = models.TextField(help_text="Provide details of what's being requested, and where it can be purchased (preferably with a link)")
     created_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
