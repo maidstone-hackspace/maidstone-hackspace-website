@@ -28,7 +28,12 @@ urlpatterns = [
     ),
     url(
         regex=r'^-access-cards$',
-        view=views.RfidCardsUpdateView.as_view(),
+        view=views.RfidCardsListView.as_view(),
         name='access_cards'
+    ),
+    url(
+        regex=r'^-access-card-create$',
+        view=views.RfidCardsUpdateView.as_view(),
+        name='access_card_create'
     ),
 ]

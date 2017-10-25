@@ -4,8 +4,9 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
+ {% if form %}
   <h1>{{ user.username }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:update' %}" enctype="multipart/form-data">
+  <form class="form-horizontal" method="post" action="{% url 'users:access_card_create' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
     {{ form_blurb|crispy }}
@@ -15,4 +16,26 @@
       </div>
     </div>
   </form>
+  {% else %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Code</th>
+          <th>Short Description</th>
+        </tr>
+      </thead>
+      {% for rfid in rfids %}
+      <tr>
+        <th scope="row"> {{ forloop.counter }} </th>
+        <td>
+          {{ rfid.code}}
+        </td>
+        <td>
+          {{ rfid.description}}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
 {% endblock %}
