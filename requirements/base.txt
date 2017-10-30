@@ -58,7 +58,8 @@ braintree==3.37.2
 django-autofixture==0.12.1
 
 git+https://github.com/olymk2/scaffold.git
-git+git://github.com/django-wiki/django-wiki.git
+git+git://github.com/olymk2/django-wiki.git
+# git+git://github.com/django-wiki/django-wiki.git
 
 djangorestframework==3.6.3
 djangorestframework-jwt
