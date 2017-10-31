@@ -2,16 +2,15 @@
 from __future__ import absolute_import, unicode_literals
 
 from django.core.urlresolvers import reverse
-from django.views.generic import DetailView, ListView, RedirectView, UpdateView, CreateView
-
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Rfid
 from .models import User
 from .models import Blurb
 from .models import Membership
 
 from .forms import BlurbForm, MembershipJoinForm
+
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
@@ -65,27 +64,6 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             blurb_model.save()
 
         return super(UserUpdateView, self).form_valid(form)
-
-
-class RfidCardsListView(LoginRequiredMixin, ListView):
-    template_name = 'users/rfid_form.html'
-    context_object_name = 'rfids'
-    paginate_by = 50
-    model = Rfid
-
-    def get_queryset(self):
-        return Rfid.objects.filter(user=self.request.user)
-
-
-class RfidCardsUpdateView(LoginRequiredMixin, CreateView):
-    fields = ['code', 'description', ]
-    model = Rfid
-    success_url = '/users/-access-cards'
-
-    def form_valid(self, form):
-        user = self.request.user
-        form.instance.user = user
-        return super(RfidCardsUpdateView, self).form_valid(form)
 
 
 class UserListView(LoginRequiredMixin, ListView):

@@ -79,7 +79,7 @@ class Membership(models.Model):
         unique=True
     )
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
-    date = models.DateTimeField() 
+    date = models.DateTimeField()
     reference = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(default=0, choices=MEMBERSHIP_STATUS_CHOICES)
     email = models.CharField(max_length=255, unique=True)
