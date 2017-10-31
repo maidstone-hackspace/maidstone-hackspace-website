@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from django.conf.urls import url
+from django.conf.urls import include, url
 
+from mhackspace.rfid.urls import access_card_patterns
 from . import views
 
 urlpatterns = [
+    url('^access-cards/', include(access_card_patterns)),
     url(
         regex=r'^$',
         view=views.UserListView.as_view(),
@@ -25,15 +27,5 @@ urlpatterns = [
         regex=r'^~update/$',
         view=views.UserUpdateView.as_view(),
         name='update'
-    ),
-    url(
-        regex=r'^-access-cards$',
-        view=views.RfidCardsListView.as_view(),
-        name='access_cards'
-    ),
-    url(
-        regex=r'^-access-card-create$',
-        view=views.RfidCardsUpdateView.as_view(),
-        name='access_card_create'
-    ),
+    )
 ]

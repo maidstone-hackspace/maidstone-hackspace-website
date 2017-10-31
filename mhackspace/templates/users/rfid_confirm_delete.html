@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+
+{% block title %}Delete RFID: {{ object.description }}{% endblock %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Delete" />
+</form>
+{% endblock %}
