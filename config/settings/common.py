@@ -83,7 +83,7 @@ THIRD_PARTY_APPS = (
     'stdimage',
     'rest_framework',
     'django_filters',
-    'draceditor',
+    'martor',
     'haystack',
     'djconfig',
 
@@ -300,9 +300,9 @@ STATICFILES_FINDERS = (
 # ------------------------------------------------------------------------------
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
 MEDIA_ROOT = str(APPS_DIR('media'))
-DRACEDITOR_UPLOAD_PATH = 'images/uploads/{}'.format(time.strftime("%Y/%m/%d/"))
-DRACEDITOR_UPLOAD_URL = '/api/uploader/'  # change to local uploader
-DRACEDITOR_MARKDOWN_BASE_EMOJI_URL = '/static/images/emojis/'
+MARTOR_UPLOAD_PATH = 'images/uploads/{}'.format(time.strftime("%Y/%m/%d/"))
+MARTOR_UPLOAD_URL = '/api/uploader/'  # change to local uploader
+MARTOR_MARKDOWN_BASE_EMOJI_URL = '/static/images/emojis/'
 MAX_IMAGE_UPLOAD_SIZE = 5242880  # 5MB
 
 
@@ -367,8 +367,9 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 # Select the correct user model
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = 'users:redirect'
-LOGIN_URL = 'account_login'
-
+#LOGIN_URL = 'account_login'
+WIKI_SIGNUP_URL = 'account_login'
+#WIKI_EDITOR = 'wiki.editors.martor.Martor'
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = 'slugify.slugify'
 

@@ -59,7 +59,6 @@ django-autofixture==0.12.1
 
 git+https://github.com/olymk2/scaffold.git
 git+git://github.com/olymk2/django-wiki.git
-# git+git://github.com/django-wiki/django-wiki.git
 
 djangorestframework==3.6.3
 djangorestframework-jwt
@@ -67,7 +66,8 @@ django-filter==1.0.2
 coreapi
 # api libraries end
 
-draceditor==1.1.8
+#martor==1.1.8
+martor==1.2.5
 # django-spirit
 django-djconfig
 django-haystack

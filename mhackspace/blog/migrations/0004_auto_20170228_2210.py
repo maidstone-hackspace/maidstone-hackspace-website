@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-import draceditor.models
+import martor.models
 
 
 class Migration(migrations.Migration):
@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='post',
             name='description',
-            field=draceditor.models.DraceditorField(),
+            field=martor.models.MartorField(),
         ),
     ]

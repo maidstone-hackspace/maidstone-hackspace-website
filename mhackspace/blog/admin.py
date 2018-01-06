@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.db import models
 from django.contrib.admin import ModelAdmin
-from draceditor.widgets import AdminDraceditorWidget
-from draceditor.models import DraceditorField
+from martor.widgets import AdminMartorWidget
+from martor.models import MartorField
 
 from mhackspace.blog.models import Post, Category
 
@@ -16,7 +16,7 @@ class PostAdmin(ModelAdmin):
     filter_horizontal = ('categories',)
     prepopulated_fields = {"slug": ("title",)}
     formfield_overrides = {
-        DraceditorField: {'widget': AdminDraceditorWidget},
+        MartorField: {'widget': AdminMartorWidget},
     }
 
 

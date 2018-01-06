@@ -42,7 +42,7 @@ class Command(BaseCommand):
         feed = AutoFixture(Feed)
         feed.create(10)
 
-        post = AutoFixture(Post)
+        post = AutoFixture(Post, follow_fk=True)
         post.create(10)
 
         categorys = AutoFixture(Category)

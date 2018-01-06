@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 
-from draceditor.models import DraceditorField
+from martor.models import MartorField
 from stdimage.validators import MinSizeValidator
 from stdimage.models import StdImageField
 from stdimage.utils import UploadToAutoSlugClassNameDir
@@ -51,7 +51,7 @@ class Post(models.Model):
         validators=[
             MinSizeValidator(730, 410)])
 
-    description = DraceditorField()
+    description = MartorField()
     excerpt = models.TextField(blank=True, null=True)
     published_date = models.DateTimeField(default=timezone.now)
     updated_date = models.DateTimeField(default=timezone.now)

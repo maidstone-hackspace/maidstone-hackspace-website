@@ -57,7 +57,7 @@ urlpatterns = [
     url(r'^discuss/', include('spirit.urls')),
     url(r'^api/v1/', include(router.urls, namespace='v1')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^draceditor/', include('draceditor.urls')),
+    url(r'^martor/', include('martor.urls')),
     url(
         r'^api/uploader/$',
         markdown_uploader, name='markdown_uploader_page'
