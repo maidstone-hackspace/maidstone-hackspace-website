@@ -13,13 +13,14 @@ REQUEST_TYPES = (
     (2, 'Training request'))
 
 
-class UserRequests(models.Model):
+class UserRequest(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='+'
     )
     title = models.CharField(max_length=255, help_text='Whats being requested ?')
     request_type = models.IntegerField(choices=REQUEST_TYPES, null=False)
+    acquired = models.BooleanField()
     cost = models.DecimalField(
         max_digits=6,
         decimal_places=2,
@@ -40,12 +41,12 @@ class UserRequests(models.Model):
 #     comment = models.TextField()
 #     created_date = models.DateTimeField(default=timezone.now)
 
-#     class Meta:
-#         ordering = ('created_date',)
+    class Meta:
+        ordering = ('acquired', 'created_date',)
 
 
 def send_topic_update_email(sender, instance, **kwargs):
     matrix_message.delay(prefix=' - REQUEST', message=instance.title)
 
 
-post_save.connect(send_topic_update_email, sender=UserRequests)
+post_save.connect(send_topic_update_email, sender=UserRequest)

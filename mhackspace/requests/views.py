@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import EmailMessage
 from django.contrib import messages
 from mhackspace.requests.forms import UserRequestForm
-from mhackspace.requests.models import UserRequests
+from mhackspace.requests.models import UserRequest
 from django.views.generic import ListView
 from django.views.generic.edit import FormView
 
@@ -23,6 +23,18 @@ class RequestsForm(LoginRequiredMixin, FormView):
 
 class RequestsList(LoginRequiredMixin, ListView):
     template_name = 'pages/requests.html'
-    model = UserRequests
+    model = UserRequest
     context_object_name = 'requests'
     paginate_by = 50
+
+
+    def get_queryset(self):
+        new_context = UserRequest.objects.filter(
+            acquired=False,
+        )
+        return new_context
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(RequestsList, self).get_context_data(*args, **kwargs)
+        context['requests_history'] = UserRequest.objects.filter(acquired=True)[:50]
+        return context

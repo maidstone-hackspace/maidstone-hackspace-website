@@ -1,11 +1,11 @@
 from django import forms
-from mhackspace.requests.models import UserRequests
+from mhackspace.requests.models import UserRequest
 from mhackspace.requests.models import REQUEST_TYPES
 
 
 class UserRequestForm(forms.ModelForm):
     class Meta:
-        model = UserRequests
+        model = UserRequest
         exclude = ['user', 'created_date']
     # description = forms.CharField(
     #     required=True,

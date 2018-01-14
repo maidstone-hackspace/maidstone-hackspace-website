@@ -40,6 +40,7 @@
       </ul>
     </div>
   </div>
+  <h3>Active Requests</h3>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -71,6 +72,42 @@
 
       {% endfor %}
     </table>
+
+
+    <h3>Completed Requests</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      {% for request in requests_history %}
+      <tr>
+        <th scope="row"> {{ forloop.counter }} </th>
+        <td>
+          {{ request.request_type_string }}
+        </td>
+        <td>
+          {{ request.created_date }}
+        </td>
+        <td>
+          {{ request.title }}
+        </td>
+        <td>
+          <button data-toggle="collapse" data-target="#expand{{forloop.counter}}" class="fa fa-expand ml-auto" ></button>
+        </td>
+      </tr>
+      <tr>
+        <td id="expand{{forloop.counter}}" colspan="5" class="collapse span-table">{{ request.description }}</td>
+      </tr>
+
+      {% endfor %}
+    </table>
+
+
   {% endif %}
 {% endblock content %}
 
