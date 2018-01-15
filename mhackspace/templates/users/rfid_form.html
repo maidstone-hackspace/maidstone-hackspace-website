@@ -6,7 +6,7 @@
 {% block content %}
  {% if form %}
   <h1>{{ user.username }}</h1>
-  <form class="form-horizontal" method="post" action="{% url 'users:access_cards:create' %}" enctype="multipart/form-data">
+  <form class="form-horizontal" method="post" action="{% url 'users:rfid::create' %}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form|crispy }}
     {{ form_blurb|crispy }}
@@ -23,7 +23,7 @@
           <th>#</th>
           <th>Code</th>
           <th>Short Description</th>
-          <th><a class="btn btn-primary pull-right" href="{% url 'users:access_cards:create' %}">Create</a></th>
+          <th><a class="btn btn-primary pull-right" href="{% url 'users:rfid:create' %}">Create</a></th>
         </tr>
       </thead>
       {% for rfid in rfids %}
@@ -36,7 +36,7 @@
           {{ rfid.description }}
         </td>
         <td>
-          <a href="{% url 'users:access_cards:delete' rfid.id %}">Delete</a>
+          <a href="{% url 'users:rfid::delete' rfid.id %}">Delete</a>
         </td>
       </tr>
       {% endfor %}
