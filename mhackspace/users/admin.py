@@ -61,7 +61,7 @@ class MembershipAdmin(ModelAdmin):
         return my_urls + urls
 
     def refresh_payments(self, request):
-        update_users_memebership_status()
+        update_users_memebership_status.apply_async()
         # for user in update_subscriptions(provider_name='gocardless'):
         #     continue
         self.message_user(request, 'Successfully triggered user payment refresh')
