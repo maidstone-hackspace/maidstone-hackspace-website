@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load recapture %}
+
+
+{% block head-open-graph %}
+  <meta property="og:title" content="New request made" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+{% endblock head-open-graph %}
+
+{% block content %}
+  <h2>{{requests.title}}</h2>
+
+  <div class="row">
+    <div class="col">
+      {{requests.description}}
+    </div>
+  </div>
+
+  {% for comment in requests_comments %}
+  <b>{{ comment.user }}</b>
+  <p>{{ comment.comment }}</p>
+  {% endfor %}
+
+  {% if requests_form %}
+    <form method="POST" action="{% url 'requests_detail_form' request_detail.id %}" class="requests_detail_form">
+      {% csrf_token %}
+      {{ requests_form|crispy }}
+      {{ google_capture }}
+      <button class="btn btn-primary " type="submit" name="action">
+        <span class="fa fa-submit" ></span>
+        {% trans "Add Comment" %}</button>
+    </form>
+  {% endif %}
+
+{% endblock content %}
+
+{% block javascript %}
+  {{ block.super }}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}

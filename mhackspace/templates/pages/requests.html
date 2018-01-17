@@ -60,7 +60,7 @@
           {{ request.created_date }}
         </td>
         <td>
-          {{ request.title }}
+          <a href="{% url 'requests_detail' request.id %}">{{ request.title }}</a>
         </td>
         <td>
           <button data-toggle="collapse" data-target="#expand{{forloop.counter}}" class="fa fa-expand ml-auto" ></button>
