@@ -44,6 +44,7 @@ CSRF_COOKIE_SECURE = True
 #disabledd so csrf works with ajax
 CSRF_COOKIE_HTTPONLY = False
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+X_FRAME_OPTIONS = 'ALLOW-FROM https://riot.im'
 
 # SITE CONFIGURATION
 # ------------------------------------------------------------------------------
