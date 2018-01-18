@@ -30,7 +30,8 @@
 
   <link href="{% sass_src 'sass/project.scss' %}" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+  {% render_block "css" %}
+  {% block css %}{% endblock %}
 
   {% block head-open-graph %}
   <meta property="og:title" content="Maidstone Hackspace" />
@@ -39,8 +40,6 @@
   <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
   {% endblock head-open-graph %}
 
-  {% render_block "css" %}
-  {% block css %}{% endblock %}
 
   {% block head-extra %}
   {% endblock head-extra %}

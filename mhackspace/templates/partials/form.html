@@ -1,0 +1,31 @@
+{% load crispy_forms_tags %}
+{% load recapture %}
+{% load sekizai_tags i18n wiki_tags static %}
+
+<form method="POST" action="{% url 'requests_form' %}" class="ui form">
+  {% csrf_token %}
+  {{ form|crispy }}
+  {{ google_capture }}
+  <button class="btn btn-primary " type="submit" name="action">
+    <span class="fa fa-submit" ></span>
+    {% trans "Send" %}</button>
+</form>
+
+{% addtoblock "css" %}
+  <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+  <link href="{% static 'plugins/css/semantic.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+  <link href="{% static 'martor/css/martor.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endaddtoblock css %}
+
+{% addtoblock "js" %}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/semantic.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'martor/js/martor.min.js' %}"></script>
+{% endaddtoblock %}

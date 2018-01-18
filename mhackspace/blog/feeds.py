@@ -83,7 +83,7 @@ class RssFeed(Feed):
 
 
 class BlogFeed(Feed):
-    title = "Mss.xmlaidstone Hackspace Blog"
+    title = "Maidstone Hackspace Blog"
     link = "/blog/"
     feed_type = MediaRssFeed
     description = "The latest blog posts and news from the Maidstone Hackspace site"

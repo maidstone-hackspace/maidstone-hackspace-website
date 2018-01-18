@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% load recapture %}
 
 
 {% block head-open-graph %}
@@ -25,20 +24,12 @@
   <p>{{ comment.comment }}</p>
   {% endfor %}
 
-  {% if requests_form %}
+  {% if form %}
     <form method="POST" action="{% url 'requests_detail_form' request_detail.id %}" class="requests_detail_form">
       {% csrf_token %}
-      {{ requests_form|crispy }}
-      {{ google_capture }}
-      <button class="btn btn-primary " type="submit" name="action">
-        <span class="fa fa-submit" ></span>
-        {% trans "Add Comment" %}</button>
+      {% include "partials/form.html" %}
     </form>
   {% endif %}
 
 {% endblock content %}
 
-{% block javascript %}
-  {{ block.super }}
-  <script src='https://www.google.com/recaptcha/api.js'></script>
-{% endblock %}
