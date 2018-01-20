@@ -116,6 +116,8 @@ EMAIL_HOST_USER = env('EMAIL_USER')
 EMAIL_PORT = 587
 EMAIL_NOTIFY = False
 
+MSG_PREFIX = 'MHS'
+
 # Anymail with Mailgun
 #INSTALLED_APPS += ("anymail", )
 #ANYMAIL = {
