@@ -223,3 +223,25 @@ ADMIN_URL = env('DJANGO_ADMIN_URL', default='trustee/')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'https://test.maidstone-hackspace.org.uk'
+
+
+AWS_S3_SECURE_URLS = True
+AWS_ACCESS_KEY_ID = env('DIGITALOCEAN_SPACE_KEY')
+AWS_SECRET_ACCESS_KEY = env('DIGITALOCEAN_SPACE_SECRET')
+AWS_STORAGE_BUCKET_NAME = 'mhackspace'
+AWS_S3_ENDPOINT_URL = 'https://ams3.digitaloceanspaces.com'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'stage'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'mysite/static'),
+]
+
+STATIC_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+COMPRESS_URL = STATIC_URL

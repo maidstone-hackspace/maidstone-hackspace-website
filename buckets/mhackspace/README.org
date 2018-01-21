@@ -1,0 +1,1 @@
+Place holder directory, each folder inside buckets folder is a fake digitalocean space or fake amazon bucket.

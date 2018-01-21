@@ -67,3 +67,9 @@ services:
     command: celery -A mhackspace.celeryapp beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
     #command: sleep 1h 
 
+  bucket:
+    image: minio/minio
+    env_file: .env
+    volumes:
+      - ./buckets:/data
+    command: server /data
