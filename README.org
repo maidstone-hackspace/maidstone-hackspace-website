@@ -97,5 +97,7 @@ return response.status_code
 ** Server 
 *** nginx
 #+BEGIN_SRC bash
-docker run -d --name=nginx olymk2/nginx -v /etc/nginx/sites-enabled/:/etc/nginx/sites-enabled/ -v /etc/letsencrypt/:/etc/letsencrypt/ -v /var/www/:/var/www/ -v sockets:/data/sockets -p 80:80 -p 443:443
+docker run -d -v /etc/nginx/sites-enabled/:/etc/nginx/sites-enabled/ -v /etc/letsencrypt/:/etc/letsencrypt/ -v /var/www/:/var/www/ -v sockets:/data/sockets -p 80:80 -p 443:443 --name=nginx olymk2/nginx
 #+END_SRC
+letsencrypt certonly --renew --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
+letsencrypt certonly --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
