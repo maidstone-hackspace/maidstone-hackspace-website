@@ -94,3 +94,8 @@ return response.status_code
 
 #+RESULTS:
 : 200
+** Server 
+*** nginx
+#+BEGIN_SRC bash
+docker run -d --name=nginx olymk2/nginx -v /etc/nginx/sites-enabled/:/etc/nginx/sites-enabled/ -v /etc/letsencrypt/:/etc/letsencrypt/ -v /var/www/:/var/www/ -v sockets:/data/sockets -p 80:80 -p 443:443
+#+END_SRC
