@@ -34,7 +34,8 @@ class gocardlessMocks(TestCase):
 
         return self.provider
 
-    def mock_success_responses(self):
+    def mock_success_responses(self, responses=None):
+        if responses == None:
         subscription_properties = Mock(
             id='02',
             status='active',
@@ -59,6 +60,34 @@ class gocardlessMocks(TestCase):
         self.provider.client.subscriptions.get = Mock(
             return_value=subscription_properties)
 
+        self.provider.client.subscriptions.cancel = PropertyMock(
+            return_value={'status_code': '200'})
+
+
+    def mock_success_responses2(self, responses=None):
+        if responses == None:
+            responses = [Mock(
+                id='02',
+                status='active',
+                amount=20.00,
+                created_at='date'
+            )]
+
+        mock_list = MagicMock()
+        mock_list_records = MagicMock(side_effect=[subscription_properties])
+        mock_list.records.return_value = mock_list_records
+
+        self.provider.client.subscriptions.list = mock_list
+        ApiResponse = namedtuple('ApiResponse', 'api_response, created_at')
+        ApiResponseStatus = namedtuple('ApiResponseStatus', 'status_code')
+
+        self.provider.client.subscriptions.create = Mock(
+            return_value=ApiResponse(
+                created_at=self.date_now,
+                api_response=ApiResponseStatus(status_code='200'))
+        )
+
+        self.provider.client.subscriptions.get.side_effects = responses
         self.provider.client.subscriptions.cancel = PropertyMock(
             return_value={'status_code': '200'})
 

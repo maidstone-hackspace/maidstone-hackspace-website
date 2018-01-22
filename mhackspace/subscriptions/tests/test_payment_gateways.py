@@ -16,7 +16,20 @@ class TestPaymentGatewaysGocardless(gocardlessMocks):
         super().setUp()
 
     def test_unsubscribe(self):
-        self.mock_success_responses()
+        responses = [
+            Mock(
+                id='02',
+                status='active',
+                amount=20.00,
+                created_at='date'
+            ), Mock(
+                id='03',
+                status='active2',
+                amount=40.00,
+                created_at='date'
+            ),
+        ]
+        self.mock_success_responses2(responses)
 
         result = self.provider.cancel_subscription(user=self.user, reference='M01')
 

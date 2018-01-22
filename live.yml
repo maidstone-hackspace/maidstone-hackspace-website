@@ -28,7 +28,6 @@ services:
     env_file: .env
     volumes:
       - .:/app
-      - ./compose/data/logs:/var/log/gunicorn
       - sockets:/data/sockets
 
   node:
