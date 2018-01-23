@@ -11,12 +11,12 @@ class gocardlessMocks(TestCase):
 
     def setUp(self):
         self.date_now = django.utils.timezone.now()
-        self.user = self.make_user()
+        self.user1 = self.make_user()
         self.auth_gocardless()
 
     def create_membership_record(self):
         member = Membership()
-        member.user = self.user
+        member.user = self.user1
         member.payment = '20.00'
         member.date = self.date_now
         member.save()
@@ -34,8 +34,7 @@ class gocardlessMocks(TestCase):
 
         return self.provider
 
-    def mock_success_responses(self, responses=None):
-        if responses == None:
+    def mock_success_responses_old(self, responses=None):
         subscription_properties = Mock(
             id='02',
             status='active',
@@ -63,31 +62,76 @@ class gocardlessMocks(TestCase):
         self.provider.client.subscriptions.cancel = PropertyMock(
             return_value={'status_code': '200'})
 
+    def mock_customer_success_responses(self):
+        ApiCustomersGet = namedtuple('ApiCustomersGet', 'email')
+        self.provider.client.customers.get = Mock(
+            return_value=ApiCustomersGet(
+                email='test@test.com')
+        )
 
-    def mock_success_responses2(self, responses=None):
-        if responses == None:
-            responses = [Mock(
+    def mock_mandate_success_responses(self):
+        ApiSubscriptionMandateLink = namedtuple('ApiSubscriptionMandateLink', 'customer')
+        # ApiMandateGet = namedtuple('ApiMandateGet', '')
+        self.provider.client.mandates.get = Mock()
+
+    def mock_success_responses(self, responses=None):
+        if responses is None:
+            responses = Mock(
                 id='02',
                 status='active',
                 amount=20.00,
                 created_at='date'
-            )]
+            )
 
-        mock_list = MagicMock()
-        mock_list_records = MagicMock(side_effect=[subscription_properties])
-        mock_list.records.return_value = mock_list_records
+        ApiRecords = namedtuple('ApiRecords', 'records')
+        ApiMandateLink = namedtuple('ApiMandateLink', 'mandate')
+        ApiResponseSubscriptionList = namedtuple('ApiResponseSubscriptionList', 'id, created_at, status, amount, links')
+        self.provider.client.subscriptions.list = Mock(
+            return_value=ApiRecords(
+                records=[
+                    ApiResponseSubscriptionList(
+                        id='02',
+                        status='active',
+                        created_at=self.date_now,
+                        amount=2000,
+                        links=ApiMandateLink(
+                            mandate='mid01'
+                        )
+                )]
+            )
+        )
 
-        self.provider.client.subscriptions.list = mock_list
-        ApiResponse = namedtuple('ApiResponse', 'api_response, created_at')
+        ApiResponseGet = namedtuple('ApiResponseGet', 'api_response, id, status, amount, created_at')
+        ApiResponseCreate = namedtuple('ApiResponseCreate', 'api_response, id, status, created_at')
+        ApiResponseCancelled = namedtuple('ApiResponseCancelled', 'api_response, status')
         ApiResponseStatus = namedtuple('ApiResponseStatus', 'status_code')
 
         self.provider.client.subscriptions.create = Mock(
-            return_value=ApiResponse(
+            return_value=ApiResponseCreate(
+                id='02',
+                status='active',
                 created_at=self.date_now,
                 api_response=ApiResponseStatus(status_code='200'))
         )
 
-        self.provider.client.subscriptions.get.side_effects = responses
-        self.provider.client.subscriptions.cancel = PropertyMock(
-            return_value={'status_code': '200'})
+        self.provider.client.subscriptions.get = Mock(
+            return_value=ApiResponseGet(
+                id='02',
+                created_at=self.date_now,
+                amount=20.00,
+                status='active',
+                api_response=ApiResponseStatus(status_code='200'))
+            )
+
+
+        self.provider.client.subscriptions.cancel = Mock(
+
+            return_value=ApiResponseCancelled(
+                api_response=ApiResponseStatus(status_code='200'),
+                status='cancelled'))
+
+
+        # self.provider.client.subscriptions.cancel = PropertyMock(
+        #     return_value={'status_code': '200'})
+
 

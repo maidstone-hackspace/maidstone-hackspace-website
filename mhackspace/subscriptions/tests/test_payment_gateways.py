@@ -16,22 +16,9 @@ class TestPaymentGatewaysGocardless(gocardlessMocks):
         super().setUp()
 
     def test_unsubscribe(self):
-        responses = [
-            Mock(
-                id='02',
-                status='active',
-                amount=20.00,
-                created_at='date'
-            ), Mock(
-                id='03',
-                status='active2',
-                amount=40.00,
-                created_at='date'
-            ),
-        ]
-        self.mock_success_responses2(responses)
+        self.mock_success_responses()
 
-        result = self.provider.cancel_subscription(user=self.user, reference='M01')
+        result = self.provider.cancel_subscription(user=self.user1, reference='M01')
 
         self.assertEqual(result.get('amount'), 20.00)
         self.assertEqual(result.get('reference'), '02')
@@ -40,17 +27,6 @@ class TestPaymentGatewaysGocardless(gocardlessMocks):
     def test_confirm_subscription_callback(self):
         self.mock_success_responses()
         membership = self.create_membership_record()
-
-        request_params = {
-            'resource_uri': 'http://gocardless/resource/url/01',
-            'resource_id': '01',
-            'resource_type': 'subscription',
-            'signature': 'sig',
-            'state': 'inactive'
-        }
-
-
-        # membership = Membership.objects.get(user=self.user)
         result = self.provider.confirm_subscription(
             membership=membership,
             session=None,
@@ -63,9 +39,10 @@ class TestPaymentGatewaysGocardless(gocardlessMocks):
 
     def test_fetch_subscription_gocardless(self):
         self.mock_success_responses()
+        self.mock_mandate_success_responses()
+        self.mock_customer_success_responses()
         for item in self.provider.fetch_subscriptions():
             self.assertEqual(item.get('status'), 'active')
             self.assertEqual(item.get('email'), 'test@test.com')
             self.assertEqual(item.get('reference'), '02')
             self.assertEqual(item.get('amount'), 20.00)
-

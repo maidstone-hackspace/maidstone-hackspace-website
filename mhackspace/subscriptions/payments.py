@@ -52,6 +52,9 @@ class gocardless_provider:
 
     def fetch_subscriptions(self):
         # for paying_member in self.client.mandates.list().records:
+        print('#############')
+        print(self.client.subscriptions.list())
+        print(self.client.subscriptions.list().records)
         for paying_member in self.client.subscriptions.list().records:
             mandate = self.client.mandates.get(paying_member.links.mandate)
             user = self.client.customers.get(mandate.links.customer)

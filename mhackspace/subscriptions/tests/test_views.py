@@ -24,13 +24,11 @@ class BaseUserTestCase(gocardlessMocks):
 
     def setUp(self):
         super().setUp()
-        # self.user = self.make_user()
-        # self.user.save()
         self.factory = RequestFactory()
         self.client = Client()
         self.client.login(
-            username=self.user.username,
-            password=self.user.password)
+            username=self.user1.username,
+            password=self.user1.password)
 
 
 class TestSubscriptionSuccessRedirectView(BaseUserTestCase):
@@ -96,14 +94,14 @@ class TestSubscriptionSuccessRedirectView(BaseUserTestCase):
         setattr(request, 'session', 'session')
         messages = FallbackStorage(request)
         setattr(request, '_messages', messages)
-        request.user = self.user
+        request.user = self.user1
 
         view = MembershipJoinFailureView()
         view.request = request
 
         self.assertEqual(
             view.get_redirect_url(provider='gocardless'),
-            reverse('users:detail', kwargs={'username': self.user.username})
+            reverse('users:detail', kwargs={'username': self.user1.username})
         )
 
         members = Membership.objects.all()

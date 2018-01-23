@@ -13,6 +13,7 @@ from mhackspace.subscriptions.helper import create_or_update_membership
 def update_subscriptions(provider_name):
     provider = select_provider('gocardless')
 
+    print(provider)
     Membership.objects.all().delete()
     for sub in provider.fetch_subscriptions():
         try:
