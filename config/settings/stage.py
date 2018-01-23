@@ -50,7 +50,7 @@ X_FRAME_OPTIONS = 'ALLOW-FROM https://riot.im'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['test.maidstone-hackspace.org.uk'])
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['test.maidstone-hackspace.org.uk', 'stage.maidstone-hackspace.org.uk'])
 ALLOWED_HOSTS.append('127.0.0.1')
 ALLOWED_HOSTS.append('172.18.0.5')
 
