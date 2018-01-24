@@ -15,6 +15,8 @@ pipeline:
       - cp -n env.example .env
       - mkdir -p ./cache/packages ./cache/pip
       - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
+      - python manage.py compilescss 
+      - python manage.py collectstatic --no-input 
       - python manage.py test mhackspace --keepdb --verbosity 2
 
   publish-test:
@@ -48,3 +50,16 @@ pipeline:
 services:
   mailhog:
     image: mailhog/mailhog
+
+  node:
+    image: node:alpine
+    commands:
+      - npm install package.json
+
+  bucket:
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    commands:
+      - minio server /data
