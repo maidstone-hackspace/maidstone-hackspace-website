@@ -1,5 +1,3 @@
-from pprint import pprint
-import pytz
 import gocardless_pro
 import braintree
 import logging
@@ -9,16 +7,16 @@ payment_providers = settings.PAYMENT_PROVIDERS
 logger = logging.getLogger(__name__)
 # import paypalrestsdk as paypal
 
-PROVIDER_ID = {'gocardless':1, 'braintree': 2}
+PROVIDER_ID = {'gocardless': 1, 'braintree': 2}
 PROVIDER_NAME = {1: 'gocardless', 2: 'braintree'}
 
 
 def select_provider(type):
     if type == "gocardless": return gocardless_provider()
     if type == "braintree": return braintree_provider()
-    if type == "paypal": return paypal_provider()
+    # if type == "paypal": return paypal_provider()
 
-    log.exception('[scaffold] - "No Provider for ' + type)
+    logger.exception('[scaffold] - "No Provider for ' + type)
     assert 0, "No Provider for " + type
 
 
@@ -49,12 +47,8 @@ class gocardless_provider:
                     'amount': payment.amount
                 }
 
-
     def fetch_subscriptions(self):
         # for paying_member in self.client.mandates.list().records:
-        print('#############')
-        print(self.client.subscriptions.list())
-        print(self.client.subscriptions.list().records)
         for paying_member in self.client.subscriptions.list().records:
             mandate = self.client.mandates.get(paying_member.links.mandate)
             user = self.client.customers.get(mandate.links.customer)
@@ -108,7 +102,6 @@ class gocardless_provider:
                 "email": user.email
             }
         })
-
 
     def confirm_subscription(self, membership, session, provider_response,
                              name, interval_unit='monthly', interval_length='1'):
@@ -191,4 +184,3 @@ class braintree_provider:
                 'start_date': paying_member.created_at,
                 'reference': paying_member.reference,
                 'amount': paying_member.amount}
-

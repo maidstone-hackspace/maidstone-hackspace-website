@@ -17,7 +17,7 @@ class TestTasks(gocardlessMocks):
         self.group = Group(name='members')
         self.group.save()
 
-    @mock.patch('mhackspace.subscriptions.payments.select_provider')
+    @mock.patch('mhackspace.subscriptions.management.commands.update_membership_status.select_provider')
     def test_refresh_subscriptions(self, mock_select_provider):
         self.mock_success_responses()
         self.mock_mandate_success_responses()
@@ -35,5 +35,5 @@ class TestTasks(gocardlessMocks):
         self.mock_success_responses()
 
         membership_count = Membership.objects.all().count()
-        self.assertEquals(2, membership_count)
-        self.assertEquals(2, user_count)
+        self.assertEquals(1, membership_count)
+        self.assertEquals(3, user_count)
