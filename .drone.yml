@@ -50,3 +50,16 @@ pipeline:
 services:
   mailhog:
     image: mailhog/mailhog
+
+  node:
+    image: node:alpine
+    commands:
+      - npm install package.json
+
+  bucket:
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    commands:
+      - minio server /data
