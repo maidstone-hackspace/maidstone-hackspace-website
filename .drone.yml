@@ -15,6 +15,8 @@ pipeline:
       - cp -n env.example .env
       - mkdir -p ./cache/packages ./cache/pip
       - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
+      - python manage.py compilescss 
+      - python manage.py collectstatic --no-input 
       - python manage.py test mhackspace --keepdb --verbosity 2
 
   publish-test:
