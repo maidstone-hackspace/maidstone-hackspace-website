@@ -31,6 +31,8 @@ pipeline:
       - cd /var/www/maidstone-hackspace-website
       - git pull
       - docker-compose -fstage.yml build
+      - docker-compose -fstage.yml run --rm django python manage.py compilescss
+      - docker-compose -fstage.yml run --rm django python manage.py collectstatic
       - docker-compose -fstage.yml down --remove-orphans 
       - docker-compose -fstage.yml up -d
 
