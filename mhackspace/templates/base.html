@@ -12,11 +12,6 @@
   <meta name="description" content="Maidstone Hackspace is a space where makers, hackers, programmers, tinkerers, professionals and hobbyists can share knowledge and collaborate">
   <meta name="author" content="">
 
-  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <![endif]-->
-
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}" sizes="32x32">
   <link rel="icon" type="image/png" href="{% static 'images/favicon-16x16.png' %}" sizes="16x16">
@@ -80,20 +75,19 @@
 <body>
 
 <div>
-  <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse mb-4">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarMainMenu" aria-controls="navbarMainMenu" aria-expanded="false"
-            aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <nav class="navbar navbar-dark bg-dark navbar-toggleable-md mb-4">
     <a class="navbar-brand" href="{% url "home" %}">
       <img src="{% static "images/logo.svg" %}" alt="Maidstone Hackspace Logo" id="navbar-logo">
       Maidstone Hackspace
     </a>
-
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarMainMenu" aria-controls="navbarMainMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarMainMenu">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
         </li>
         <li class="nav-item">
@@ -119,7 +113,7 @@
         </li>
       </ul>
 
-      <ul class="nav navbar-nav pull-xs-right">
+      <ul class="nav navbar-nav pull-xs-right my-lg-0">
         {% if request.user.is_authenticated %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -185,16 +179,8 @@
 			  src="https://code.jquery.com/jquery-3.2.1.min.js"
 			  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 			  crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
-          integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-          crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
-          integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-          crossorigin="anonymous"></script>
-
-  {% compress js %}
+    <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/project.js' %}"></script>
-  {% endcompress %}
   <script>
     window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};
     ga('create', 'UA-63373181-1', 'auto');
@@ -206,4 +192,3 @@
   {% render_block "js" %}
 </body>
 </html>
-

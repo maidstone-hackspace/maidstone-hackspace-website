@@ -54,7 +54,8 @@ services:
   node:
     image: node:alpine
     commands:
-      - npm install package.json
+      - npm --version 
+      - npm install 
 
   bucket:
     image: minio/minio
@@ -62,4 +63,4 @@ services:
       - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
       - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
     commands:
-      - minio server /data
+      - minio server /data &
