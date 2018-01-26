@@ -8,3 +8,4 @@ staticfiles/*
 cache/
 celerybeat-schedule
 celerybeat.pid
+.minio.sys

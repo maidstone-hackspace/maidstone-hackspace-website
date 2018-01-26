@@ -17,6 +17,7 @@ from .common import *  # noqa
 # DEBUG
 # ------------------------------------------------------------------------------
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
+DEBUG = False
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 # SECRET CONFIGURATION
@@ -148,26 +149,17 @@ LOGGING = {
 PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'http://127.0.0.1:8180'
 TEMPLATE_DEBUG = False
 
-
 AWS_S3_SECURE_URLS = False
 AWS_ACCESS_KEY_ID = env('MINIO_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('MINIO_SECRET_KEY')
 
-
 AWS_S3_ENDPOINT_URL = 'http://%s:9000' % socket.gethostbyname('bucket')
-
-
-# AWS_S3_SECURE_URLS = True
-# AWS_ACCESS_KEY_ID = env('DIGITALOCEAN_SPACE_KEY')
-# AWS_SECRET_ACCESS_KEY = env('DIGITALOCEAN_SPACE_SECRET')
-# AWS_S3_ENDPOINT_URL = 'https://ams3.digitaloceanspaces.com'
-AWS_STORAGE_BUCKET_NAME = 'mhackspace'
+AWS_STORAGE_BUCKET_NAME = 'static'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-AWS_LOCATION = 'dev'
 AWS_S3_SECURE_URLS = True
-STATIC_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
+STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-COMPRESS_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
+COMPRESS_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)

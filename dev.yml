@@ -64,5 +64,5 @@ services:
     image: minio/minio
     env_file: .env
     volumes:
-      - ./buckets:/data
+      - ./mhackspace:/data
     command: server /data
