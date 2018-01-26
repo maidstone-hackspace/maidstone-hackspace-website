@@ -33,12 +33,6 @@ services:
     ports:
       - "8125:8025"
 
-  node:
-    image: node:7-onbuild
-    command: npm install
-    volumes:
-      - ./:/usr/src/app
-
   redis:
     image: redis:latest
 
@@ -65,7 +59,6 @@ services:
       - postgres
       - redis
     command: celery -A mhackspace.celeryapp beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
-    #command: sleep 1h 
 
   bucket:
     image: minio/minio
