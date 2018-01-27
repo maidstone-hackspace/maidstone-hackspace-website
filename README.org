@@ -111,12 +111,26 @@ Setup / create new certs
 letsencrypt certonly --renew --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
 letsencrypt certonly --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
 #+END_SRC
+*** Postgres tips
+Connect to the database inside container to run sql commands.
+#+BEGIN_SRC bash
+docker-compose -fstage.yml run --rm postgres psql -U postgres
+#+END_SRC
 
 *** Backups
+Create a backup file with today's date
 #+BEGIN_SRC bash
-docker exec -t {CONTAINER_NAME} pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+docker exec -t {CONTAINER_NAME} pg_dump -Fp -c -U postgresuser > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
 #+END_SRC
+
+Import previously made backup
 #+BEGIN_SRC bash
-docker exec -t {CONTAINER_ID} pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
 cat dump_27-01-2018_14_26_09.sql | docker exec -i {CONTAINER_ID} psql -U postgres
 #+END_SRC
+
+
+docker exec -i {CONTINERID} pg_restore -U postgresuser <  ./dump_27-01-2018_18_16_45.sql
+docker exec miq_latest bash -lc 'pg_dump --format custom vmdb_production' > /tmp/pg_dump.pgdata
+
+
+docker exec {CONTAINERID} bash -lc 'pg_dump --format custom -U postgresuser' > pg_dump.pgdata
