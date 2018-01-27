@@ -56,10 +56,3 @@ services:
       - postgres
       - redis
     command: celery -A mhackspace.celeryapp beat -l INFO
-
-  bucket:
-    image: minio/minio
-    env_file: .env
-    volumes:
-      - ./buckets:/data
-    command: server /data

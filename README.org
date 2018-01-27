@@ -98,7 +98,12 @@ return response.status_code
 Example service setup for website under docker, nginx in a container forwarding traffic to uwsgi.
 *** nginx web server
 #+BEGIN_SRC bash
-docker run --name=nginx -d -v /etc/nginx/sites-enabled/:/etc/nginx/sites-enabled/ -v /etc/letsencrypt/:/etc/letsencrypt/ -v /var/www/:/var/www/ -v sockets:/data/sockets -p 80:80 -p 443:443 olymk2/nginx 
+docker volume create --name=sockets
+docker run --name=nginx -d \
+    -v /etc/nginx/sites-enabled/:/etc/nginx/sites-enabled/ \
+    -v /etc/letsencrypt/:/etc/letsencrypt/ \
+    -v /var/www/:/var/www/ \
+    -v sockets:/data/sockets -p 80:80 -p 443:443 olymk2/nginx 
 #+END_SRC
 *** letsencrypt cert setup
 Setup / create new certs
