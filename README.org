@@ -116,3 +116,7 @@ letsencrypt certonly --webroot -w /var/www/.well-known -d stage.maidstone-hacksp
 #+BEGIN_SRC bash
 docker exec -t {CONTAINER_NAME} pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
 #+END_SRC
+#+BEGIN_SRC bash
+docker exec -t {CONTAINER_ID} pg_dumpall -c -U postgres > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+cat dump_27-01-2018_14_26_09.sql | docker exec -i {CONTAINER_ID} psql -U postgres
+#+END_SRC
