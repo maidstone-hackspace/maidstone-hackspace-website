@@ -7,9 +7,13 @@
   }
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
-    position:static !important;
     max-width: 100%;
+    margin-bottom: 60px;
 }
 
 .collapse.show.span-table {
