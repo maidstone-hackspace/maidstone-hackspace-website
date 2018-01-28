@@ -134,3 +134,6 @@ docker exec miq_latest bash -lc 'pg_dump --format custom vmdb_production' > /tmp
 
 
 docker exec {CONTAINERID} bash -lc 'pg_dump --format custom -U postgresuser' > pg_dump.pgdata
+
+CMD ["nginx", "-g", "daemon off;"]
+sudo chmod -R a+rX static/
