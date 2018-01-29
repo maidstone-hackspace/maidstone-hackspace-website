@@ -56,6 +56,10 @@ git+https://github.com/jrief/django-sass-processor.git
 libsass==0.13.2
 lxml==3.7.3
 
+# WSGI Handler
+# ------------------------------------------------
+gevent==1.2.2
+gunicorn==19.7.1
 
 # Your custom requirements go here
 mock==2.0.0

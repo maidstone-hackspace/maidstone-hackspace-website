@@ -1,0 +1,79 @@
+version: '2'
+
+volumes:
+  sockets:
+    driver: local
+  postgres_data:
+    driver: local
+  postgres_backup:
+    driver: local
+
+services:
+  nginx:
+    image: olymk2/nginx
+    volumes:
+      - ./config/settings/nginx/maidstone-hackspace.org.uk:/etc/nginx/sites-enabled/default
+      - ./:/var/www
+      - sockets:/data/sockets
+
+  postgres:
+    build: ./compose/postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_backup:/backups
+    env_file: .env
+
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
+    depends_on:
+      - postgres
+      # - redis
+    command: /dev-gunicorn-mhackspace.sh
+    env_file: .env
+    volumes:
+      - .:/app
+      - sockets:/data/sockets
+
+  # port 8125
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8125:8025"
+
+  redis:
+    image: redis:latest
+
+  celeryworker:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp worker -l INFO
+
+  celerybeat:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp beat -l INFO
+
+  # port 9000 by default
+  bucket:
+    image: minio/minio
+    env_file: .env
+    volumes:
+      - ./mhackspace:/data
+    command: server /data

@@ -1,0 +1,44 @@
+upstream app-dev {
+    server unix:/data/sockets/dev-gunicorn-mhackspace.sock fail_timeout=0;
+}
+
+server {
+    listen 80;
+    server_name dev.maidstone-hackspace.org.uk;
+    root /var/www/maidstone-hackspace-website;
+
+    resolver 8.8.8.8;
+
+    server_tokens off;
+    add_header X-Frame-Options "ALLOW-FROM riot.im";
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Strict-Transport-Security max-age=15768000;
+
+    error_page 404 = /404.htm;
+
+     location /media {
+         alias /var/www/maidstone-hackspace-website/mhackspace/media;
+         expires 1d;
+         add_header Pragma public;
+         add_header Cache-Control "public";
+     }
+
+
+    location / {
+#      try_files $uri $uri;
+      access_log on;
+      proxy_redirect off;
+      proxy_pass   http://app-dev;
+      proxy_pass_header Server;
+
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-SSL-Protocol $ssl_protocol;
+
+       proxy_ssl_session_reuse off;
+    }
+
+}
+
