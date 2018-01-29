@@ -50,7 +50,7 @@ X_FRAME_OPTIONS = 'ALLOW-FROM https://riot.im'
 # ------------------------------------------------------------------------------
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['maidstone-hackspace.org.uk', 'live.maidstone-hackspace.org.uk', 'www.maidstone-hackspace.org.uk'])
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['maidstone-hackspace.org.uk', 'live.maidstone-hackspace.org.ukhackdev_postgres_data_dev', 'www.maidstone-hackspace.org.uk'])
 ALLOWED_HOSTS.append('127.0.0.1')
 ALLOWED_HOSTS.append('172.18.0.5')
 
@@ -192,7 +192,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename': "%s/django.log" % ROOT_DIR,
+            'filename': "/tmp/django.log"
         },
     },
     'loggers': {
@@ -235,4 +235,3 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # ------------------------------------------------------------------------------
 COMPRESS_STORAGE = STATICFILES_STORAGE
 COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
-COMPRESS_URL = STATIC_URL

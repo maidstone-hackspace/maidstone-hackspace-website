@@ -90,15 +90,9 @@ AWS_HEADERS = {
 # MEDIA_URL = ''
 
 
-# Static Assets
-# ------------------------
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 # COMPRESSOR
 # ------------------------------------------------------------------------------
-COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-COMPRESS_URL = STATIC_URL
+# COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -201,7 +195,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename': "%s/django.log" % ROOT_DIR,
+            'filename': "/tmp/django.log" 
         },
     },
     'loggers': {
@@ -239,5 +233,3 @@ AWS_LOCATION = 'stage'
 
 STATIC_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-COMPRESS_URL = STATIC_URL

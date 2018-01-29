@@ -98,8 +98,6 @@ CAPTCHA = {
     'site': ''
 }
 
-WHITENOISE_AUTOREFRESH = True
-WHITENOISE_USE_FINDERS = True
 
 LOGGING = {
     'version': 1,
@@ -125,11 +123,6 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
-        },
-        'logfile': {
-            'level':'DEBUG',
-            'class':'logging.FileHandler',
-            'filename': "%s/django.log" % ROOT_DIR,
         },
     },
     'loggers': {
@@ -161,6 +154,3 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_S3_SECURE_URLS = True
 STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-COMPRESS_URL = 'static/'
-#/'%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)

@@ -495,3 +495,5 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+
+COMPRESS_URL = 'cache/'
