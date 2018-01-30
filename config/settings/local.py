@@ -17,7 +17,7 @@ from .common import *  # noqa
 # DEBUG
 # ------------------------------------------------------------------------------
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
-
+DEBUG = True
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 # SECRET CONFIGURATION
@@ -169,7 +169,9 @@ AWS_S3_OBJECT_PARAMETERS = {
 AWS_LOCATION = 'dev'
 AWS_S3_SECURE_URLS = True
 STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+STATICFILES_STORAGE = 'mhackspace.core.storage.SassStorageFix'
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------

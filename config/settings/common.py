@@ -446,7 +446,8 @@ PAYMENT_PROVIDERS = {
 }
 
 SASS_PRECISION = 8
-
+# Important this fixes permission issues by compiling in a temporary folder, instead of inside your project
+SASS_PROCESSOR_ROOT = os.path.join('/tmp', 'sass')
 SASS_PROCESSOR_INCLUDE_DIRS = [
     str(APPS_DIR) + '/static/sass',
     str(ROOT_DIR) + '/node_modules',

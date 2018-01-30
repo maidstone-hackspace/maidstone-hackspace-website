@@ -14,6 +14,7 @@ framework.
 
 """
 import os
+import bjoern
 
 from django.core.wsgi import get_wsgi_application
 
@@ -38,3 +39,4 @@ from werkzeug.debug import DebuggedApplication
 application = DebuggedApplication(application, evalex=True, pin_security=True)
 application.debug = True
 
+bjoern.run(application, 'unix:/data/sockets/bjoern-mhackspace.sock')

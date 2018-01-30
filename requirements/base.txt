@@ -60,6 +60,8 @@ lxml==3.7.3
 # ------------------------------------------------
 gevent==1.2.2
 gunicorn==19.7.1
+#https://github.com/jonashaag/bjoern
+#bjoern
 
 # Your custom requirements go here
 mock==2.0.0

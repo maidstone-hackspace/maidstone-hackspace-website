@@ -31,6 +31,7 @@ services:
     depends_on:
       - postgres
       # - redis
+    # command: python /bjorne.py
     command: /dev-gunicorn-mhackspace.sh
     env_file: .env
     volumes:
@@ -76,4 +77,4 @@ services:
     env_file: .env
     volumes:
       - ./mhackspace:/data
-    command: server /data
+    command: server --config-dir /tmp/minio /data
