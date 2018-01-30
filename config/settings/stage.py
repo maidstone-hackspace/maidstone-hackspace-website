@@ -17,7 +17,7 @@ from .common import *  # noqa
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Raises ImproperlyConfigured exception if DJANGO_SECRET_KEY not in os.environ
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-SITE_ID = 2
+
 
 # This ensures that Django will be able to detect a secure connection
 # properly on Heroku.
@@ -90,10 +90,10 @@ AWS_HEADERS = {
 # MEDIA_URL = ''
 
 
-# COMPRESSOR
-# ------------------------------------------------------------------------------
-# COMPRESS_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
+# Static Assets
+# ------------------------
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # EMAIL
 # ------------------------------------------------------------------------------
 DEFAULT_FROM_EMAIL = env('DJANGO_DEFAULT_FROM_EMAIL',
@@ -108,7 +108,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_HOST_USER = env('EMAIL_USER')
 EMAIL_PORT = 587
-EMAIL_NOTIFY = False
+EMAIL_NOTIFY = True
 
 MSG_PREFIX = 'MHS'
 
@@ -139,7 +139,7 @@ DATABASES['default'] = env.db('DATABASE_URL')
 # CACHING
 # ------------------------------------------------------------------------------
 
-REDIS_LOCATION = '{0}/{1}'.format(env('REDIS_URL', default='redis://127.0.0.1:6379'), 0)
+REDIS_LOCATION = '{0}/{1}'.format(env('REDIS_URL', default='redis://redis:6379'), 0)
 # Heroku URL does not pass the DB number, so we parse it in
 CACHES = {
     'default': {
@@ -195,7 +195,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename': "/tmp/django.log" 
+            'filename': "/tmp/django.log"
         },
     },
     'loggers': {
@@ -233,3 +233,8 @@ AWS_LOCATION = 'stage'
 
 STATIC_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# COMPRESSOR
+# ------------------------------------------------------------------------------
+COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
+COMPRESS_STORAGE = STATICFILES_STORAGE

@@ -17,7 +17,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use
@@ -32,3 +31,7 @@ application = get_wsgi_application()
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
 # application = HelloWorldApplication(application)
+# apply Werkzeug WSGI middleware
+if os.environ.setdefault('DEBUG', 'False') is True:
+    from werkzeug.debug import DebuggedApplication
+    application = DebuggedApplication(application, evalex=True)

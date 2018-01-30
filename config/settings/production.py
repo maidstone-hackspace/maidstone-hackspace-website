@@ -108,6 +108,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
 EMAIL_HOST_USER = env('EMAIL_USER')
 EMAIL_PORT = 587
+EMAIL_NOTIFY = True
+
+MSG_PREFIX = 'MH'
 
 # Anymail with Mailgun
 #INSTALLED_APPS += ("anymail", )
@@ -210,7 +213,7 @@ LOGGING = {
 }
 
 # Custom Admin URL, use {% url 'admin:index' %}
-ADMIN_URL = env('DJANGO_ADMIN_URL', default='trustee')
+ADMIN_URL = env('DJANGO_ADMIN_URL', default='trustee/')
 
 # Your production stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
@@ -233,5 +236,6 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------
+COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 COMPRESS_STORAGE = STATICFILES_STORAGE
 COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)

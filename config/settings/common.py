@@ -404,6 +404,8 @@ CELERY_RESULT_SERIALIZER = 'json'
 # django-compressor
 # ------------------------------------------------------------------------------
 INSTALLED_APPS += ("compressor", 'sass_processor',)
+INSTALLED_APPS += ('django_extensions', )
+INSTALLED_APPS += ('storages', )
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}

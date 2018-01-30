@@ -77,10 +77,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TEMPLATE_CONTEXT': True,
 }
 
-# django-extensions
-# ------------------------------------------------------------------------------
-INSTALLED_APPS += ('django_extensions', )
-INSTALLED_APPS += ('storages', )
 
 # TESTING
 # ------------------------------------------------------------------------------
@@ -99,6 +95,14 @@ CAPTCHA = {
 }
 
 
+# LOGGING CONFIGURATION
+# ------------------------------------------------------------------------------
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -124,20 +128,32 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
+        'logfile': {
+            'level':'DEBUG',
+            'class':'logging.FileHandler',
+            'filename': "/tmp/django.log"
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'logfile'],
             'level': 'ERROR',
             'propagate': True
         },
         'django.security.DisallowedHost': {
             'level': 'ERROR',
-            'handlers': ['console', 'mail_admins'],
+            'handlers': ['logfile', 'console', 'mail_admins'],
             'propagate': True
         }
     }
 }
+
+# Custom Admin URL, use {% url 'admin:index' %}
+ADMIN_URL = env('DJANGO_ADMIN_URL', default='trustee/')
+
+# Your production stuff: Below this line define 3rd party library settings
+# ------------------------------------------------------------------------------
+
 
 PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'http://127.0.0.1:8180'
 TEMPLATE_DEBUG = False
@@ -145,12 +161,17 @@ TEMPLATE_DEBUG = False
 AWS_S3_SECURE_URLS = False
 AWS_ACCESS_KEY_ID = env('MINIO_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('MINIO_SECRET_KEY')
-
-AWS_S3_ENDPOINT_URL = 'http://%s:9000' % socket.gethostbyname('bucket')
 AWS_STORAGE_BUCKET_NAME = 'static'
+AWS_S3_ENDPOINT_URL = 'http://%s:9000' % socket.gethostbyname('bucket')
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
+AWS_LOCATION = 'dev'
 AWS_S3_SECURE_URLS = True
 STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# COMPRESSOR
+# ------------------------------------------------------------------------------
+COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
+COMPRESS_STORAGE = STATICFILES_STORAGE
