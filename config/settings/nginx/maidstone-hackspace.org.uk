@@ -1,13 +1,18 @@
-upstream app-dev {
-    server unix:/data/sockets/dev-gunicorn-mhackspace.sock fail_timeout=0;
+upstream app-gunicorn {
+    server unix:/data/sockets/gunicorn-mhackspace.sock fail_timeout=0;
 }
+upstream app-bjoern {
+    server unix:/data/sockets/bjoern-mhackspace.sock fail_timeout=0;
+}
+
 
 server {
     listen 80;
     server_name dev.maidstone-hackspace.org.uk;
     root /var/www/maidstone-hackspace-website;
 
-    resolver 8.8.8.8;
+    # resolver 8.8.8.8;
+    resolver 127.0.0.11;
 
     server_tokens off;
     add_header X-Frame-Options "ALLOW-FROM riot.im";
@@ -16,6 +21,12 @@ server {
     add_header Strict-Transport-Security max-age=15768000;
 
     error_page 404 = /404.htm;
+
+    # only for dev to test different wsgi servers
+    set $upstream "django:8000";
+    if ($http_cookie ~ "proxy_override=([\w-]+)") {
+        set $upstream $1;
+    }
 
      location /media {
          alias /var/www/maidstone-hackspace-website/mhackspace/media;
@@ -26,18 +37,18 @@ server {
 
 
     location / {
-#      try_files $uri $uri;
-      access_log on;
-      proxy_redirect off;
-      proxy_pass   http://app-dev;
-      proxy_pass_header Server;
+        access_log on;
+        proxy_redirect off;
+        proxy_pass_header Server;
+        resolver 127.0.0.11;
 
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header Host $host;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-SSL-Protocol $ssl_protocol;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-SSL-Protocol $ssl_protocol;
 
-       proxy_ssl_session_reuse off;
+        proxy_pass http://$upstream;
+        proxy_ssl_session_reuse off;
     }
 
 }

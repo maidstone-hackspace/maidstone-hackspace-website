@@ -5,8 +5,7 @@ ENV PYTHONUNBUFFERED 1
 
 #RUN apk add --no-cache libev-dev git postgresql-dev gcc python3-dev musl-dev
 
-#RUN apt update
-#RUN apt install -y libev-dev libevdev2 git python3-dev 
+RUN apt update && apt install -y libev-dev libmagic-dev && pip install bjoern
 
 # Requirements have to be pulled and installed here, otherwise caching won't work
 COPY ./requirements /requirements
