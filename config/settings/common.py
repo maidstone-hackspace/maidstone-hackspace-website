@@ -13,6 +13,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 import time
 import environ
+import socket
 
 # from spirit.settings import *
 ROOT_DIR = environ.Path(__file__) - 3  # (mhackspace/config/settings/common.py - 3 = mhackspace/)
@@ -49,6 +50,7 @@ ST_UPLOAD_FILE_ENABLED = True
 ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
 ST_BASE_DIR = os.path.dirname(__file__)
 
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='wq)sg12k&5&adv)e%56n5e97o@))6xu90b**=-w+)d^c+cd9%1')
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -193,6 +195,9 @@ FIXTURE_DIRS = (
 # EMAIL CONFIGURATION
 # ------------------------------------------------------------------------------
 EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
+EMAIL_PORT = 1025
+EMAIL_HOST = env("EMAIL_HOST", default='mailhog')
+MSG_PREFIX = env("EMAIL_HOST", default='MHT')
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -406,6 +411,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 INSTALLED_APPS += ("compressor", 'sass_processor',)
 INSTALLED_APPS += ('django_extensions', )
 INSTALLED_APPS += ('storages', )
+INSTALLED_APPS += ('gunicorn', )
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
@@ -500,3 +506,37 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 
 COMPRESS_URL = 'cache/'
+
+# django-debug-toolbar
+# ---------------------MDVTDNXFTRJSJBX9KWOJTMCGSNMYASEFNBPDUZJMGSPPCVMQRUZMZAEXDTIGHPZCP9JBGLVKGSJMZKPVV---------------------------------------------------------
+MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+INSTALLED_APPS += ('debug_toolbar', )
+
+ALLOWED_HOSTS = ['*']
+INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', '172.22.0.9', '192.168.1.113', '172.22.0.4', '0.0.0.0', '192.168.1.64']
+# tricks to have debug toolbar when developing with docker
+if os.environ.get('USE_DOCKER') == 'yes':
+    ip = socket.gethostbyname(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + "1"]
+
+# CACHING
+# ------------------------------------------------------------------------------
+
+REDIS_LOCATION = '{0}/{1}'.format(env('REDIS_URL', default='redis://redis:6379'), 0)
+# Heroku URL does not pass the DB number, so we parse it in
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_LOCATION,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'IGNORE_EXCEPTIONS': True,  # mimics memcache behavior.
+                                        # http://niwinz.github.io/django-redis/latest/#_memcached_exceptions_behavior
+        }
+    },
+    'st_rate_limit': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'spirit_rl_cache',
+        'TIMEOUT': None
+    }
+}

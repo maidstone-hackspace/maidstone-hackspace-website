@@ -120,20 +120,21 @@ docker-compose -fstage.yml run --rm postgres psql -U postgres
 *** Backups
 Create a backup file with today's date
 #+BEGIN_SRC bash
-docker exec -t {CONTAINER_NAME} pg_dump -Fp -c -U postgresuser > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+    docker exec -t {CONTAINER_NAME} pg_dump -Fp -c -U postgresuser > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+    docker exec {CONTAINER_NAME} bash -lc 'pg_dump --format custom vmdb_production' > dump_`date +%d-%m-%Y"_"%H_%M_%S`.pgdata
 #+END_SRC
 
 Import previously made backup
 #+BEGIN_SRC bash
-cat dump_27-01-2018_14_26_09.sql | docker exec -i {CONTAINER_ID} psql -U postgres
+  docker exec -i -u {USER} {CONTAINER_NAME} pg_restore -C --clean -d {DATABASE_USER} < dump_31-01-2018_13_09_24.pgdata
+  cat dump_27-01-2018_14_26_09.sql | docker exec -i {CONTAINER_ID} psql -U postgres
 #+END_SRC
 
+letsencrypt config
+#+BEGIN_SRC bash
+  letsencrypt certonly --renew --webroot -w /var/www/.well-known -d maidstone-hackspace.org.uk -d maidstone-hackspace.org.uk -d www.maidstone-hackspace.org.uk
+#+END_SRC
 
-docker exec -i {CONTINERID} pg_restore -U postgresuser <  ./dump_27-01-2018_18_16_45.sql
-docker exec miq_latest bash -lc 'pg_dump --format custom vmdb_production' > /tmp/pg_dump.pgdata
-
-
-docker exec {CONTAINERID} bash -lc 'pg_dump --format custom -U postgresuser' > pg_dump.pgdata
 
 CMD ["nginx", "-g", "daemon off;"]
 sudo chmod -R a+rX static/
