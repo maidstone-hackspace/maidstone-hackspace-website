@@ -509,8 +509,6 @@ COMPRESS_URL = 'cache/'
 
 # django-debug-toolbar
 # ---------------------MDVTDNXFTRJSJBX9KWOJTMCGSNMYASEFNBPDUZJMGSPPCVMQRUZMZAEXDTIGHPZCP9JBGLVKGSJMZKPVV---------------------------------------------------------
-MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += ('debug_toolbar', )
 
 ALLOWED_HOSTS = ['*']
 INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', '172.22.0.9', '192.168.1.113', '172.22.0.4', '0.0.0.0', '192.168.1.64']

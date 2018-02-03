@@ -126,6 +126,7 @@ Create a backup file with today's date
 
 Import previously made backup
 #+BEGIN_SRC bash
+docker exec -i -u {USER} {CONTAINER_NAME}  pg_restore --verbose --no-acl --no-owner --clean --role=postgres -Upostgres --dbname={DATABASE_USER} < dump_31-01-2018_13_09_24.pgdata
   docker exec -i -u {USER} {CONTAINER_NAME} pg_restore -C --clean -d {DATABASE_USER} < dump_31-01-2018_13_09_24.pgdata
   cat dump_27-01-2018_14_26_09.sql | docker exec -i {CONTAINER_ID} psql -U postgres
 #+END_SRC

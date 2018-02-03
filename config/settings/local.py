@@ -1,35 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-Local settings
-
-- Run in Debug mode
-
-- Use mailhog for emails
-
-- Add Django Debug Toolbar
-- Add django-extensions as app
-"""
 
 import socket
 import os
 from .common import *  # noqa
 
-# DEBUG
-# ------------------------------------------------------------------------------
 DEBUG = env.bool('DJANGO_DEBUG', default=True)
 DEBUG = True
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
-
-# SECRET CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-# Note: This key only used for development and testing.
-
-# django-debug-toolbar
-# ---------------------MDVTDNXFTRJSJBX9KWOJTMCGSNMYASEFNBPDUZJMGSPPCVMQRUZMZAEXDTIGHPZCP9JBGLVKGSJMZKPVV---------------------------------------------------------
-# MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-# MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-# INSTALLED_APPS += ('debug_toolbar', )
 
 # ALLOWED_HOSTS = ['*']
 # INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', '172.22.0.9', '192.168.1.113', '172.22.0.4', '0.0.0.0']
@@ -40,6 +17,8 @@ if os.environ.get('USE_DOCKER') == 'yes':
     ip = socket.gethostbyname(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + "1"]
 
+MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+INSTALLED_APPS += ('debug_toolbar', )
 DEBUG_TOOLBAR_CONFIG = {
     'DISABLE_PANELS': [
         'debug_toolbar.panels.redirects.RedirectsPanel',
