@@ -103,7 +103,7 @@ LOGGING = {
 
 
 PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'http://127.0.0.1:8180'
-TEMPLATE_DEBUG = True 
+TEMPLATE_DEBUG = True
 
 AWS_S3_SECURE_URLS = False
 AWS_ACCESS_KEY_ID = env('MINIO_ACCESS_KEY')
@@ -118,6 +118,7 @@ AWS_S3_SECURE_URLS = True
 STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 
 
+# STATICFILES_STORAGE = 'mhackspace.core.storage.S3PipelineManifestStorage'
 STATICFILES_STORAGE = 'mhackspace.core.storage.SassStorageFix'
 
 # COMPRESSOR

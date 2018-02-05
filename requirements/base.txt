@@ -72,7 +72,7 @@ gocardless_pro
 braintree==3.37.2
 
 django-autofixture==0.12.1
-
+django-pipeline==1.6.14
 git+https://github.com/olymk2/scaffold.git
 #git+git://github.com/olymk2/django-wiki.git
 git+git://github.com/django-wiki/django-wiki.git

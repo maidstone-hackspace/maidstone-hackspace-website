@@ -3,6 +3,8 @@ version: '2'
 volumes:
   sockets:
     driver: local
+  storage_bucket:
+    driver: local
   postgres_data:
     driver: local
   postgres_backup:
@@ -39,6 +41,7 @@ services:
     volumes:
       - .:/app
       - sockets:/data/sockets
+      - storage_bucket:/tmp/bucket
 
   django_bjoren:
     build:
@@ -103,5 +106,5 @@ services:
     image: minio/minio
     env_file: .env
     volumes:
-      - ./mhackspace:/data
-    command: server --config-dir /tmp/minio /data
+      - storage_bucket:/tmp/bucket
+    command: server --config-dir /tmp/minio /tmp/bucket

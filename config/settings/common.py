@@ -81,7 +81,7 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount.providers.google',  # registration
     'allauth.socialaccount.providers.github',  # registration
     # 'allauth.socialaccount.providers.facebook',  # registration
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
     'stdimage',
     'rest_framework',
     'django_filters',
@@ -154,7 +154,7 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ------------------------------------------------------------------------------
 MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -299,7 +299,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
+    'pipeline.finders.PipelineFinder',
+    # 'sass_processor.finders.CssFinder',
 )
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -408,11 +409,12 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 # django-compressor
 # ------------------------------------------------------------------------------
-INSTALLED_APPS += ("compressor", 'sass_processor',)
+# INSTALLED_APPS += ("compressor", 'sass_processor',)
 INSTALLED_APPS += ('django_extensions', )
 INSTALLED_APPS += ('storages', )
 INSTALLED_APPS += ('gunicorn', )
-STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
+INSTALLED_APPS += ('pipeline', )
+# STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = '^trustee/'
@@ -538,3 +540,31 @@ CACHES = {
         'TIMEOUT': None
     }
 }
+
+PIPELINE = {
+    'PIPELINE_ENABLED': True,
+    'PIPELINE_COLLECTOR_ENABLED': True,
+    'STYLESHEETS': {
+        'main': {
+            'source_filenames': (
+                # 'scss/project.scss',
+                'css/project2.css'
+            ),
+            'output_filename': 'css/project.css',
+            'extra_context': {
+                'media': 'screen,projection',
+            },
+        },
+    },
+    'JAVASCRIPT': {
+        'stats': {
+            'source_filenames': (
+            ),
+            'output_filename': 'js/project2.js',
+        }
+    }
+}
+PIPELINE['COMPILERS'] = (
+  'pipeline.compilers.sass.SASSCompiler',
+)
+
