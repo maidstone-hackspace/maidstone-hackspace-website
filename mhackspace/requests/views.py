@@ -67,4 +67,5 @@ class RequestsList(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(RequestsList, self).get_context_data(*args, **kwargs)
         context['requests_history'] = UserRequest.objects.filter(acquired=True)[:50]
+        context['total'] = sum([r.cost for r in UserRequest.objects.filter(acquired=True)])
         return context

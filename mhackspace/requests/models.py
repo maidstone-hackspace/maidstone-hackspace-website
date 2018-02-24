@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.contrib.sites.models import Site
 from django.db.models.signals import post_save
 from martor.models import MartorField
 from mhackspace.base.tasks import matrix_message
@@ -53,7 +54,10 @@ class UserRequestsComment(models.Model):
 def send_topic_update_email(sender, instance, **kwargs):
     matrix_message.delay(
         prefix=' - REQUEST',
-        message='%s - %s' % (instance.title, instance.get_absolute_url()))
+        message='%s - https://%s%s' % (
+            Site.objects.get_current().domain,
+            instance.title,
+            instance.get_absolute_url()))
 
 
 post_save.connect(send_topic_update_email, sender=UserRequest)

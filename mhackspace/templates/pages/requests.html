@@ -44,6 +44,7 @@
           <th>#</th>
           <th>Type</th>
           <th>Date</th>
+          <th>Cost</th>
           <th>Detail</th>
         </tr>
       </thead>
@@ -57,6 +58,9 @@
           {{ request.created_date }}
         </td>
         <td>
+          {{ request.cost }}
+        </td>
+        <td>
           <a href="{% url 'requests_detail' request.id %}">{{ request.title }}</a>
         </td>
         <td>
@@ -68,6 +72,13 @@
       </tr>
 
       {% endfor %}
+
+      <tr>
+        <th colspan="3">Total</th>
+        <td>{{ total }}</td>
+        <td></td>
+        <td></td>
+      </tr>
     </table>
 
 
