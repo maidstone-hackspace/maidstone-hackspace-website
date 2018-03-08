@@ -100,3 +100,4 @@ django-celery-beat==1.0.1
 
 argon2-cffi
 django-cors-headers
+magic
