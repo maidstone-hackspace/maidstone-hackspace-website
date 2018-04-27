@@ -111,6 +111,14 @@ Setup / create new certs
 letsencrypt certonly --renew --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
 letsencrypt certonly --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
 #+END_SRC
+
+Automation of renewal process
+create a file called =/etc/cron.monthly/letsencrypt-renew.sh= and make it executable with chmod +x, then place your above commands in the file like in the example below. 
+#+BEGIN_SRC bash
+#!/bin/bash
+letsencrypt certonly --webroot --renew-by-default --agree-tos -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
+#+END_SRC
+
 *** Postgres tips
 Connect to the database inside container to run sql commands.
 #+BEGIN_SRC bash
@@ -139,3 +147,17 @@ letsencrypt config
 
 CMD ["nginx", "-g", "daemon off;"]
 sudo chmod -R a+rX static/
+
+#+BEGIN_SRC emacs-lisp
+(let ((default-directory "/docker:hackdev_django_1:/app"))
+  (python-shell-make-comint "python manage.py shell" "Python" 'show))
+#+END_SRC
+** Test
+
+#+BEGIN_SRC emacs-lisp
+(setq python-shell-interpreter "/docker:hackdev_django_1:/usr/local/bin/python")
+#+END_SRC
+
+#+RESULTS:
+: /docker:hackdev_django_1:/usr/local/bin/python
+

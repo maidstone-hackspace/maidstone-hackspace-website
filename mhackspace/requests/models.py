@@ -55,8 +55,8 @@ def send_topic_update_email(sender, instance, **kwargs):
     matrix_message.delay(
         prefix=' - REQUEST',
         message='%s - https://%s%s' % (
-            Site.objects.get_current().domain,
             instance.title,
+            Site.objects.get_current().domain,
             instance.get_absolute_url()))
 
 
