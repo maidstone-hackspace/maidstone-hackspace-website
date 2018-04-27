@@ -105,3 +105,7 @@ services:
     volumes:
       - ./mhackspace:/data
     command: server --config-dir /tmp/minio /data
+
+  directory:
+    image: osixia/openldap:1.2.0
+    env_file: .env

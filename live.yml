@@ -15,6 +15,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - postgres_backup:/backups
     env_file: .env
+    restart: always
 
   django:
     build:
@@ -28,9 +29,11 @@ services:
     volumes:
       - .:/app
       - sockets:/data/sockets
+    restart: always
 
   redis:
     image: redis:latest
+    restart: always
 
   celeryworker:
     build:
@@ -43,6 +46,7 @@ services:
       - postgres
       - redis
     command: celery -A mhackspace.celeryapp worker -l INFO
+    restart: always
 
   celerybeat:
     build:
@@ -55,3 +59,7 @@ services:
       - postgres
       - redis
     command: celery -A mhackspace.celeryapp beat -l INFO
+    restart: always
+  directory:
+    image: osixia/openldap:1.2.0
+    env_file: .env

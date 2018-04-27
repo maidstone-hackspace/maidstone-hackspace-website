@@ -9,3 +9,5 @@ cache/
 celerybeat-schedule
 celerybeat.pid
 .minio.sys
+buckets
+*.pyc

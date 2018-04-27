@@ -40,3 +40,4 @@ docker-compose -f dev.yml run django python manage.py migrate
 #+BEGIN_SRC sh
 docker-compose -f dev.yml run django python manage.py createsuperuser
 #+END_SRC
+

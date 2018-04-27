@@ -12,7 +12,7 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', '172.22.0.9', '192.168.1.113', '172.22.0.4', '0.0.0.0']
 # tricks to have debug toolbar when developing with docker
 if os.environ.get('USE_DOCKER') == 'yes':
-    ip = socket.gethostbyname('nginx')
+    # ip = socket.gethostbyname('nginx')
     INTERNAL_IPS += [ip[:-1] + "1"]
     ip = socket.gethostbyname(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + "1"]

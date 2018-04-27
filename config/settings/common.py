@@ -144,6 +144,7 @@ LOCAL_APPS = (
     'mhackspace.core',
     'mhackspace.requests',
     'mhackspace.register',
+    'mhackspace.ldapsync',
     'mhackspace.rfid',
 )
 
@@ -344,10 +345,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # PASSWORD HASHING
 PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.BCryptPasswordHasher',
 ]
 
@@ -538,3 +539,7 @@ CACHES = {
         'TIMEOUT': None
     }
 }
+
+LDAP_SERVER = env('LDAP_SERVER', default='172.19.0.6')
+LDAP_PASSWORD = env('LDAP_ADMIN_PASSWORD', default='secretldappassword')
+LDAP_ROOT = env('LDAP_ROOT', default='dc=maidstone-hackspace, dc=org, dc=uk')
