@@ -65,3 +65,19 @@ def matrix_message(message, prefix=''):
     except:
         pass
     return {'result', 'Matrix message sent successfully'}
+
+
+@shared_task
+def twitter_mesage(message, prefix=''):
+    import twitter
+    api = twitter.Api(consumer_key=[settings.TWITTER_CONSUMER_KEY],
+                      consumer_secret=[settings.TWITTER_CONSUMER_SECRET],
+                      access_token_key=[settings.TWITTER_ACCESS_TOKEN],
+                      access_token_secret=[settings.TWITTER_ACCESS_SECRET])
+    try:
+        status = api.PostUpdate(message)
+        return {'result', 'Twitter message sent successfully'}
+    except UnicodeDecodeError:
+        return {'result', "Your message could not be encoded. "
+                "Perhaps it contains non-ASCII characters? "
+                "Try explicitly specifying the encoding with the --encoding flag"}
