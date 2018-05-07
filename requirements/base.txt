@@ -103,3 +103,4 @@ django-cors-headers
 python-magic
 ldap3
 bcrypt==3.1.4
+python-twitter==3.4.1
