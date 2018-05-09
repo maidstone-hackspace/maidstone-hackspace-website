@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from stdimage.models import StdImageField
+from django.db.models.signals import post_save
+from mhackspace.base.tasks import matrix_message
 
 
 class User(AbstractUser):
