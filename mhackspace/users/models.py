@@ -117,3 +117,14 @@ class Rfid(models.Model):
 
     def name(self):
         return self.user.name
+
+
+def send_subscription_update_message(sender, instance, **kwargs):
+    matrix_message.delay(
+        prefix=' - MEMBERSHIP',
+        message='Changed to %s for user %s' % (
+            instance.get_status,
+            instance.user.username))
+
+
+post_save.connect(send_subscription_update_message, sender=Membership)
