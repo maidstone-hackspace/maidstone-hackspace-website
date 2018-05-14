@@ -68,7 +68,7 @@ def matrix_message(message, prefix=''):
 
 
 @shared_task
-def twitter_mesage(message, prefix=''):
+def twitter_message(message, prefix=''):
     import twitter
     api = twitter.Api(consumer_key=[settings.TWITTER_CONSUMER_KEY],
                       consumer_secret=[settings.TWITTER_CONSUMER_SECRET],
