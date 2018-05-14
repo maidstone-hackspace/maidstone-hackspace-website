@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
-from mhackspace.core.tasks import twitter_message
+from mhackspace.base.tasks import twitter_message
 
 
 class Command(BaseCommand):
