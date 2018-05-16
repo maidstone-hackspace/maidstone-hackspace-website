@@ -75,9 +75,10 @@ def twitter_message(message, prefix=''):
                       access_token_key=settings.TWITTER_ACCESS_TOKEN,
                       access_token_secret=settings.TWITTER_ACCESS_SECRET)
     try:
-        status = api.PostUpdate(message)
+        status = api.PostUpdate(prefix + message)
         return {'result', 'Twitter message sent successfully'}
     except UnicodeDecodeError:
         return {'result', "Your message could not be encoded. "
                 "Perhaps it contains non-ASCII characters? "
                 "Try explicitly specifying the encoding with the --encoding flag"}
+    return {'result': 'Twitter message sent successfully'}
