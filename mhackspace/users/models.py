@@ -123,6 +123,7 @@ class Rfid(models.Model):
 
 def send_subscription_update_message(sender, instance, **kwargs):
     matrix_message.delay(
+        room='admin',
         prefix=' - MEMBERSHIP',
         message='Changed to %s for user %s' % (
             instance.get_status,

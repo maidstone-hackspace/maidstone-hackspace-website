@@ -499,7 +499,13 @@ CORS_ORIGIN_WHITELIST = (
 # Matrix chat settings
 MATRIX_USER=env('MATRIX_USERNAME')
 MATRIX_PASSWORD=env('MATRIX_PASSWORD')
-MATRIX_ROOM=env('MATRIX_ROOM')
+MATRIX_ROOM={
+    'default': env('MATRIX_ROOM', default='fmCpNwqgIiuwATlcdw:matrix.org'),
+    'admin': 'SiUlbxziFQjndQQTvl:matrix.org',
+    'piwars': 'ilIDnMSGUKsejBFkmh:matrix.org'
+}
+
+
 MSG_PREFIX = 'MH'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 

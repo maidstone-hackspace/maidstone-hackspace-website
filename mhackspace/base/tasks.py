@@ -34,7 +34,7 @@ def send_email(email_to,
     return {'result', 'Email sent to %s' % email_to}
 
 @shared_task
-def matrix_message(message, prefix=''):
+def matrix_message(message, prefix='', room='default'):
     # we dont rely on theses, so ignore if it goes wrong
     # TODO at least log that something has gone wrong
     try:
@@ -48,14 +48,14 @@ def matrix_message(message, prefix=''):
 
         # join room by id
         url_params = {
-            'room': settings.MATRIX_ROOM,
+            'room': settings.MATRIX_ROOM.get(room),
             'access_token': access_token}
         url = matrix_join_room_id_url.format(**url_params)
         r1 = requests.post(url)
 
         # send message
         url_params = {
-            "room": settings.MATRIX_ROOM,
+            "room": settings.MATRIX_ROOM.get(room),
             "access_token": access_token}
         url = matrix_send_msg_url.format(**url_params)
         details = {
