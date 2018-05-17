@@ -129,4 +129,5 @@ def send_subscription_update_message(sender, instance, **kwargs):
             instance.user.username))
 
 
-post_save.connect(send_subscription_update_message, sender=Membership)
+#Needs to be change to seend to admin room, and not triger on scheduled job
+#post_save.connect(send_subscription_update_message, sender=Membership)
