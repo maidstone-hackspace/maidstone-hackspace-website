@@ -29,8 +29,10 @@ class Device(models.Model):
 class DeviceAuth(models.Model):
     rfid = models.ForeignKey(
         Rfid,
+        on_delete=models.CASCADE
     )
 
     device = models.ForeignKey(
         Device,
+        on_delete=models.CASCADE
     )

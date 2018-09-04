@@ -2,7 +2,7 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 # from django.contrib.auth.models import Group
 from django.test import Client
 from django.test import RequestFactory
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from test_plus.test import TestCase
 from mock import patch, Mock
 from mhackspace.users.models import Membership

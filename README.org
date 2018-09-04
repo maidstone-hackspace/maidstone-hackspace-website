@@ -156,8 +156,9 @@ sudo chmod -R a+rX static/
 
 #+BEGIN_SRC emacs-lisp
 (setq python-shell-interpreter "/docker:hackdev_django_1:/usr/local/bin/python")
+(setq python-environment-directory "/docker:hackdev_django_1:/")
 #+END_SRC
 
 #+RESULTS:
-: /docker:hackdev_django_1:/usr/local/bin/python
+: /docker:hackdev_django_1:/
 

@@ -19,37 +19,26 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('blog-category', kwargs={'category': self.slug})
+        return reverse("blog-category", kwargs={"category": self.slug})
 
 
 class Post(models.Model):
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     categories = models.ManyToManyField(Category)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = StdImageField(
-        upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
+        upload_to=UploadToAutoSlugClassNameDir(populate_from="title"),
         blank=True,
         null=True,
         variations={
-            'home': {
-                "width": 530,
-                "height": 220,
-                "crop": True},
-            'mobilethumb': {
-                "width": 580,
-                "height": 150,
-                "crop": True},
-            'thumbnail': {
-                "width": 250,
-                "height": 150,
-                "crop": True},
-            'full': {
-                "width": 825,
-                "height": 450,
-                "crop": True}},
-        validators=[
-            MinSizeValidator(730, 410)])
+            "home": {"width": 530, "height": 220, "crop": True},
+            "mobilethumb": {"width": 580, "height": 150, "crop": True},
+            "thumbnail": {"width": 250, "height": 150, "crop": True},
+            "full": {"width": 825, "height": 450, "crop": True},
+        },
+        validators=[MinSizeValidator(730, 410)],
+    )
 
     description = MartorField()
     excerpt = models.TextField(blank=True, null=True)
@@ -62,8 +51,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog-item', kwargs={'slug': self.slug})
+        return reverse("blog-item", kwargs={"slug": self.slug})
 
     class Meta:
-        ordering = ('-published_date',)
-
+        ordering = ("-published_date",)
