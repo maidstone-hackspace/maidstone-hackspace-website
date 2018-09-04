@@ -60,8 +60,8 @@ urlpatterns = [
         name='requests_detail'),
     url(r'^requests/(?P<pk>\d+)/submit/$', RequestsDetailForm.as_view(template_name='pages/requests-detail.html'), name='requests_detail_form'),
 
-    url(r'^discuss/', include('spirit.urls')),
-    url(r'^api/v1/', include(router.urls, namespace='v1')),
+    url(r'^discuss/', include(('spirit.urls', 'spirit'), namespace='spirit')),
+    url(r'^api/v1/', include((router.urls, 'v1'), namespace='v1')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^martor/', include('martor.urls')),
     url(
@@ -88,8 +88,9 @@ urlpatterns = [
     url(r'^api/docs/', include_docs_urls(title='Hackspace API')),
 
     # User management
-    url(r'^users/', include('mhackspace.users.urls', namespace='users')),
+    url(r'^users/', include(('mhackspace.users.urls', 'users'), namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
+    url('^accounts/', include('django.contrib.auth.urls')),
 
     # Your stuff: custom urls includes go here
     url(r'^latest/$', LatestEntriesFeed()),
@@ -98,10 +99,10 @@ urlpatterns = [
     url(r'membership/cancel/$', subscription.MembershipCancelView.as_view(), name='cancel_membership'),
     url(r'membership/(?P<provider>[\w\-]+)/success$', subscription.MembershipJoinSuccessView.as_view(), name='join_hackspace_success'),
     url(r'membership/(?P<provider>\w{0,50})/failure$', subscription.MembershipJoinFailureView.as_view(), name='join_hackspace_failure'),
-    url(r'^admin/password_reset/$', auth_views.password_reset, name='admin_password_reset'),
-    url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+    url(r'^admin/password_reset/$', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
+    url(r'^admin/password_reset/done/$', auth_views.PasswordChangeDoneView.as_view(), name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     url(r'^register/$', RegisterForm.as_view(), name='register_form'),
     url(r'^register/success$', TemplateView.as_view(template_name='pages/register.html'), name='register_success'),
