@@ -46,7 +46,7 @@ class RequestsDetail(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(RequestsDetail, self).get_context_data(*args, **kwargs)
-        context['requests_comments'] = UserRequestsComment.objects.all()
+        context['request_comments'] = UserRequestsComment.objects.all()
         context['form'] = UserRequestFormComment
         return context
 

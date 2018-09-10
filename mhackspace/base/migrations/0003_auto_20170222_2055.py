@@ -7,29 +7,52 @@ import django.utils.timezone
 import stdimage.models
 import stdimage.utils
 import stdimage.validators
+import dynamic_filenames
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('base', '0002_auto_20170214_1911'),
-    ]
+    dependencies = [("base", "0002_auto_20170214_1911")]
 
     operations = [
         migrations.CreateModel(
-            name='BannerImage',
+            name="BannerImage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('url', models.URLField()),
-                ('title', models.CharField(max_length=255)),
-                ('displayed', models.BooleanField(default=True)),
-                ('original_image', models.URLField(blank=True, max_length=255, null=True)),
-                ('scaled_image', stdimage.models.StdImageField(blank=True, null=True, upload_to=stdimage.utils.UploadToAutoSlugClassNameDir('title'), validators=[stdimage.validators.MinSizeValidator(1200, 300)])),
-                ('caption', models.TextField()),
-                ('date', models.DateTimeField(default=django.utils.timezone.now)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("url", models.URLField()),
+                ("title", models.CharField(max_length=255)),
+                ("displayed", models.BooleanField(default=True)),
+                (
+                    "original_image",
+                    models.URLField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "scaled_image",
+                    stdimage.models.StdImageField(
+                        blank=True,
+                        null=True,
+                        upload_to=dynamic_filenames.FilePattern(
+                            filename_pattern="{model_name}/{instance.title:slug}{ext}"
+                        ),
+                        validators=[
+                            stdimage.validators.MinSizeValidator(1200, 300)
+                        ],
+                    ),
+                ),
+                ("caption", models.TextField()),
+                (
+                    "date",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
             ],
         ),
-        migrations.DeleteModel(
-            name='BannerImages',
-        ),
+        migrations.DeleteModel(name="BannerImages"),
     ]

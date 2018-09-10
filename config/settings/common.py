@@ -382,7 +382,7 @@ EDITOR_INCLUDE_JAVASCRIPT = False
 MARTOR_ENABLE_CONFIGS = {
     'imgur': 'true',     # to enable/disable imgur uploader/custom uploader.
     'mention': 'true',   # to enable/disable mention
-    'jquery': 'false',    # to include/revoke jquery (require for admin default django)
+    'jquery': 'true',    # to include/revoke jquery (require for admin default django)
 }
 MARTOR_UPLOAD_PATH = 'images/uploads/{}'.format(time.strftime("%Y/%m/%d/"))
 MARTOR_UPLOAD_URL = '/api/uploader/'  # change to local uploader

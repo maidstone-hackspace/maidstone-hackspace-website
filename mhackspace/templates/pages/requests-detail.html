@@ -6,24 +6,27 @@
 {% block head-open-graph %}
   <meta property="og:title" content="New request made" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:url" content="{{ request_detail.get_absolute_url }}" />
   <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
 {% endblock head-open-graph %}
 
 {% block content %}
-  <h2>{{requests.title}}</h2>
+  <h2>{{request_detail.title}}</h2>
 
   <div class="row">
     <div class="col">
-      {{requests.description}}
+      {{request_detail.description}}
     </div>
   </div>
 
-  {% for comment in requests_comments %}
+  {% for comment in request_comments %}
   <b>{{ comment.user }}</b>
   <p>{{ comment.comment }}</p>
   {% endfor %}
-
+  <br />
+  <br />
+  <br />
+  <p>Add comments below</p>
   {% if form %}
     <form method="POST" action="{% url 'requests_detail_form' request_detail.id %}" class="requests_detail_form">
       {% csrf_token %}

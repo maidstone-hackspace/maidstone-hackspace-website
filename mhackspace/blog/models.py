@@ -5,9 +5,14 @@ from django.urls import reverse
 from martor.models import MartorField
 from stdimage.validators import MinSizeValidator
 from stdimage.models import StdImageField
-from stdimage.utils import UploadToAutoSlugClassNameDir
+from dynamic_filenames import FilePattern
+
 
 from mhackspace.users.models import User
+
+upload_to_pattern = FilePattern(
+    filename_pattern="{model_name}/{instance.title:slug}{ext}"
+)
 
 
 class Category(models.Model):
@@ -28,7 +33,7 @@ class Post(models.Model):
     categories = models.ManyToManyField(Category)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = StdImageField(
-        upload_to=UploadToAutoSlugClassNameDir(populate_from="title"),
+        upload_to=upload_to_pattern,
         blank=True,
         null=True,
         variations={
