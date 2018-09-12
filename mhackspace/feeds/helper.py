@@ -21,11 +21,11 @@ def import_feeds(feed=False):
     articles = []
     for article in rss_articles:
         articles.append(Article(
-            url=article['url'],
+            url=article['url'].decode(),
             feed=Feed.objects.get(pk=article['id']),
-            title=article['title'],
+            title=article['title'].decode(),
             original_image=article['image'],
-            description=article['description'],
+            description=article['description'].decode(),
             date=make_aware(article['date'])
         ))
 
