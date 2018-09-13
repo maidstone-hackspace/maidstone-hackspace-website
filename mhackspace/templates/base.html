@@ -29,10 +29,10 @@
   {% block css %}{% endblock %}
 
   {% block head-open-graph %}
-  <meta property="og:title" content="Maidstone Hackspace" />
-  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Maidstone Hackspace{% if open_graph.title %} - {{open_graph.title}}{% endif %}" />
+  <meta property="og:type" content="{% if open_graph.type %}{{open_graph.type}}{% else %}website{% endif %}" />
   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-  <meta property="og:image" content="https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png" />
+  <meta property="og:image" content="{% if open_graph.image %}{{open_graph.image.full.url}}{% else %}https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png{% endif %}" />
   {% endblock head-open-graph %}
 
 
