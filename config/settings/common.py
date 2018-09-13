@@ -414,6 +414,7 @@ INSTALLED_APPS += ('django_extensions', )
 INSTALLED_APPS += ('storages', )
 INSTALLED_APPS += ('gunicorn', )
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = '^trustee/'
@@ -516,6 +517,7 @@ TWITTER_ACCESS_TOKEN=env('TWITTER_ACCESS_TOKEN')
 TWITTER_ACCESS_SECRET=env('TWITTER_ACCESS_SECRET')
 
 
+AWS_DEFAULT_ACL = None
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
