@@ -414,7 +414,11 @@ INSTALLED_APPS += ('django_extensions', )
 INSTALLED_APPS += ('storages', )
 INSTALLED_APPS += ('gunicorn', )
 STATICFILES_FINDERS += ("compressor.finders.CompressorFinder", )
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'mhackspace.core.storage.MediaStorage'
+STATICFILES_STORAGE = 'mhackspace.core.storage.StaticStorage'
+#COMPRESS_STORAGE = STATICFILES_STORAGE
+
 
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = '^trustee/'
@@ -516,8 +520,10 @@ TWITTER_CONSUMER_SECRET=env('TWITTER_CONSUMER_SECRET')
 TWITTER_ACCESS_TOKEN=env('TWITTER_ACCESS_TOKEN')
 TWITTER_ACCESS_SECRET=env('TWITTER_ACCESS_SECRET')
 
-
-AWS_DEFAULT_ACL = None
+LOCATION_PREFIX = env('BUCKET_PREFIX_PATH', default='')
+MEDIAFILE_LOCATION = LOCATION_PREFIX + 'media'
+STATICFILE_LOCATION = LOCATION_PREFIX + 'static'
+AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
