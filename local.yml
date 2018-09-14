@@ -103,7 +103,7 @@ services:
     image: minio/minio
     env_file: .env
     volumes:
-      - ./mhackspace:/data
+      - ./bucket:/data
     command: server --config-dir /tmp/minio /data
 
   directory:

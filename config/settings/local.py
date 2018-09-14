@@ -108,7 +108,7 @@ TEMPLATE_DEBUG = True
 AWS_S3_SECURE_URLS = False
 AWS_ACCESS_KEY_ID = env('MINIO_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('MINIO_SECRET_KEY')
-AWS_STORAGE_BUCKET_NAME = 'static'
+AWS_STORAGE_BUCKET_NAME = 'mhackspace-local'
 AWS_S3_ENDPOINT_URL = 'http://%s:9000' % socket.gethostbyname('bucket')
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
@@ -118,12 +118,11 @@ AWS_S3_SECURE_URLS = True
 STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 
 
-#STATICFILES_STORAGE = 'mhackspace.core.storage.SassStorageFix'
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------
-COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
-COMPRESS_STORAGE = STATICFILES_STORAGE
+#COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
+#COMPRESS_STORAGE = STATICFILES_STORAGE
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }

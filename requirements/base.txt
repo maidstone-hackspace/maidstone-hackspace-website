@@ -104,3 +104,4 @@ python-magic==0.4.15
 ldap3==2.5.1
 bcrypt==3.1.4
 python-twitter==3.4.2
+feedparser
