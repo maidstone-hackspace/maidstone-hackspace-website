@@ -32,7 +32,10 @@
   <meta property="og:title" content="Maidstone Hackspace{% if open_graph.title %} - {{open_graph.title}}{% endif %}" />
   <meta property="og:type" content="{% if open_graph.type %}{{open_graph.type}}{% else %}website{% endif %}" />
   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-  <meta property="og:image" content="{% if open_graph.image %}{{open_graph.image.full.url}}{% else %}https://maidstone-hackspace.org.uk/static/images/android-chrome-192x192.png{% endif %}" />
+  <meta property="og:image" content="{% if open_graph.image %}{{open_graph.image.full.url}}{% else %}{% static 'images/android-chrome-192x192.png' %}{% endif %}" />
+  {% if open_graph.description %}
+  <meta property="og:description" content="{{open_graph.description}}" />
+  {% endif %}
   {% endblock head-open-graph %}
 
 

@@ -23,8 +23,10 @@ from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 from mhackspace.requests.views import RequestsForm, RequestsList, RequestsDetail, RequestsDetailForm
 from mhackspace.rfid.views import DeviceViewSet, AuthUserWithDeviceViewSet
+from mhackspace.core.views import ChatView, AboutView
 
 from mhackspace.register.views import RegisterForm
+from mhackspace.wiki.urls import CustomWikiUrlPatterns
 
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_nyt.urls import get_pattern as get_nyt_pattern
@@ -47,8 +49,8 @@ sitemaps = {
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
-    url(r'^chat/$', TemplateView.as_view(template_name='pages/chat.html'), name='chat'),
+    url(r'^about/$', AboutView.as_view(template_name='pages/about.html'), name='about'),
+    url(r'^chat/$', ChatView.as_view(template_name='pages/chat.html'), name='chat'),
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
     url(r'^contact/$', contact, name='contact'),
 
@@ -110,7 +112,7 @@ urlpatterns = [
 
 urlpatterns += [
     url(r'^notifications/', get_nyt_pattern()),
-    url(r'^wiki/', get_wiki_pattern(), name='wiki')
+    url(r'^wiki/', get_wiki_pattern(url_config_class=CustomWikiUrlPatterns), name='wiki')
 ]
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

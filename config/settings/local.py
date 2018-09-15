@@ -121,8 +121,8 @@ STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------
-#COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
-#COMPRESS_STORAGE = STATICFILES_STORAGE
+COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
+COMPRESS_STORAGE = STATICFILES_STORAGE
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
