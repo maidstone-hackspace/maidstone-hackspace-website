@@ -4,7 +4,10 @@
 [[https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/][https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/shield.svg]]
 
 Repository for the maidstone hackspace website, feel free to fork this site for your own Hackspace.
-
+** Social
+Test site sharing links / cards with twitter and facebook
+https://cards-dev.twitter.com/validator
+https://developers.facebook.com/tools/debug/
 ** Requirements
 Before getting started make sure you have git, docker and docker-compose installed on your machine.
 The simplest way to setup this site is to use docker-compose so please install that from this site 

@@ -19,6 +19,7 @@ class BlogPost(DetailView):
             "image": self.object.image,
             "title": self.object.title,
             "type": "blog",
+            "description": self.object.excerpt,
         }
         return context
 

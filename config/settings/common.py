@@ -22,6 +22,7 @@ APPS_DIR = ROOT_DIR.path('mhackspace')
 env = environ.Env()
 env.read_env('%s/.env' % ROOT_DIR)
 
+# Start  ST is Spirit forum software config 
 ST_TOPIC_PRIVATE_CATEGORY_PK = 1
 ST_RATELIMIT_ENABLE = True
 ST_RATELIMIT_CACHE_PREFIX = 'srl'
@@ -49,6 +50,8 @@ ST_UPLOAD_FILE_ENABLED = True
 # Tests helpers
 ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
 ST_BASE_DIR = os.path.dirname(__file__)
+# END  ST is Spirit forum software config 
+
 
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='wq)sg12k&5&adv)e%56n5e97o@))6xu90b**=-w+)d^c+cd9%1')
 
