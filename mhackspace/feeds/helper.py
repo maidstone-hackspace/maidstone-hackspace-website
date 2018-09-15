@@ -3,10 +3,14 @@ import os
 import logging
 import feedparser
 
+from time import mktime
+from datetime import datetime
 from urllib.request import urlretrieve
 from django.core.files import File
 from django.utils.timezone import make_aware
+from django.utils import timezone
 from stdimage.utils import render_variations
+from mhackspace.feeds.reader import fetch_feeds
 
 # from scaffold.readers.rss_reader import feed_reader
 
@@ -18,24 +22,29 @@ logger = logging.getLogger(__name__)
 def feed_reader(feeds):
     for feed in feeds:
         print(feed)
-        yield feedparser.parse(feed['url'])
+        yield feedparser.parse(feed["url"])
 
 
 def import_feeds(feed=False):
     remove_old_articles()
-    rss_articles = feed_reader(get_active_feeds(feed))
+
+    print([f.get("url") for f in get_active_feeds(feed)])
+    rss_articles = fetch_feeds(get_active_feeds(feed))
 
     articles = []
     for article in rss_articles:
-        print(article)
+        date = datetime.fromtimestamp(mktime(article["date"]))
+        print(article["title"])
+        print(article["image"])
+        print('#############')
         articles.append(
             Article(
-                url=article["url"].decode(),
-                feed=Feed.objects.get(pk=article["id"]),
-                title=article["title"].decode(),
-                original_image=article["image"],
-                description=article["description"].decode(),
-                date=make_aware(article["date"]),
+                url=article["url"],
+                feed=Feed.objects.get(pk=article["feed"]),
+                title=article["title"][0:100],
+                original_image=article["image"][0:100],
+                description=article["description"],
+                date=date,
             )
         )
 

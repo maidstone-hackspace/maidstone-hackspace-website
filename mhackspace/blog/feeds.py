@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from django.utils.html import escape
 from django.contrib.syndication.views import Feed, add_domain
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
@@ -54,7 +55,7 @@ class RssFeed(Feed):
         return post.get('title')
 
     def item_description(self, post):
-        return post.get('description')
+        return escape(post.get('description'))
 
     def item_author_name(self, post):
         return post.get('author')
@@ -102,7 +103,7 @@ class BlogFeed(Feed):
         return post.title
 
     def item_description(self, post):
-        return post.description
+        return escape(post.description)
 
     def item_author_name(self, post):
         return post.author.name
@@ -146,4 +147,4 @@ class BlogCategoryFeed(BlogFeed):
         return "Maidstone Hackspace Blog: %s" % category.name
 
     def description(self, category):
-        return category.description
+        return escape(category.description)
