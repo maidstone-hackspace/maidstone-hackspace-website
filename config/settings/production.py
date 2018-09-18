@@ -41,22 +41,6 @@ ALLOWED_HOSTS.append('172.18.0.5')
 
 # END SITE CONFIGURATION
 
-AWS_ACCESS_KEY_ID = env('DJANGO_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('DJANGO_AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = env('DJANGO_AWS_STORAGE_BUCKET_NAME')
-AWS_AUTO_CREATE_BUCKET = True
-AWS_QUERYSTRING_AUTH = False
-
-# AWS cache settings, don't change unless you know what you're doing:
-AWS_EXPIRY = 60 * 60 * 24 * 7
-
-# TODO See: https://github.com/jschneier/django-storages/issues/47
-# Revert the following and use str after the above-mentioned bug is fixed in
-# either django-storage-redux or boto
-AWS_HEADERS = {
-    'Cache-Control': six.b('max-age=%d, s-maxage=%d, must-revalidate' % (
-        AWS_EXPIRY, AWS_EXPIRY))
-}
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -182,10 +166,23 @@ LOGGING = {
 
 PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'https://maidstone-hackspace.org.uk'
 
+AWS_AUTO_CREATE_BUCKET = True
+AWS_QUERYSTRING_AUTH = False
+
+# AWS cache settings, don't change unless you know what you're doing:
+AWS_EXPIRY = 60 * 60 * 24 * 7
+
+# TODO See: https://github.com/jschneier/django-storages/issues/47
+# Revert the following and use str after the above-mentioned bug is fixed in
+# either django-storage-redux or boto
+AWS_HEADERS = {
+    'Cache-Control': six.b('max-age=%d, s-maxage=%d, must-revalidate' % (
+        AWS_EXPIRY, AWS_EXPIRY))
+}
 
 AWS_S3_SECURE_URLS = True
-AWS_ACCESS_KEY_ID = env('DIGITALOCEAN_SPACE_KEY')
-AWS_SECRET_ACCESS_KEY = env('DIGITALOCEAN_SPACE_SECRET')
+AWS_ACCESS_KEY_ID = env('BUCKET_KEY')
+AWS_SECRET_ACCESS_KEY = env('BUCKET_SPACE_SECRET_KEY')
 AWS_STORAGE_BUCKET_NAME = 'mhackspace'
 AWS_S3_ENDPOINT_URL = 'https://ams3.digitaloceanspaces.com'
 AWS_S3_OBJECT_PARAMETERS = {
