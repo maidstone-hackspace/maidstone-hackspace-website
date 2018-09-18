@@ -302,7 +302,6 @@ AWS_STORAGE_BUCKET_NAME = "mhackspace-local"
 AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 AWS_LOCATION = "dev"
 AWS_S3_SECURE_URLS = True
-STATIC_URL = "%s/%s/" % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
