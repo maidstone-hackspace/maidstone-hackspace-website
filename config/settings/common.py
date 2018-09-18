@@ -299,7 +299,6 @@ AWS_S3_SECURE_URLS = False
 AWS_ACCESS_KEY_ID = env('BUCKET_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('BUCKET_SECRET_KEY')
 AWS_STORAGE_BUCKET_NAME = "mhackspace-local"
-AWS_S3_ENDPOINT_URL = "http://%s:9000" % socket.gethostbyname("bucket")
 AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
 AWS_LOCATION = "dev"
 AWS_S3_SECURE_URLS = True
