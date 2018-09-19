@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
+import tempfile
 import requests
 import logging
-from io import BytesIO
 from time import mktime
 from datetime import datetime
+from django.conf import settings
 from django.core.files import File
 from stdimage.utils import render_variations
 from mhackspace.feeds.reader import fetch_feeds
@@ -42,23 +43,35 @@ def remove_old_articles():
 
 def download_remote_images():
     for article in Article.objects.all():
+        print(article.original_image)
         if not article.original_image:
             continue
         try:
             result = requests.get(article.original_image)
-            article.image.save(
-                os.path.basename(article.original_image.__str__()),
-                File(open(BytesIO(result.content), "rb")),
-            )
-            render_variations(result[0], image_variations, replace=True)
-            article.save()
         except Exception as e:
-            logger.exception(result)
             logger.exception(result.status_code)
             logger.exception(
                 "Unable to download remote image for %s"
                 % article.original_image
             )
+            return
+
+        try:
+            tmpfile = tempfile.TemporaryFile(mode='w+b')
+            tmpfile.write(result.content)
+
+            article.image.save(
+                os.path.basename(article.original_image),
+                File(tmpfile),
+            )
+
+            file_path = f'{settings.MEDIA_ROOT}/{article.image.file}'
+            render_variations(file_path, image_variations, replace=True)
+            article.save()
+        except Exception as e:
+            logger.exception(result)
+        finally:
+            tmpfile.close()
 
 
 def get_active_feeds(feed=False):

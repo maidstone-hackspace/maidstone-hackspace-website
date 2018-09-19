@@ -294,6 +294,7 @@ STATICFILES_FINDERS = (
     "sass_processor.finders.CssFinder",
 )
 
+AWS_AUTO_CREATE_BUCKET = True
 AWS_DEFAULT_ACL = "public-read"
 AWS_S3_SECURE_URLS = False
 AWS_ACCESS_KEY_ID = env('BUCKET_ACCESS_KEY')
