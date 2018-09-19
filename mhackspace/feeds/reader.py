@@ -1,9 +1,7 @@
 import lxml
 import feedparser
-from operator import itemgetter
-from lxml import etree
+from io import StringIO
 from lxml.html.clean import Cleaner
-from io import StringIO, BytesIO
 
 from django.utils.html import escape
 
@@ -20,10 +18,6 @@ html_parser = lxml.etree.HTMLParser()
 
 
 def parse_content(content):
-    headers = {
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0"
-    }
-
     html_img_cleaner = Cleaner(allow_tags=["img"], remove_unknown_tags=False)
     html_img_cleaner.allow_tags = ["img"]
 
@@ -35,9 +29,8 @@ def parse_content(content):
 
 
 def fetch_image_from_node_text(text):
-    description = lxml.etree.parse(text, html_parser)
+    description = lxml.etree.parse(StringIO(text), html_parser)
     for image in description.xpath(".//img"):
-        print("fetch image from node text")
         return image.get("src")
     return None
 
@@ -58,14 +51,11 @@ def fetch_node_text(node, name, default=u""):
 def fetch_image(post, node, namespaces):
     """Try and get an image from an item in the feed, use various fall back methods"""
     if hasattr(post, "media_thumbnail"):
-        print("media")
         image = post.media_thumbnail
-        print(image)
         if image:
             return image[0].get("url")
 
     if hasattr(post, "content"):
-        print("content")
         content = " ".join(c.value for c in post.content)
         image = fetch_image_from_node_text(content)
         if image:
@@ -74,7 +64,6 @@ def fetch_image(post, node, namespaces):
     # final attempt at getting an image from the item using description
     result = fetch_node_text(node, "description")
     if result:
-        print("description")
         image = fetch_image_from_node_text(result)
         if image:
             return image
