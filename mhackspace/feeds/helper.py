@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
+import requests
 import logging
-
+from io import BytesIO
 from time import mktime
 from datetime import datetime
-from urllib.request import urlretrieve
 from django.core.files import File
 from stdimage.utils import render_variations
 from mhackspace.feeds.reader import fetch_feeds
@@ -45,16 +45,16 @@ def download_remote_images():
         if not article.original_image:
             continue
         try:
-            result = urlretrieve(article.original_image.__str__())
+            result = requests.get(article.original_image)
             article.image.save(
                 os.path.basename(article.original_image.__str__()),
-                File(open(result[0], "rb")),
+                File(open(BytesIO(result.content), "rb")),
             )
             render_variations(result[0], image_variations, replace=True)
             article.save()
         except Exception as e:
             logger.exception(result)
-            logger.exception(result[0])
+            logger.exception(result.status_code)
             logger.exception(
                 "Unable to download remote image for %s"
                 % article.original_image
