@@ -47,7 +47,7 @@ def download_remote_images():
         if not article.original_image:
             continue
         try:
-            result = requests.get(article.original_image)
+            result = requests.get(article.original_image, timeout=5)
         except Exception as e:
             logger.exception(result.status_code)
             logger.exception(
