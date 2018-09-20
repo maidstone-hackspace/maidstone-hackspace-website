@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
 import os
-import tempfile
 import requests
 import logging
+from io import BytesIO
 from time import mktime
 from datetime import datetime
-from django.conf import settings
-from django.core.files import File
-from stdimage.utils import render_variations
-from mhackspace.feeds.reader import fetch_feeds
 
-from mhackspace.feeds.models import Feed, Article, image_variations
+from django.core.files import File
+
+from mhackspace.feeds.reader import fetch_feeds
+from mhackspace.feeds.models import Feed, Article
 
 logger = logging.getLogger(__name__)
 
 
 def import_feeds(feed=False):
     remove_old_articles()
-    articles = []
-    for article in fetch_feeds(get_active_feeds(feed)):
+    articles = fetch_feeds(get_active_feeds(feed))
+    article_objects = []
+    # for author in articles:
+    for article in articles:
         date = datetime.fromtimestamp(mktime(article["date"]))
-        articles.append(
+        article_objects.append(
             Article(
                 url=article["url"],
                 feed=Feed.objects.get(pk=article["feed"]),
@@ -30,7 +31,7 @@ def import_feeds(feed=False):
                 date=date,
             )
         )
-    articles = Article.objects.bulk_create(articles)
+    articles = Article.objects.bulk_create(article_objects)
     download_remote_images()
     return articles
 
@@ -43,7 +44,6 @@ def remove_old_articles():
 
 def download_remote_images():
     for article in Article.objects.all():
-        print(article.original_image)
         if not article.original_image:
             continue
         try:
@@ -57,21 +57,13 @@ def download_remote_images():
             return
 
         try:
-            tmpfile = tempfile.TemporaryFile(mode='w+b')
-            tmpfile.write(result.content)
-
             article.image.save(
                 os.path.basename(article.original_image),
-                File(tmpfile),
+                File(BytesIO(result.content)),
             )
-
-            file_path = f'{settings.MEDIA_ROOT}/{article.image.file}'
-            render_variations(file_path, image_variations, replace=True)
             article.save()
         except Exception as e:
             logger.exception(result)
-        finally:
-            tmpfile.close()
 
 
 def get_active_feeds(feed=False):
