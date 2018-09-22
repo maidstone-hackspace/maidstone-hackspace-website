@@ -77,7 +77,7 @@ services:
   celeryworker:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     env_file: .env
     volumes:
       - .:/app
@@ -89,7 +89,7 @@ services:
   celerybeat:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
+      dockerfile: ./compose/django/Dockerfile-dev
     env_file: .env
     volumes:
       - .:/app
