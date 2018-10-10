@@ -25,6 +25,7 @@ class User(AbstractUser):
     )
 
     # https://github.com/pennersr/django-allauth/issues/520
+
     @property
     def image(self):
         return self._image
@@ -90,6 +91,9 @@ class Membership(models.Model):
         default=0, choices=MEMBERSHIP_STATUS_CHOICES
     )
     email = models.CharField(max_length=255, unique=True)
+    over_18 = models.BooleanField(
+        default=False, help_text="Please confirm your over 18"
+    )
 
     @property
     def get_status(self):
@@ -98,11 +102,13 @@ class Membership(models.Model):
     def is_active(self):
         if self.status is MEMBERSHIP_ACTIVE:
             return True
+
         return False
 
     def lookup_status(name):
         if not name:
             return 0
+
         return MEMBERSHIP_STATUS.get(name.lower(), 0)
 
     def __str__(self):
@@ -110,6 +116,8 @@ class Membership(models.Model):
 
 
 # users rfid card to user mapping, user can have more than one card
+
+
 class Rfid(models.Model):
     code = models.CharField(max_length=7)
     description = models.CharField(
@@ -132,11 +140,11 @@ class Rfid(models.Model):
 
 def send_subscription_update_message(sender, instance, **kwargs):
     matrix_message.delay(
-        room='admin',
-        prefix=' - MEMBERSHIP',
-        message='Changed to %s for user %s' % (
-            instance.get_status,
-            instance.user.username))
+        room="admin",
+        prefix=" - MEMBERSHIP",
+        message="Changed to %s for user %s"
+        % (instance.get_status, instance.user.username),
+    )
 
 
 # Needs to be change to seend to admin room, and not triger on scheduled job
