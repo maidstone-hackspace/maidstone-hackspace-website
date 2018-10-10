@@ -1,11 +1,18 @@
 from django.db import models
+from django.conf import settings
+
 from django.utils import timezone
 from django.urls import reverse
+from django.db.models.signals import post_save
+from django.contrib.sites.models import Site
+
 
 from martor.models import MartorField
 from stdimage.validators import MinSizeValidator
 from stdimage.models import StdImageField
 from dynamic_filenames import FilePattern
+from django.core.mail import EmailMessage
+from mhackspace.base.tasks import matrix_message, twitter_message
 
 
 from mhackspace.users.models import User
@@ -51,6 +58,7 @@ class Post(models.Model):
     updated_date = models.DateTimeField(default=timezone.now)
     active = models.BooleanField(default=True)
     members_only = models.BooleanField(default=False)
+    sent_on_social = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -60,3 +68,19 @@ class Post(models.Model):
 
     class Meta:
         ordering = ("-published_date",)
+
+
+def blog_article_updated(sender, instance, **kwargs):
+    if instance.active is False:
+        return
+    if instance.sent_on_social is True:
+        return
+
+    instance.sent_on_social = True
+    instance.save()
+    url = "https://%s%s" % (Site.objects.get_current().domain, instance.get_absolute_url())
+    message = f"{instance.title} {url}"
+    twitter_message.delay(message)
+    matrix_message.delay(message)
+
+post_save.connect(blog_article_updated, sender=Post)
