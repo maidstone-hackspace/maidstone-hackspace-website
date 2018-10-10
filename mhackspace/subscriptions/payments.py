@@ -43,7 +43,7 @@ class gocardless_provider:
                     'status': payment.status,
                     'payment_id': payment.links.subscription,
                     'payment_type': 'subscription' if payment.links.subscription else 'payment',
-                    'payment_date': payment.created_at,
+                    'payment_date': payment.charge_date,
                     'amount': payment.amount
                 }
 

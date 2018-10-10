@@ -9,33 +9,41 @@ from mhackspace.subscriptions.models import Payments
 
 
 class Command(BaseCommand):
-    help = 'Update user subscriptions'
+    help = "Update user subscriptions"
 
     def handle(self, *args, **options):
-        provider = select_provider('gocardless')
+        provider = select_provider("gocardless")
 
         self.stdout.write(
-            self.style.NOTICE(
-                '== Gocardless customer payments =='))
+            self.style.NOTICE("== Gocardless customer payments ==")
+        )
 
         Payments.objects.all().delete()
 
         payment_objects = []
+        # TODO create a user if they do not exist
         for customer in provider.fetch_customers():
-            user = User.objects.get(email=customer.get('email')) 
-            payment_objects.append(Payments(
-                user=user,
-                user_reference=customer.get('user_reference'),
-                user_email=customer.get('email'),
-                reference=customer.get('payment_id'),
-                amount=customer.get('amount'),
-                type=Payments.lookup_payment_type(customer.get('payment_type')),
-                date=customer.get('payment_date')
-            ))
+            user = User.objects.get(email=customer.get("email"))
+            payment_type = customer.get("payment_type")
+            payment_objects.append(
+                Payments(
+                    user=user,
+                    user_reference=customer.get("user_reference"),
+                    user_email=customer.get("email"),
+                    reference=customer.get("payment_id"),
+                    amount=customer.get("amount"),
+                    type=Payments.lookup_payment_type(payment_type),
+                    date=customer.get("payment_date"),
+                )
+            )
+            md = model_to_dict(payment_objects[-1])
+            md["payment_type"] = payment_type
             self.stdout.write(
                 self.style.SUCCESS(
-                    '\t{reference} - {amount} - {type} - {user_email}'.format(**model_to_dict(payment_objects[-1]))))
-
-
+                    "\t{reference} - {amount} - {date} - {payment_type} - {user_email}".format(
+                        **md
+                    )
+                )
+            )
 
         Payments.objects.bulk_create(payment_objects)
