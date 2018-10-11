@@ -50,7 +50,7 @@ class MyUserAdmin(AuthUserAdmin):
 
 @admin.register(Membership)
 class MembershipAdmin(ModelAdmin):
-    list_display = ('user_id', 'email', 'payment', 'date', 'status')
+    list_display = ('user_id', 'join_date','email', 'payment', 'payment_date', 'status')
     list_filter = ('status',)
 
     def get_urls(self):
