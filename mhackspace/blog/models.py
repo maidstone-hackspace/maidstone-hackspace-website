@@ -83,4 +83,4 @@ def blog_article_updated(sender, instance, **kwargs):
     twitter_message.delay(message)
     matrix_message.delay(message)
 
-post_save.connect(blog_article_updated, sender=Post)
+post_save.connet(blog_article_updated, sender=Post)

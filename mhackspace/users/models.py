@@ -85,6 +85,10 @@ class Membership(models.Model):
         on_delete=models.CASCADE,
     )
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    payment_date = models.DateTimeField()
+    join_date = models.DateTimeField()
+
+    #  date not specific enough
     date = models.DateTimeField()
     reference = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(

@@ -31,7 +31,8 @@ def create_or_update_membership(user, signup_details, complete=False):
     member.email = signup_details.get('email')
     member.reference = signup_details.get('reference')
     member.payment = signup_details.get('amount')
-    member.date = start_date
+    member.payment_date = start_date
+    member.join_date = start_date
 
     member.save()
 
