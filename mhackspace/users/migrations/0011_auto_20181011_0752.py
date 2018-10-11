@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='membership',
             name='payment_date',
-            field=models.DateTimeField(default=None),
+            field=models.DateTimeField(null=True),
         ),
     ]
