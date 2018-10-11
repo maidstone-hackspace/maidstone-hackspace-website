@@ -51,14 +51,16 @@ class gocardless_provider:
         # for paying_member in self.client.mandates.list().records:
         for paying_member in self.client.subscriptions.list().records:
             mandate = self.client.mandates.get(paying_member.links.mandate)
-            user = self.client.customers.get(mandate.links.customer)
-
+            customer = self.client.customers.get(mandate.links.customer)
+            # TODO get the last couple of months not all time payments
+            payments =  self.client.payments.list(params={"customer": customer.id}).records
             # gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
-                'email': user.email,
+                'email': customer.email,
                 'start_date': paying_member.created_at,
                 'reference': paying_member.id,
+                'last_payment': payments[0].charge_date,
                 'amount': paying_member.amount * 0.01}
 
     def get_redirect_url(self):

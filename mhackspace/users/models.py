@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from stdimage.models import StdImageField
 from django.db.models.signals import post_save
@@ -85,6 +86,11 @@ class Membership(models.Model):
         on_delete=models.CASCADE,
     )
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
+    payment_date = models.DateTimeField(default=None)
+    join_date = models.DateTimeField(default=timezone.now)
+
+
+    #  date not specific enough
     date = models.DateTimeField()
     reference = models.CharField(max_length=255)
     status = models.PositiveSmallIntegerField(

@@ -56,11 +56,12 @@ class Command(BaseCommand):
                                         signup_details=sub,
                                         complete=True)
 
-            message = '\t{prefix}{date} - {reference} - {payment} - {status} - {email}'.format(**{
+            message = '\t{prefix}{date} - {reference} - {payment} - {last_payment} - {status} - {email} '.format(**{
                 'prefix': prefix,
                 'date': sub.get('start_date'),
                 'reference': sub.get('reference'),
                 'payment': sub.get('amount'),
+                'last_payment': sub.get('last_payment'),
                 'status': sub.get('status'),
                 'email': sub.get('email')
             })
