@@ -54,13 +54,17 @@ class gocardless_provider:
             customer = self.client.customers.get(mandate.links.customer)
             # TODO get the last couple of months not all time payments
             payments =  self.client.payments.list(params={"customer": customer.id}).records
+            last_payments = None
+            if len(payments):
+                last_payment = payments[0].charge_date
+
             # gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
                 'email': customer.email,
                 'start_date': paying_member.created_at,
                 'reference': paying_member.id,
-                'last_payment': payments[0].charge_date,
+                'last_payment': last_payment,
                 'amount': paying_member.amount * 0.01}
 
     def get_redirect_url(self):
