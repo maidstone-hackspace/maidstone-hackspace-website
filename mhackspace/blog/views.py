@@ -11,7 +11,7 @@ from mhackspace.blog.serializers import PostSerializer, CategorySerializer
 
 class BlogPost(DetailView):
     context_object_name = "post"
-    queryset = Post.objects.filter(active=True, members_only=False)
+    queryset = Post.objects.filter(members_only=False)
 
     def get_context_data(self, *args, **kwargs):
         context = super(BlogPost, self).get_context_data(*args, **kwargs)
