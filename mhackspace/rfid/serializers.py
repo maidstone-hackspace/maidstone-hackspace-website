@@ -19,6 +19,5 @@ class DeviceSerializer(serializers.ModelSerializer):
 class AuthSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     rfid = serializers.CharField(max_length=255)
-    # device = serializers.UUIDField(format='hex_verbose')
     device = serializers.CharField(max_length=255)
 

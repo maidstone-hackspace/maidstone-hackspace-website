@@ -100,3 +100,4 @@ ldap3==2.5.1
 bcrypt==3.1.4
 python-twitter==3.4.2
 feedparser==5.2.1
+PyJWT==1.6.4

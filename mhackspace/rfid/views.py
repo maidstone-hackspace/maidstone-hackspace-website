@@ -1,15 +1,19 @@
 import logging
+import jwt
+from jwt import ExpiredSignatureError
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import status
 
 from django.views.generic import ListView, DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
 
+from mhackspace.base.tasks import matrix_message
 from mhackspace.users.models import Rfid
-from mhackspace.rfid.models import Device, DeviceAuth
+from mhackspace.rfid.models import Device, AccessLog
 from mhackspace.rfid.serializers import DeviceSerializer, AuthSerializer
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 
 logger = logging.getLogger(__name__)
 
@@ -31,18 +35,31 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
 
     def post(self, request, format=None):
         try:
-            rfid = Rfid.objects.get(code=request.data.get('rfid'))
-            device = Device.objects.get(identifier=request.data.get('device'))
-            deviceAuth = DeviceAuth.objects.get(device=device.identifier, rfid=rfid.id)
+            data = jwt.decode(request.data["data"], settings.RFID_SECRET, algorithms=['HS256'])
+        except ExpiredSignatureError:
+            data = jwt.decode(request.data["data"], settings.RFID_SECRET, algorithms=['HS256'], verify=False)
+            logger.warn(f"Signature expired for {data.get('rfid_code')} on device {data.get('device_id')}")
+            return Response(jwt.encode({"authenticated": False}, settings.RFID_SECRET), status=status.HTTP_403_FORBIDDEN)
+
+        if data.get("rfid_code") is None or data.get("rfid_code") is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # print(data)
+        try:
+            rfid = Rfid.objects.get(code=data["rfid_code"])
+            device = Device.objects.get(identifier=data["device_id"])
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        except ValidationError as e:
-        # except:
-        #     logger.exception("An error occurred")
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        serializer = AuthSerializer(
-            instance={'name': device.name, 'rfid': rfid.code, 'device': device.identifier})
-        return Response(serializer.data, status=200)
+
+        try:
+            member = device.users.get(pk=rfid.user_id)
+            matrix_message.delay(
+                f"{member.username} has just entered {device.name}"
+            )
+            AccessLog.objects.create(rfid=rfid, device=device, success=True)
+            return Response(jwt.encode({"authenticated": True, "username": member.username}, settings.RFID_SECRET))
+        except ObjectDoesNotExist:
+            AccessLog.objects.create(rfid=rfid, device=device, success=False)
+            return Response(jwt.encode({"authenticated": False}, settings.RFID_SECRET), status=status.HTTP_403_FORBIDDEN)
 
 
 class RfidCardsListView(LoginRequiredMixin, ListView):

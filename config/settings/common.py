@@ -620,3 +620,5 @@ ST_UPLOAD_FILE_ENABLED = True
 ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
 ST_BASE_DIR = os.path.dirname(__file__)
 #   ST is Spirit forum software config
+
+RFID_SECRET = env("RFID_SECRET")
