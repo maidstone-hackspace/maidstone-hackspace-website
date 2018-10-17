@@ -38,7 +38,7 @@ router.register(r'categories', CategoryViewSet, base_name='categories')
 router.register(r'feeds', FeedViewSet, 'feeds')
 router.register(r'articles', ArticleViewSet, base_name='articles')
 router.register(r'rfid', DeviceViewSet, base_name='rfid_device')
-router.register(r'rfidAuth', AuthUserWithDeviceViewSet, base_name='device_auth')
+router.register(r'rfid_auth', AuthUserWithDeviceViewSet, base_name='device_auth')
 
 
 sitemaps = {

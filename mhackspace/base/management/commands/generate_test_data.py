@@ -14,7 +14,7 @@ from mhackspace.base.models import BannerImage
 from mhackspace.feeds.models import Article, Feed
 from mhackspace.users.models import User, Rfid, Membership, MEMBERSHIP_STATUS_CHOICES
 from mhackspace.blog.models import Category, Post
-from mhackspace.rfid.models import Device, DeviceAuth
+from mhackspace.rfid.models import Device
 
 
 class ImageFixture(AutoFixture):
@@ -80,7 +80,6 @@ class Command(BaseCommand):
 
         Rfid.objects.all().delete()
         Device.objects.all().delete()
-        DeviceAuth.objects.all().delete()
 
         rfid = AutoFixture(
             Rfid,
@@ -93,9 +92,6 @@ class Command(BaseCommand):
             'name': ChoicesGenerator(values=('Door', 'Printer', 'Laser Cutter', ''))
         })
         device.create(5)
-
-        deviceauth = AutoFixture(DeviceAuth)
-        deviceauth.create(5)
 
         feed = AutoFixture(Feed)
         feed.create(10)
