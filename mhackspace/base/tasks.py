@@ -34,7 +34,7 @@ def send_email(email_to,
     return {'result', 'Email sent to %s' % email_to}
 
 @shared_task
-def matrix_message(message, prefix=''):
+def matrix_message(message, prefix='', room='default'):
     # we dont rely on theses, so ignore if it goes wrong
     # TODO at least log that something has gone wrong
     try:
@@ -48,14 +48,14 @@ def matrix_message(message, prefix=''):
 
         # join room by id
         url_params = {
-            'room': settings.MATRIX_ROOM,
+            'room': settings.MATRIX_ROOM.get(room),
             'access_token': access_token}
         url = matrix_join_room_id_url.format(**url_params)
         r1 = requests.post(url)
 
         # send message
         url_params = {
-            "room": settings.MATRIX_ROOM,
+            "room": settings.MATRIX_ROOM.get(room),
             "access_token": access_token}
         url = matrix_send_msg_url.format(**url_params)
         details = {
@@ -65,3 +65,20 @@ def matrix_message(message, prefix=''):
     except:
         pass
     return {'result', 'Matrix message sent successfully'}
+
+
+@shared_task
+def twitter_message(message, prefix=''):
+    import twitter
+    api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                      consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                      access_token_key=settings.TWITTER_ACCESS_TOKEN,
+                      access_token_secret=settings.TWITTER_ACCESS_SECRET)
+    try:
+        status = api.PostUpdate(prefix + message)
+        return {'result', 'Twitter message sent successfully'}
+    except UnicodeDecodeError:
+        return {'result', "Your message could not be encoded. "
+                "Perhaps it contains non-ASCII characters? "
+                "Try explicitly specifying the encoding with the --encoding flag"}
+    return {'result': 'Twitter message sent successfully'}

@@ -5,11 +5,17 @@ from mhackspace.register.managers import RegisteredUserManager
 
 
 class RegisteredUser(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='+', null=True, blank=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="+",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+    )
     name = models.CharField(max_length=100, null=False, blank=False)
     created_at = models.DateTimeField(default=timezone.now)
 
     objects = RegisteredUserManager()
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ("-created_at",)

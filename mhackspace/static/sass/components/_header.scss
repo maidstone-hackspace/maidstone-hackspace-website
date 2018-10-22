@@ -7,14 +7,15 @@
   }
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
     max-width: 100%;
+    margin-bottom: 60px;
+    font-size: 14px;
 }
-
-.navbar-brand {
-    width:100%;
-}
-
 
 .collapse.show.span-table {
     display: table-cell

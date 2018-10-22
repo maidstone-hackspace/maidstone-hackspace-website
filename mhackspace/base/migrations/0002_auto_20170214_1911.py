@@ -6,18 +6,24 @@ from django.db import migrations
 import stdimage.models
 import stdimage.utils
 import stdimage.validators
+import dynamic_filenames
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('base', '0001_initial'),
-    ]
+    dependencies = [("base", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='bannerimages',
-            name='scaled_image',
-            field=stdimage.models.StdImageField(blank=True, null=True, upload_to=stdimage.utils.UploadToAutoSlugClassNameDir('title'), validators=[stdimage.validators.MinSizeValidator(800, 600)]),
-        ),
+            model_name="bannerimages",
+            name="scaled_image",
+            field=stdimage.models.StdImageField(
+                blank=True,
+                null=True,
+                upload_to=dynamic_filenames.FilePattern(
+                    filename_pattern="{model_name}/{instance.title:slug}{ext}"
+                ),
+                validators=[stdimage.validators.MinSizeValidator(800, 600)],
+            ),
+        )
     ]

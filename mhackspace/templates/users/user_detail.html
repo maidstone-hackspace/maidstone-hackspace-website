@@ -25,9 +25,9 @@
 
     {% if membership %}
       <h3>Membership status</h3>
-      <p>Member since {{membership.date}}</p>
+      <p>Member since {{membership.join_date}}</p>
       <p>Membership Status: {{ membership.get_status }}</p>
-      <p>Last Payment: {{membership.date}}</p>
+      <p>Last Payment: {{membership.payment_date}}</p>
       <p>Amount: &pound;{{membership.payment}}</p>
     {% else %}
       You are not currently a member consider signing up.
@@ -74,7 +74,7 @@
   <div class="col-sm-12">
     <p>
     <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">My Info</a>
-    <a class="btn btn-primary" href="{% url 'users:access_cards' %}" role="button">My Rfid Cards</a>
+    <a class="btn btn-primary" href="{% url 'users:rfid:index' %}" role="button">My Rfid Cards</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
     </p>
     <!-- Your Stuff: Custom user template urls -->

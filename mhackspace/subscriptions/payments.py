@@ -1,5 +1,3 @@
-from pprint import pprint
-import pytz
 import gocardless_pro
 import braintree
 import logging
@@ -9,16 +7,16 @@ payment_providers = settings.PAYMENT_PROVIDERS
 logger = logging.getLogger(__name__)
 # import paypalrestsdk as paypal
 
-PROVIDER_ID = {'gocardless':1, 'braintree': 2}
+PROVIDER_ID = {'gocardless': 1, 'braintree': 2}
 PROVIDER_NAME = {1: 'gocardless', 2: 'braintree'}
 
 
 def select_provider(type):
     if type == "gocardless": return gocardless_provider()
     if type == "braintree": return braintree_provider()
-    if type == "paypal": return paypal_provider()
+    # if type == "paypal": return paypal_provider()
 
-    log.exception('[scaffold] - "No Provider for ' + type)
+    logger.exception('[scaffold] - "No Provider for ' + type)
     assert 0, "No Provider for " + type
 
 
@@ -45,23 +43,28 @@ class gocardless_provider:
                     'status': payment.status,
                     'payment_id': payment.links.subscription,
                     'payment_type': 'subscription' if payment.links.subscription else 'payment',
-                    'payment_date': payment.created_at,
+                    'payment_date': payment.charge_date,
                     'amount': payment.amount
                 }
-
 
     def fetch_subscriptions(self):
         # for paying_member in self.client.mandates.list().records:
         for paying_member in self.client.subscriptions.list().records:
             mandate = self.client.mandates.get(paying_member.links.mandate)
-            user = self.client.customers.get(mandate.links.customer)
+            customer = self.client.customers.get(mandate.links.customer)
+            # TODO get the last couple of months not all time payments
+            payments =  self.client.payments.list(params={"customer": customer.id}).records
+            last_payments = None
+            if len(payments):
+                last_payment = payments[0].charge_date
 
             # gocardless does not have a reference so we use the id instead
             yield {
                 'status': paying_member.status,
-                'email': user.email,
+                'email': customer.email,
                 'start_date': paying_member.created_at,
                 'reference': paying_member.id,
+                'last_payment': last_payment,
                 'amount': paying_member.amount * 0.01}
 
     def get_redirect_url(self):
@@ -105,7 +108,6 @@ class gocardless_provider:
                 "email": user.email
             }
         })
-
 
     def confirm_subscription(self, membership, session, provider_response,
                              name, interval_unit='monthly', interval_length='1'):
@@ -188,4 +190,3 @@ class braintree_provider:
                 'start_date': paying_member.created_at,
                 'reference': paying_member.reference,
                 'amount': paying_member.amount}
-

@@ -6,5 +6,5 @@ register = template.Library()
 
 @register.inclusion_tag('partials/banner_list.html')
 def show_banner_images():
-    return {'bannerlist': BannerImage.objects.all()}
+    return {'bannerlist': BannerImage.objects.filter(displayed=True)}
 

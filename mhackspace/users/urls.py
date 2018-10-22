@@ -7,12 +7,7 @@ from mhackspace.rfid.urls import access_card_patterns
 from . import views
 
 urlpatterns = [
-    url('^access-cards/', include(access_card_patterns)),
-    url(
-        regex=r'^$',
-        view=views.UserListView.as_view(),
-        name='list'
-    ),
+    url('^access-cards/', include(access_card_patterns, namespace='rfid')),
     url(
         regex=r'^~redirect/$',
         view=views.UserRedirectView.as_view(),

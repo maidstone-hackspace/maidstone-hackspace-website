@@ -4,7 +4,10 @@
 [[https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/][https://pyup.io/repos/github/maidstone-hackspace/maidstone-hackspace-website/shield.svg]]
 
 Repository for the maidstone hackspace website, feel free to fork this site for your own Hackspace.
-
+** Social
+Test site sharing links / cards with twitter and facebook
+https://cards-dev.twitter.com/validator
+https://developers.facebook.com/tools/debug/
 ** Requirements
 Before getting started make sure you have git, docker and docker-compose installed on your machine.
 The simplest way to setup this site is to use docker-compose so please install that from this site 
@@ -94,3 +97,71 @@ return response.status_code
 
 #+RESULTS:
 : 200
+** Server 
+Example service setup for website under docker, nginx in a container forwarding traffic to uwsgi.
+*** nginx web server
+#+BEGIN_SRC bash
+docker volume create --name=sockets
+docker run --name=nginx -d \
+    -v /etc/nginx/sites-enabled/:/etc/nginx/sites-enabled/ \
+    -v /etc/letsencrypt/:/etc/letsencrypt/ \
+    -v /var/www/:/var/www/ \
+    -v sockets:/data/sockets -p 80:80 -p 443:443 olymk2/nginx 
+#+END_SRC
+*** letsencrypt cert setup
+Setup / create new certs
+#+BEGIN_SRC bash
+letsencrypt certonly --renew --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
+letsencrypt certonly --webroot -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
+#+END_SRC
+
+Automation of renewal process
+create a file called =/etc/cron.monthly/letsencrypt-renew.sh= and make it executable with chmod +x, then place your above commands in the file like in the example below. 
+#+BEGIN_SRC bash
+#!/bin/bash
+letsencrypt certonly --webroot --renew-by-default --agree-tos -w /var/www/.well-known -d stage.maidstone-hackspace.org.uk
+#+END_SRC
+
+*** Postgres tips
+Connect to the database inside container to run sql commands.
+#+BEGIN_SRC bash
+docker-compose -fstage.yml run --rm postgres psql -U postgres
+#+END_SRC
+
+*** Backups
+Create a backup file with today's date
+#+BEGIN_SRC bash
+    docker exec -t {CONTAINER_NAME} pg_dump -Fp -c -U postgresuser > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
+    docker exec {CONTAINER_NAME} bash -lc 'pg_dump --format custom vmdb_production' > dump_`date +%d-%m-%Y"_"%H_%M_%S`.pgdata
+#+END_SRC
+
+Import previously made backup
+#+BEGIN_SRC bash
+docker exec -i -u {USER} {CONTAINER_NAME}  pg_restore --verbose --no-acl --no-owner --clean --role=postgres -Upostgres --dbname={DATABASE_USER} < dump_31-01-2018_13_09_24.pgdata
+  docker exec -i -u {USER} {CONTAINER_NAME} pg_restore -C --clean -d {DATABASE_USER} < dump_31-01-2018_13_09_24.pgdata
+  cat dump_27-01-2018_14_26_09.sql | docker exec -i {CONTAINER_ID} psql -U postgres
+#+END_SRC
+
+letsencrypt config
+#+BEGIN_SRC bash
+  letsencrypt certonly --renew --webroot -w /var/www/.well-known -d maidstone-hackspace.org.uk -d maidstone-hackspace.org.uk -d www.maidstone-hackspace.org.uk
+#+END_SRC
+
+
+CMD ["nginx", "-g", "daemon off;"]
+sudo chmod -R a+rX static/
+
+#+BEGIN_SRC emacs-lisp
+(let ((default-directory "/docker:hackdev_django_1:/app"))
+  (python-shell-make-comint "python manage.py shell" "Python" 'show))
+#+END_SRC
+** Test
+
+#+BEGIN_SRC emacs-lisp
+(setq python-shell-interpreter "/docker:hackdev_django_1:/usr/local/bin/python")
+(setq python-environment-directory "/docker:hackdev_django_1:/")
+#+END_SRC
+
+#+RESULTS:
+: /docker:hackdev_django_1:/
+

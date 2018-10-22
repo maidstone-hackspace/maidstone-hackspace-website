@@ -15,28 +15,34 @@ pipeline:
       - cp -n env.example .env
       - mkdir -p ./cache/packages ./cache/pip
       - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
+      - python manage.py compilescss 
+      - python manage.py collectstatic --no-input 
       - python manage.py test mhackspace --keepdb --verbosity 2
 
   publish-test:
     pull: True
     image: appleboy/drone-ssh
-    host: maidstone-hackspace.org.uk
-    user: ${SSH_USER}
-    key: ${SSH_KEY}
+    host: stage.maidstone-hackspace.org.uk
+    user: root
+    secrets: [ ssh_key ]
     port: 22
     command_timeout: 480
     script:
-      - cd /var/www/stage/maidstone-hackspace-website
+      - cd /var/www/maidstone-hackspace-website
       - git pull
-      - docker-compose -fstage.yml down --remove-orphans 
       - docker-compose -fstage.yml build
+      - docker-compose -fstage.yml run --rm django python manage.py compilescss
+      - docker-compose -fstage.yml run --rm django python manage.py collectstatic
+      - docker-compose -fstage.yml down --remove-orphans 
       - docker-compose -fstage.yml up -d
 
   publish-live:
-#    pull: True
+    pull: True
     image: appleboy/drone-ssh
-    user: {SSH_USER}
-    key: {SSH_KEY}
+    user: root
+    secrets:
+      - source: DEPLOY_SSH_KEY
+        target: ssh_key
     host: maidstone-hackspace.org.uk
     port: 22
     command_timeout: 480
@@ -48,3 +54,17 @@ pipeline:
 services:
   mailhog:
     image: mailhog/mailhog
+
+  node:
+    image: node:alpine
+    commands:
+      - npm --version 
+      - npm install 
+
+  bucket:
+    image: minio/minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    commands:
+      - minio server /data &

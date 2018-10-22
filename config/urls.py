@@ -21,10 +21,12 @@ from mhackspace.base.views import markdown_uploader
 from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostList
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
-from mhackspace.requests.views import RequestsForm, RequestsList
+from mhackspace.requests.views import RequestsForm, RequestsList, RequestsDetail, RequestsDetailForm
 from mhackspace.rfid.views import DeviceViewSet, AuthUserWithDeviceViewSet
+from mhackspace.core.views import ChatView, AboutView
 
 from mhackspace.register.views import RegisterForm
+from mhackspace.wiki.urls import CustomWikiUrlPatterns
 
 from wiki.urls import get_pattern as get_wiki_pattern
 from django_nyt.urls import get_pattern as get_nyt_pattern
@@ -36,7 +38,7 @@ router.register(r'categories', CategoryViewSet, base_name='categories')
 router.register(r'feeds', FeedViewSet, 'feeds')
 router.register(r'articles', ArticleViewSet, base_name='articles')
 router.register(r'rfid', DeviceViewSet, base_name='rfid_device')
-router.register(r'rfidAuth', AuthUserWithDeviceViewSet, base_name='device_auth')
+router.register(r'rfid_auth', AuthUserWithDeviceViewSet, base_name='device_auth')
 
 
 sitemaps = {
@@ -47,17 +49,23 @@ sitemaps = {
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
-    url(r'^chat/$', TemplateView.as_view(template_name='pages/chat.html'), name='chat'),
+    url(r'^about/$', AboutView.as_view(template_name='pages/about.html'), name='about'),
+    url(r'^chat/$', ChatView.as_view(template_name='pages/chat.html'), name='chat'),
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),
     url(r'^contact/$', contact, name='contact'),
+
     url(r'^requests/$', RequestsList.as_view(), name='requests'),
     url(r'^requests/create$', RequestsForm.as_view(), name='requests_form'),
+    url(
+        r'^requests/(?P<pk>\d+)/$',
+        RequestsDetail.as_view(template_name='pages/requests-detail.html'),
+        name='requests_detail'),
+    url(r'^requests/(?P<pk>\d+)/submit/$', RequestsDetailForm.as_view(template_name='pages/requests-detail.html'), name='requests_detail_form'),
 
-    url(r'^discuss/', include('spirit.urls')),
-    url(r'^api/v1/', include(router.urls, namespace='v1')),
+    url(r'^discuss/', include(('spirit.urls', 'spirit'), namespace='spirit')),
+    url(r'^api/v1/', include((router.urls, 'v1'), namespace='v1')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^draceditor/', include('draceditor.urls')),
+    url(r'^martor/', include('martor.urls')),
     url(
         r'^api/uploader/$',
         markdown_uploader, name='markdown_uploader_page'
@@ -82,8 +90,9 @@ urlpatterns = [
     url(r'^api/docs/', include_docs_urls(title='Hackspace API')),
 
     # User management
-    url(r'^users/', include('mhackspace.users.urls', namespace='users')),
+    url(r'^users/', include(('mhackspace.users.urls', 'users'), namespace='users')),
     url(r'^accounts/', include('allauth.urls')),
+    url('^accounts/', include('django.contrib.auth.urls')),
 
     # Your stuff: custom urls includes go here
     url(r'^latest/$', LatestEntriesFeed()),
@@ -92,10 +101,10 @@ urlpatterns = [
     url(r'membership/cancel/$', subscription.MembershipCancelView.as_view(), name='cancel_membership'),
     url(r'membership/(?P<provider>[\w\-]+)/success$', subscription.MembershipJoinSuccessView.as_view(), name='join_hackspace_success'),
     url(r'membership/(?P<provider>\w{0,50})/failure$', subscription.MembershipJoinFailureView.as_view(), name='join_hackspace_failure'),
-    url(r'^admin/password_reset/$', auth_views.password_reset, name='admin_password_reset'),
-    url(r'^admin/password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.password_reset_confirm, name='password_reset_confirm'),
-    url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+    url(r'^admin/password_reset/$', auth_views.PasswordResetView.as_view(), name='admin_password_reset'),
+    url(r'^admin/password_reset/done/$', auth_views.PasswordChangeDoneView.as_view(), name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    url(r'^reset/done/$', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
     url(r'^register/$', RegisterForm.as_view(), name='register_form'),
     url(r'^register/success$', TemplateView.as_view(template_name='pages/register.html'), name='register_success'),
@@ -103,7 +112,7 @@ urlpatterns = [
 
 urlpatterns += [
     url(r'^notifications/', get_nyt_pattern()),
-    url(r'^wiki/', get_wiki_pattern(), name='wiki')
+    url(r'^wiki/', get_wiki_pattern(url_config_class=CustomWikiUrlPatterns), name='wiki')
 ]
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

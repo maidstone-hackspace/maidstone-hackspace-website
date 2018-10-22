@@ -1,35 +1,37 @@
 # -*- coding: utf-8 -*-
 import os
+import requests
 import logging
+from io import BytesIO
+from time import mktime
+from datetime import datetime
 
-from urllib.request import urlretrieve
 from django.core.files import File
-from django.utils.timezone import make_aware
-from django.core.management import call_command
-from stdimage.utils import render_variations
-from scaffold.readers.rss_reader import feed_reader
 
-from mhackspace.feeds.models import Feed, Article, image_variations
+from mhackspace.feeds.reader import fetch_feeds
+from mhackspace.feeds.models import Feed, Article
 
 logger = logging.getLogger(__name__)
 
 
 def import_feeds(feed=False):
     remove_old_articles()
-    rss_articles = feed_reader(get_active_feeds(feed))
-
-    articles = []
-    for article in rss_articles:
-        articles.append(Article(
-            url=article['url'],
-            feed=Feed.objects.get(pk=article['id']),
-            title=article['title'],
-            original_image=article['image'],
-            description=article['description'],
-            date=make_aware(article['date'])
-        ))
-
-    articles = Article.objects.bulk_create(articles)
+    articles = fetch_feeds(get_active_feeds(feed))
+    article_objects = []
+    # for author in articles:
+    for article in articles:
+        date = datetime.fromtimestamp(mktime(article["date"]))
+        article_objects.append(
+            Article(
+                url=article["url"],
+                feed=Feed.objects.get(pk=article["feed"]),
+                title=article["title"],
+                original_image=article["image"],
+                description=article["description"],
+                date=date,
+            )
+        )
+    articles = Article.objects.bulk_create(article_objects)
     download_remote_images()
     return articles
 
@@ -45,17 +47,23 @@ def download_remote_images():
         if not article.original_image:
             continue
         try:
-            result = urlretrieve(article.original_image.__str__())
-            article.image.save(
-                os.path.basename(article.original_image.__str__()),
-                File(open(result[0], 'rb'))
+            result = requests.get(article.original_image, timeout=5)
+        except Exception as e:
+            logger.exception(result.status_code)
+            logger.exception(
+                "Unable to download remote image for %s"
+                % article.original_image
             )
-            render_variations(result[0], image_variations, replace=True)
+            return
+
+        try:
+            article.image.save(
+                os.path.basename(article.original_image),
+                File(BytesIO(result.content)),
+            )
             article.save()
-        except:
+        except Exception as e:
             logger.exception(result)
-            logger.exception(result[0])
-            logger.exception('Unable to download remote image for %s' % article.original_image)
 
 
 def get_active_feeds(feed=False):
@@ -68,9 +76,7 @@ def get_active_feeds(feed=False):
     for feed in feeds:
         if feed.enabled is False:
             continue
-        rss_feeds.append({
-            'id': feed.id,
-            'author': feed.author,
-            'url': feed.feed_url
-        })
+        rss_feeds.append(
+            {"id": feed.id, "author": feed.author, "url": feed.feed_url}
+        )
     return rss_feeds

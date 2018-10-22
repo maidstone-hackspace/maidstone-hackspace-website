@@ -18,7 +18,7 @@ class Command(BaseCommand):
             # python3
             from urllib.request import urlretrieve
 
-        from draceditor.extensions.emoji import EMOJIS
+        from martor.extensions.emoji import EMOJIS
 
         emoji_path = 'mhackspace/static/images/emojis/' # create this folder first
         base_url = 'https://assets-cdn.github.com/images/icons/emoji/'

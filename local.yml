@@ -1,0 +1,111 @@
+version: '2'
+
+volumes:
+  sockets:
+    driver: local
+  postgres_data:
+    driver: local
+  postgres_backup:
+    driver: local
+
+
+services:
+  nginx:
+    image: olymk2/nginx
+    depends_on:
+      - django
+    volumes:
+      - ./cache:/etc/ssl/certs
+      - ./config/settings/nginx/maidstone-hackspace.org.uk:/etc/nginx/sites-enabled/default
+      - ./:/var/www
+      - sockets:/data/sockets
+
+  postgres:
+    build: ./compose/postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: .env
+
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
+    depends_on:
+      - postgres
+      # - redis
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file: .env
+    volumes:
+      - .:/app
+      - sockets:/data/sockets
+
+  django_bjoren:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
+    depends_on:
+      - postgres
+    command: python /app/wsgi_bjoern.py
+    env_file: .env
+    volumes:
+      - .:/app
+      - sockets:/data/sockets
+
+  django_gunicorn:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
+    depends_on:
+      - postgres
+    command: /usr/local/bin/gunicorn config.wsgi -w 1 -b unix:/data/sockets/gunicorn-mhackspace.sock --reload --chdir=/app
+    env_file: .env
+    volumes:
+      - .:/app
+      - sockets:/data/sockets
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8125:8025"
+
+  redis:
+    image: redis:latest
+
+  celeryworker:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp worker -l INFO
+
+  celerybeat:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    env_file: .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A mhackspace.celeryapp beat -l INFO
+
+  # port 9000 by default
+  bucket:
+    image: minio/minio
+    env_file: .env
+    volumes:
+      - ./bucket:/data
+    command: server --config-dir /tmp/minio /data
+
+  directory:
+    image: osixia/openldap:1.2.0
+    env_file: .env

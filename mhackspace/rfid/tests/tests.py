@@ -1,13 +1,11 @@
 import sys
-import requests
-
 from io import StringIO
 from django.core.management import call_command
 from test_plus.test import TestCase
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import RequestsClient
 
-from mhackspace.rfid.models import Device, DeviceAuth
+from mhackspace.rfid.models import Device
 from mhackspace.users.models import User, Rfid
 
 
@@ -24,7 +22,6 @@ class MigrationTestCase(TestCase):
 
 
 class ApiTests(TestCase):
-    maxDiff = None
     def setUp(self):
         self.user = User(name='User01')
         self.user.save()
@@ -34,8 +31,6 @@ class ApiTests(TestCase):
         self.device.save()
         self.rfid = Rfid(code='1', user=self.user)
         self.rfid.save()
-        self.auth = DeviceAuth(rfid=self.rfid, device=self.device)
-        self.auth.save()
 
     def testAuth(self):
         factory = APIRequestFactory()

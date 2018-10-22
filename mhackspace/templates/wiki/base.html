@@ -55,7 +55,30 @@
         {% block wiki_footer_prepend %}{% endblock %}
       </footer>
 {% endblock wiki_body %}
+
+
+{% addtoblock "css" %}
+  <link href="{% static 'plugins/css/ace.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+  <link href="{% static 'martor/css/martor.css' %}" type="text/css" media="all" rel="stylesheet" />
+{% endaddtoblock css %}
+
+{% addtoblock "js" %}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <script type="text/javascript" src="{% static 'plugins/js/ace.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/semantic.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/mode-markdown.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/ext-language_tools.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/theme-github.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/highlight.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/resizable.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'plugins/js/emojis.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'wiki/js/editors/martor-patch.js' %}"></script>
+  <script type="text/javascript" src="{% static 'martor/js/martor.js' %}"></script>
+{% endaddtoblock %}
+
 {% endblock content %}
+<!-- test includes -->
+{% include "partials/form.html" %}
 
 {% block javascript %}
     {{ block.super }}

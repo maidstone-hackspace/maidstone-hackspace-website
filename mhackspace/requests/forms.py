@@ -1,17 +1,14 @@
 from django import forms
-from mhackspace.requests.models import UserRequests
-from mhackspace.requests.models import REQUEST_TYPES
+from mhackspace.requests.models import UserRequest, UserRequestsComment
 
 
 class UserRequestForm(forms.ModelForm):
     class Meta:
-        model = UserRequests
-        exclude = ['user', 'created_date']
-    # description = forms.CharField(
-    #     required=True,
-    #     widget=forms.Textarea
-    # )
-    # request_type = forms.ChoiceField(
-    #     required=True,
-    #     widget=forms.Select,
-    #     choices=REQUEST_TYPES)
+        model = UserRequest
+        exclude = ['user', 'created_date', 'acquired']
+
+
+class UserRequestFormComment(forms.ModelForm):
+    class Meta:
+        model = UserRequestsComment
+        exclude = ['user', 'created_date', 'request']

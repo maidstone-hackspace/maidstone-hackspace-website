@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-
-from django.core.urlresolvers import reverse
+from django.http import Http404
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -17,6 +17,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     # These next two lines tell the view to index lookups by username
     slug_field = 'username'
     slug_url_kwarg = 'username'
+
+
+    def get_object(self):
+        user = super(UserDetailView, self).get_object()
+        # Disallow users to view others profiles
+        if user.username == self.request.user.username:
+            return user
+        raise Http404()
 
     def get_context_data(self, **kwargs):
         # xxx will be available in the template as the related objects
@@ -64,10 +72,3 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             blurb_model.save()
 
         return super(UserUpdateView, self).form_valid(form)
-
-
-class UserListView(LoginRequiredMixin, ListView):
-    model = User
-    # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'

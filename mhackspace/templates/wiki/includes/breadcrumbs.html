@@ -17,19 +17,19 @@
     <ul class="dropdown-menu">
       {% for child in children_slice %}
         <li>
-          <a href="{% url 'wiki:get' path=child.path %}">
+          <a class="dropdown-item" href="{% url 'wiki:get' path=child.path %}">
             {{ child.article.current_revision.title }}
           </a>
         </li>
         {% empty %}
-        <li><a href="#"><em>{% trans "No sub-articles" %}</em></a></li>
+        <li><a class="dropdown-item" href="#"><em>{% trans "No sub-articles" %}</em></a></li>
       {% endfor %}
       {% if children_slice_more %}
-      <li><a href="#"><em>{% trans "...and more" %}</em></a></li>
+      <li><a class="dropdown-item" href="#"><em>{% trans "...and more" %}</em></a></li>
       {% endif %}
       <li class="divider"></li>
       <li>
-        <a href="{% url 'wiki:dir' path=urlpath.path %}">{% trans "Browse articles in this level" %} &raquo;</a>
+        <a class="dropdown-item" href="{% url 'wiki:dir' path=urlpath.path %}">{% trans "Browse articles in this level" %} &raquo;</a>
       </li>
     </ul>
   </div>
@@ -43,12 +43,12 @@
     <ul class="dropdown-menu">
       <li>
         {% if urlpath.parent %}
-        <a href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
+        <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.parent.path %}" style="padding: 7px;">
           <span class="fa fa-arrow-right"></span>
           {% trans "New article next to" %} {{ article.current_revision.title }}
         </a>
         {% endif %}
-        <a href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
+        <a class="dropdown-item" href="{% url 'wiki:create' path=urlpath.path %}" style="padding: 7px;">
           <span class="fa fa-arrow-down"></span>
           {% trans "New article below" %} {{ article.current_revision.title }}
         </a>

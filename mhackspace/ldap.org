@@ -1,0 +1,171 @@
+#+TITLE: Hackspace LDAP examples 
+
+* Introduction
+LDAP is a direcotry service that is often used to authenticate users, it has support in a lot of apps so we maintain a ldap server to provided authentication.
+
+** Usefull links
+https://www.redpill-linpro.com/techblog/2016/08/16/ldap-password-hash.html
+** setup
+Setup an ldap server inside docker
+#+BEGIN_SRC bash
+docker run --name hackspace-ldap --restart=always --env LDAP_ORGANISATION="Maidstone Hackspace" --env LDAP_DOMAIN="maidstone-hackspace.org.uk"  --env LDAP_ADMIN_PASSWORD="JonSn0w" --detach osixia/openldap:1.2.0
+#+END_SRC
+
+* Add Objects
+** Add Organizational Units
+#+BEGIN_SRC python :results value
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  LDAP_PASSWORD = 'secretldappassword'
+  LDAP_ROOT = 'dc=maidstone-hackspace, dc=org, dc=uk'
+  LDAP_SERVER = '172.18.0.2'
+
+  server = Server(LDAP_SERVER)
+  conn = Connection(server, 'cn=admin, %s' % LDAP_ROOT, LDAP_PASSWORD, auto_bind=True)
+
+  conn.add('ou=users,dc=maidstone-hackspace, dc=org, dc=uk', 'organizationalUnit')
+  conn.add('ou=groups,dc=maidstone-hackspace, dc=org, dc=uk', 'organizationalUnit')
+  return conn.result
+#+END_SRC
+
+#+RESULTS:
+| result | : | 0 | description | : | success | dn | : |   | message | : |   | referrals | : | hline | type | : | addResponse |
+
+** Add Groups
+#+BEGIN_SRC python :results value
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  LDAP_PASSWORD = 'secretldappassword'
+  LDAP_ROOT = 'dc=maidstone-hackspace, dc=org, dc=uk'
+  LDAP_SERVER = '172.18.0.2'
+
+  server = Server(LDAP_SERVER)
+  conn = Connection(server, 'cn=admin, %s' % LDAP_ROOT, LDAP_PASSWORD, auto_bind=True)
+
+  g = {'objectClass':  ['groupOfNames', 'top'], 'cn': 'g1', 'member': ['cn=admin',]}
+  conn.add('cn=g1, ou=groups,dc=maidstone-hackspace, dc=org, dc=uk', attributes=g)
+  conn.add('cn=g2, ou=groups,dc=maidstone-hackspace, dc=org, dc=uk', attributes=g)
+  return conn.result
+#+END_SRC
+
+#+RESULTS:
+| result | : | 0 | description | : | success | dn | : |   | message | : |   | referrals | : | hline | type | : | addResponse |
+
+** Add Users
+#+BEGIN_SRC python :results value
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  LDAP_PASSWORD = 'secretldappassword'
+  LDAP_ROOT = 'dc=maidstone-hackspace, dc=org, dc=uk'
+  LDAP_SERVER = '172.18.0.2'
+
+  server = Server(LDAP_SERVER)
+  conn = Connection(server, 'cn=admin, %s' % LDAP_ROOT, LDAP_PASSWORD, auto_bind=True)
+
+  u = {'objectClass':  ['inetOrgPerson', 'person', 'top'], 'sn': 'user_sn', 'cn': 'First Last', 'userPassword': ''}
+  conn.add('cn=user2,ou=users,dc=maidstone-hackspace, dc=org, dc=uk', attributes=u)
+  return conn.result
+#+END_SRC
+
+#+RESULTS:
+| result | : | 0 | description | : | success | dn | : |   | message | : |   | referrals | : | hline | type | : | addResponse |
+
+* Modify objects
+** Modify groups
+#+BEGIN_SRC python :results raw
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL, MODIFY_REPLACE, MODIFY_DELETE
+  server = Server('172.17.0.2')
+  conn = Connection(server, 'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk', 'JonSn0w', auto_bind=True)
+  print(conn.bind())
+  conn.modify(
+      'cn=g1, ou=groups,dc=maidstone-hackspace, dc=org, dc=uk', 
+      {'member': [
+	  (MODIFY_REPLACE, ['cn=admin','cn=user1'])]})
+  return conn.result
+#+END_SRC
+
+#+RESULTS:
+{'result': 0, 'description': 'success', 'dn': '', 'message': '', 'referrals': None, 'type': 'modifyResponse'}
+
+* Search objects
+** Check group exists
+#+BEGIN_SRC python :results value
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  server = Server('172.17.0.2')
+  conn = Connection(server, 'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk', 'JonSn0w', auto_bind=True)
+  print(conn.bind())
+  return conn.search('cn=g4, ou=groups, dc=maidstone-hackspace, dc=org, dc=uk', '(objectclass=groupOfNames)')
+#+END_SRC
+
+#+RESULTS:
+: False
+
+* List objects
+** list users
+#+BEGIN_SRC python :results value
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  server = Server('172.19.0.6')
+  conn = Connection(server, 'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk', 'secretldappassword', auto_bind=True)
+  print(conn.bind())
+  conn.search('dc=maidstone-hackspace, dc=org, dc=uk', '(objectclass=person)')
+  return conn.entries
+#+END_SRC
+
+#+RESULTS:
+| DN: | cn=oly | ou=users | dc=maidstone-hackspace | dc=org | dc=uk | - | STATUS: | Read | - | READ | TIME: | 2018-04-23T21:13:46.919782 | DN: | cn=test | ou=users | dc=maidstone-hackspace | dc=org | dc=uk | - | STATUS: | Read | - | READ | TIME: | 2018-04-23T21:13:46.919828 |
+
+** list groups
+#+BEGIN_SRC python :results table
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL, SUBTREE
+  server = Server('172.17.0.2')
+  conn = Connection(server, 'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk', 'JonSn0w', auto_bind=True)
+  print(conn.bind())
+  conn.search(
+      search_base='ou=groups, dc=maidstone-hackspace, dc=org, dc=uk', 
+      search_filter='(objectclass=groupOfNames)',
+      search_scope=SUBTREE,
+      attributes=['cn', 'member'])
+  return conn.entries[0]
+#+END_SRC
+
+** list organizational units
+#+BEGIN_SRC python :results table
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  server = Server('172.17.0.2')
+  conn = Connection(server, 'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk', 'JonSn0w', auto_bind=True)
+  print(conn.bind())
+  conn.search('dc=maidstone-hackspace, dc=org, dc=uk', '(objectclass=organizationalUnit)')
+  return conn.entries
+#+END_SRC
+
+#+RESULTS:
+| DN: | ou=users | dc=maidstone-hackspace | dc=org | dc=uk | - | STATUS: | Read | - | READ | TIME: | 2018-04-19T22:29:32.989385 | DN: | ou=groups | dc=maidstone-hackspace | dc=org | dc=uk | - | STATUS: | Read | - | READ | TIME: | 2018-04-19T22:29:32.989433 |
+
+#+BEGIN_SRC python :results table
+  from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
+  server = Server('172.19.0.3')
+  conn = Connection(server, 'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk', 'secretldappassword', auto_bind=True)
+  print(conn.bind())
+  conn.search('dc=maidstone-hackspace, dc=org, dc=uk', '(objectclass=organizationalUnit)')
+  return conn.entries
+#+END_SRC
+
+#+RESULTS:
+|   |
+
+
+
+* Queries
+Testing with elisp
+#+BEGIN_SRC emacs-lisp
+  (setq ldap-default-host "test.maidstone-hackspace.org.uk")
+  (setq ldap-default-base "dc=test, dc=maidstone-hackspace, dc=org, dc=uk")
+  (setq ldap-host-alist '(("ldap://test.maidstone-hackspace.org.uk"
+                           timelimit "10" 
+                           password "password-here"
+                           base "dc=test, dc=maidstone-hackspace, dc=org, dc=uk"
+                           binddn "cn=admin, dc=test, dc=maidstone-hackspace, dc=org, dc=uk")))
+  (ldap-search "(objectclass=person)")
+#+END_SRC
+
+Testing with ldap search
+#+BEGIN_SRC shell
+docker exec hackstage_directory_1 ldapsearch -x -H ldap://localhost -b "dc=test, dc=maidstone-hackspace, dc=org, dc=uk" -D "cn=admin, dc=test, dc=maidstone-hackspace, dc=org, dc=uk" -w password-here
+#+END_SRC

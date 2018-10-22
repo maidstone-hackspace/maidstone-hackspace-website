@@ -5,14 +5,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from stdimage.models import StdImageField
-from stdimage.utils import UploadToAutoSlugClassNameDir
+from dynamic_filenames import FilePattern
 
 
-image_variations = {
-    'home': {
-        "width": 530,
-        "height": 220,
-        "crop": True}}
+image_variations = {"home": {"width": 530, "height": 220, "crop": True}}
+upload_to_pattern = FilePattern(
+    filename_pattern="{model_name}/{instance.title:slug}{ext}"
+)
 
 
 @python_2_unicode_compatible
@@ -23,10 +22,11 @@ class Feed(models.Model):
     author = models.CharField(max_length=255)
     tags = models.CharField(max_length=255, blank=True)
     image = StdImageField(
-        upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
+        upload_to=upload_to_pattern,
         blank=True,
         null=True,
-        variations=image_variations)
+        variations=image_variations,
+    )
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
@@ -35,14 +35,15 @@ class Feed(models.Model):
 
 class Article(models.Model):
     url = models.URLField()
-    feed = models.ForeignKey(Feed)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     original_image = models.URLField(max_length=255, blank=True, null=True)
     image = StdImageField(
-        upload_to=UploadToAutoSlugClassNameDir(populate_from='title'),
+        upload_to=upload_to_pattern,
         blank=True,
         null=True,
-        variations=image_variations)
+        variations=image_variations,
+    )
 
     description = models.TextField()
     displayed = models.BooleanField(default=True)
@@ -52,4 +53,4 @@ class Article(models.Model):
         return self.title
 
     class Meta:
-        ordering = ('pk',)
+        ordering = ("pk",)

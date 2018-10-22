@@ -6,27 +6,32 @@ from django.db import migrations, models
 import stdimage.models
 import stdimage.utils
 import stdimage.validators
+import dynamic_filenames
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('blog', '0004_auto_20170228_2210'),
-    ]
+    dependencies = [("blog", "0004_auto_20170228_2210")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='post',
-            options={'ordering': ('-published_date',)},
+            name="post", options={"ordering": ("-published_date",)}
         ),
         migrations.AddField(
-            model_name='post',
-            name='excerpt',
+            model_name="post",
+            name="excerpt",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='image',
-            field=stdimage.models.StdImageField(blank=True, null=True, upload_to=stdimage.utils.UploadToAutoSlugClassNameDir('title'), validators=[stdimage.validators.MinSizeValidator(730, 410)]),
+            model_name="post",
+            name="image",
+            field=stdimage.models.StdImageField(
+                blank=True,
+                null=True,
+                upload_to=dynamic_filenames.FilePattern(
+                    filename_pattern="{model_name}/{instance.title:slug}{ext}"
+                ),
+                validators=[stdimage.validators.MinSizeValidator(730, 410)],
+            ),
         ),
     ]
