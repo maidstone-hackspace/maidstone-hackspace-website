@@ -26,55 +26,85 @@ To get started checkout the project to your machine, with the command below.
 git clone https://github.com/maidstone-hackspace/maidstone-hackspace-website.git
 #+END_SRC
 
-*** Build your containers to install the sites requirements
+*** Then build your containers to install the sites requirements
 Once checked out build your containers locally you only need to do this when first start or if requirements change.
 
 #+BEGIN_SRC sh
-docker-compose -fdev.yml build
+docker-compose -f local.yml build
 #+END_SRC
 
-*** Start your new containers containing a database and django
+*** Next start your new containers containing a database and django
 
 #+BEGIN_SRC sh
-docker-compose -fdev up
+docker-compose -f local.yml up
 #+END_SRC
 
-Test django is serving pages
-http://127.0.0.1:8180
+Once it's running, there's a few commands to run the first time before you can use it.
 
 *** Run migrations to setup the database
-To run django commands just prefix them with =docker-compose -f dev.yml run django=
+To run django commands just prefix them with =docker-compose -f local.yml run django=
 #+BEGIN_SRC sh
-docker-compose -f dev.yml run --rm django python manage.py makemigrations
-docker-compose -f dev.yml run --rm django python manage.py migrate
+docker-compose -f local.yml run --rm django python manage.py migrate
 #+END_SRC
-*** Create the admin user.
-Once created you can login at http://127.0.0.1:8180/trustee
+
+*** Download static content
 #+BEGIN_SRC sh
-docker-compose -f dev.yml run --rm django python manage.py createsuperuser
+docker-compose -f local.yml run --rm django python manage.py collectstatic
+#+END_SRC
+
+*** Find the website address
+Every time you start the website with the =docker-compose -f local.yml up= command the IPAddress of the website could change.
+To find it you can run =docker ps=, but you may find the following command more handy.
+#+BEGIN_SRC sh
+docker ps -q | xargs docker inspect --format="{{printf \"%.40s\" .Name}} @ {{printf \"%.20s\" .Config.Image}} @ http://{{if ne \"\" .NetworkSettings.IPAddress}}{{ printf \"%.22s\" .NetworkSettings.IPAddress}}{{else}}{{range .NetworkSettings.Networks}}{{printf \"%.22s\" .IPAddress}}{{end}}{{end}} @ {{printf \"%.10s\" .State.Status}}" | column -t -s@ -c 80
+#+END_SRC
+This should return something like this:
+#+BEGIN_SRC sh
+/maidstonehackspacewebsite_nginx_1          olymk2/nginx            http://172.18.0.12    running
+/maidstonehackspacewebsite_celerybeat_1     maidstonehackspacewe    http://172.18.0.10    running
+/maidstonehackspacewebsite_celeryworker_    maidstonehackspacewe    http://172.18.0.11    running
+/maidstonehackspacewebsite_django_1         maidstonehackspacewe    http://172.18.0.9     running
+/maidstonehackspacewebsite_django_bjoren    maidstonehackspacewe    http://172.18.0.8     running
+/maidstonehackspacewebsite_django_gunico    maidstonehackspacewe    http://172.18.0.7     running
+/maidstonehackspacewebsite_postgres_1       maidstonehackspacewe    http://172.18.0.6     running
+/maidstonehackspacewebsite_bucket_1         minio/minio             http://172.18.0.5     running
+/maidstonehackspacewebsite_directory_1      osixia/openldap:1.2.    http://172.18.0.4     running
+/maidstonehackspacewebsite_mailhog_1        mailhog/mailhog         http://172.18.0.3     running
+/maidstonehackspacewebsite_redis_1          redis:latest            http://172.18.0.2     running
+#+END_SRC
+Look for the =nginx= line, in this instance the IPAddress is 172.18.0.12.
+This IPAddress will be used in the rest of the examples below, you will need to substitue with your IPAddress.
+
+At this point the website should be up and running and you should be able to access it by going to the nginx IPAddress, e.g.,
+http://172.18.0.12/
+
+*** Create the admin user.
+Once created you can login at http://172.18.0.12/trustee
+#+BEGIN_SRC sh
+docker-compose -f local.yml run --rm django python manage.py createsuperuser
 #+END_SRC
 
 *** Generate dummy data
 #+BEGIN_SRC sh
-docker-compose -f dev.yml run --rm django python manage.py generate_test_data
+docker-compose -f local.yml run --rm django python manage.py generate_test_data
 #+END_SRC
 ** Migrations / Managing default data
 If you want to export some data you entered into the admin area you can use =dumpdata= and =loaddata= to export and import.
 
 #+BEGIN_SRC sh
-docker-compose -fdev.yml run --rm django python manage.py dumpdata feeds > mhackspace/feeds/fixtures/defaults.json
-docker-compose -fdev.yml run --rm django python manage.py loaddata mhackspace/feeds/fixtures/defaults.json
+docker-compose -f local.yml run --rm django python manage.py dumpdata feeds > mhackspace/feeds/fixtures/defaults.json
+docker-compose -f local.yml run --rm django python manage.py loaddata mhackspace/feeds/fixtures/defaults.json
 #+END_SRC
 
 ** Django Commands
 
 #+BEGIN_SRC sh
-docker-compose -fdev.yml run --rm django python manage.py list_subscriptions
+docker-compose -f local.yml run --rm django python manage.py list_subscriptions
 #+END_SRC
 
 *** Render image variations, if you change the images sizes this will be needed
 #+BEGIN_SRC sh
-docker-compose -fdev.yml run --rm django python manage.py rendervariations 'blog.Post.image' --replace
+docker-compose -f local.yml run --rm django python manage.py rendervariations 'blog.Post.image' --replace
 #+END_SRC
 ** Api
 #+BEGIN_SRC python
