@@ -38,16 +38,24 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
             data = jwt.decode(request.data["data"], settings.RFID_SECRET, algorithms=['HS256'])
         except ExpiredSignatureError:
             data = jwt.decode(request.data["data"], settings.RFID_SECRET, algorithms=['HS256'], verify=False)
-            logger.warn(f"Signature expired for {data.get('rfid_code')} on device {data.get('device_id')}")
+            logger.warning(f"Signature expired for {data.get('rfid_code')} on device {data.get('device_id')}")
             return Response(jwt.encode({"authenticated": False}, settings.RFID_SECRET), status=status.HTTP_403_FORBIDDEN)
+        except jwt.exceptions.InvalidTokenError as e:
+            logger.warning(f'Invalid JWT {e} : {request.data["data"]}')
+            return Response(jwt.encode({"authenticated": False}, settings.RFID_SECRET),
+                            status=status.HTTP_403_FORBIDDEN)
 
         if data.get("rfid_code") is None or data.get("rfid_code") is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        # print(data)
         try:
             rfid = Rfid.objects.get(code=data["rfid_code"])
+        except Rfid.DoesNotExist:
+            logger.warning(f"Unable to find valid rfid {data['rfid_code']}")
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        try:
             device = Device.objects.get(identifier=data["device_id"])
-        except ObjectDoesNotExist:
+        except Device.DoesNotExist:
+            logger.warning(f"Unable to find valid device {data['device_id']}")
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         try:
