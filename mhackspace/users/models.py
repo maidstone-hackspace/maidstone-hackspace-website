@@ -125,7 +125,7 @@ class Membership(models.Model):
 
 
 class Rfid(models.Model):
-    code = models.CharField(max_length=7, unique=True)
+    code = models.CharField(max_length=200, unique=True)
     description = models.CharField(
         _("Short rfid description"), blank=True, max_length=255
     )
