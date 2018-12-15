@@ -7,19 +7,6 @@ Test settings
 
 from .common import *  # noqa
 
-
-# DEBUG
-# ------------------------------------------------------------------------------
-# Turn debug off so tests run faster
-DEBUG = False
-TEMPLATES[0]['OPTIONS']['debug'] = False
-
-# SECRET CONFIGURATION
-# ------------------------------------------------------------------------------
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
-# Note: This key only used for development and testing.
-SECRET_KEY = env('DJANGO_SECRET_KEY', default='CHANGEME!!!')
-
 # Mail settings
 # ------------------------------------------------------------------------------
 EMAIL_HOST = 'localhost'
@@ -29,35 +16,10 @@ EMAIL_PORT = 1025
 # for unit testing purposes
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
-# CACHING
-# ------------------------------------------------------------------------------
-# Speed advantages of in-memory caching without having to run Memcached
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': ''
-    },
-    'st_rate_limit': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'spirit_rl_cache',
-        'TIMEOUT': None
-    }
-}
-
 # TESTING
 # ------------------------------------------------------------------------------
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-
-# PASSWORD HASHING
-# ------------------------------------------------------------------------------
-# Use fast password hasher so tests run faster
-PASSWORD_HASHERS = (
-    'django.contrib.auth.hashers.MD5PasswordHasher',
-)
-
-# TEMPLATE LOADERS
-# ------------------------------------------------------------------------------
 # Keep templates in memory so tests run faster
 TEMPLATES[0]['OPTIONS']['loaders'] = [
     ('django.template.loaders.cached.Loader', [
@@ -72,3 +34,4 @@ DATABASES = {
         'NAME': os.path.join(str(ROOT_DIR), 'cache/test_database.db'),
         }
 }
+

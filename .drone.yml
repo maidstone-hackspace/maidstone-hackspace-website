@@ -1,16 +1,15 @@
-workspace:
-  base: /drone
-  path: src
+kind: pipeline
+name: default
 
-pipeline:
-  tests:
-    image: python:3.5
-
+steps:
+  - name: tests
+    image: python:3.6
     environment:
-      - PYTHONUSERBASE=/drone/src/cache/packages
-      - POSTGRES_USER=mhackspace
-      - USE_DOCKER=yes
-      - DJANGO_SETTINGS_MODULE=config.settings.test
+      PYTHONUSERBASE: /drone/src/cache/packages
+      POSTGRES_USER: mhackspace
+      USE_DOCKER: yes
+      DJANGO_SETTINGS_MODULE: config.settings.test
+      BUCKET_URL: http://minio:9000
     commands:
       - cp -n env.example .env
       - mkdir -p ./cache/packages ./cache/pip
@@ -19,7 +18,7 @@ pipeline:
       - python manage.py collectstatic --no-input 
       - python manage.py test mhackspace --keepdb --verbosity 2
 
-  publish-test:
+  - name: publish-stage
     pull: True
     image: appleboy/drone-ssh
     host: stage.maidstone-hackspace.org.uk
@@ -36,7 +35,7 @@ pipeline:
       - docker-compose -fstage.yml down --remove-orphans 
       - docker-compose -fstage.yml up -d
 
-  publish-live:
+  - name: publish-live
     pull: True
     image: appleboy/drone-ssh
     user: root
@@ -52,19 +51,18 @@ pipeline:
       event: [ tag ]
 
 services:
-  mailhog:
+  - name: mailhog
     image: mailhog/mailhog
 
-  node:
+  - name: node
     image: node:alpine
     commands:
-      - npm --version 
-      - npm install 
+    - npm --version
+    - npm install
 
-  bucket:
+  - name: minio
     image: minio/minio
     environment:
-      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
-      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-    commands:
-      - minio server /data &
+      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    command: [ "server", "--config-dir=/tmp/minio", "/bucket/" ]

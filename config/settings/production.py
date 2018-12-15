@@ -181,9 +181,6 @@ AWS_HEADERS = {
 }
 
 AWS_S3_SECURE_URLS = True
-AWS_ACCESS_KEY_ID = env('BUCKET_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = env('BUCKET_SECRET_KEY')
-AWS_STORAGE_BUCKET_NAME = 'mhackspace'
 AWS_S3_ENDPOINT_URL = 'https://ams3.digitaloceanspaces.com'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',

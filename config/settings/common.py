@@ -198,7 +198,7 @@ EMAIL_BACKEND = env(
 )
 EMAIL_PORT = 1025
 EMAIL_HOST = env("EMAIL_HOST", default="mailhog")
-MSG_PREFIX = env("EMAIL_HOST", default="MHT")
+MSG_PREFIX = env("EMAIL_PREFIX", default="MHT")
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -296,13 +296,16 @@ STATICFILES_FINDERS = (
 
 AWS_AUTO_CREATE_BUCKET = True
 AWS_DEFAULT_ACL = "public-read"
-AWS_S3_SECURE_URLS = False
+AWS_S3_ENDPOINT_URL = env('BUCKET_URL', default="http://127.0.0.1:9000")
 AWS_ACCESS_KEY_ID = env('BUCKET_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('BUCKET_SECRET_KEY')
-AWS_STORAGE_BUCKET_NAME = "mhackspace-local"
+AWS_STORAGE_BUCKET_NAME = env('BUCKET_NAME', default="mhackspace-local")
 AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-AWS_LOCATION = "dev"
+AWS_LOCATION = "static"
 AWS_S3_SECURE_URLS = True
+
+STATIC_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
+
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
