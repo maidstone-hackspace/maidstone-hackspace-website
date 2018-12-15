@@ -4,11 +4,7 @@ import socket
 import os
 from .common import *  # noqa
 
-DEBUG = env.bool('DJANGO_DEBUG', default=True)
-DEBUG = True
-TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
-# ALLOWED_HOSTS = ['*']
 # INTERNAL_IPS = ['127.0.0.1', '10.0.2.2', '172.22.0.9', '192.168.1.113', '172.22.0.4', '0.0.0.0']
 # tricks to have debug toolbar when developing with docker
 if os.environ.get('USE_DOCKER') == 'yes':
@@ -107,21 +103,6 @@ LOGGING = {
 
 
 PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'http://127.0.0.1:8180'
-TEMPLATE_DEBUG = True 
-
-AWS_S3_SECURE_URLS = False
-AWS_ACCESS_KEY_ID = env('BUCKET_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = env('BUCKET_SECRET_KEY')
-AWS_STORAGE_BUCKET_NAME = 'mhackspace-local'
-AWS_S3_ENDPOINT_URL = 'http://%s:9000' % socket.gethostbyname('bucket')
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_LOCATION = 'dev'
-AWS_S3_SECURE_URLS = True
-STATIC_URL = '%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME)
-
-
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------
