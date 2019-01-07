@@ -98,7 +98,7 @@ def fetch_feeds(feeds):
                     "title": post.title,
                     "original_image": image,
                     "description": post.description,
-                    "date": post.published_parsed,
+                    "date": post.updated_parsed,
                     "image": image,
                 }
             )

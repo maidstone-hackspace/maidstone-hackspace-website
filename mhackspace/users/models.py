@@ -88,7 +88,9 @@ class Membership(models.Model):
     payment = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     payment_date = models.DateTimeField(default=None)
     join_date = models.DateTimeField(default=timezone.now)
-
+    has_fob = models.BooleanField(
+        default=False, help_text="Member has fob access"
+    )
 
     #  date not specific enough
     date = models.DateTimeField()
