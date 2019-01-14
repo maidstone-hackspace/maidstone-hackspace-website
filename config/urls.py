@@ -23,7 +23,7 @@ from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
 from mhackspace.requests.views import RequestsForm, RequestsList, RequestsDetail, RequestsDetailForm
 from mhackspace.rfid.views import DeviceViewSet, AuthUserWithDeviceViewSet
-from mhackspace.core.views import ChatView, AboutView
+from mhackspace.core.views import ChatView, AboutView, StatusView
 
 from mhackspace.register.views import RegisterForm
 from mhackspace.wiki.urls import CustomWikiUrlPatterns
@@ -49,6 +49,7 @@ sitemaps = {
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+    url(r'^status/$', StatusView.as_view(), name='status'),
     url(r'^about/$', AboutView.as_view(template_name='pages/about.html'), name='about'),
     url(r'^chat/$', ChatView.as_view(template_name='pages/chat.html'), name='chat'),
     url(r'^mailing-list/$', TemplateView.as_view(template_name='pages/mailing-list.html'), name='group'),

@@ -54,7 +54,7 @@ class gocardless_provider:
             customer = self.client.customers.get(mandate.links.customer)
             # TODO get the last couple of months not all time payments
             payments =  self.client.payments.list(params={"customer": customer.id}).records
-            last_payments = None
+            last_payment = None
             if len(payments):
                 last_payment = payments[0].charge_date
 

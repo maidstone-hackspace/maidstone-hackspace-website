@@ -18,6 +18,7 @@ class gocardlessMocks(TestCase):
         member = Membership()
         member.user = self.user1
         member.payment = '20.00'
+        member.payment_date = self.date_now
         member.date = self.date_now
         member.save()
         return member
@@ -63,9 +64,10 @@ class gocardlessMocks(TestCase):
             return_value={'status_code': '200'})
 
     def mock_customer_success_responses(self):
-        ApiCustomersGet = namedtuple('ApiCustomersGet', 'email')
+        ApiCustomersGet = namedtuple('ApiCustomersGet', 'email, id')
         self.provider.client.customers.get = Mock(
             return_value=ApiCustomersGet(
+                id='1',
                 email='test@test.com')
         )
 

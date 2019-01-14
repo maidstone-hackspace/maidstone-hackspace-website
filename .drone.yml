@@ -16,7 +16,8 @@ steps:
       - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
       - python manage.py compilescss 
       - python manage.py collectstatic --no-input 
-      - python manage.py test mhackspace --keepdb --verbosity 2
+      - pytest -v
+#      - python manage.py test mhackspace --keepdb --verbosity 2
 
   - name: publish-stage
     pull: True
