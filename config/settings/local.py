@@ -82,7 +82,7 @@ LOGGING = {
     'loggers': {
         'mhackspace': {
           'level': 'DEBUG',
-            'handlers': ['console']
+            'handlers': ['console', 'logfile']
         },
         'django.request': {
             'handlers': ['mail_admins', 'logfile'],
