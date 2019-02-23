@@ -36,31 +36,19 @@ services:
     image: redis:latest
     restart: always
 
-  celeryworker:
+  huey:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile
-    env_file: .env
-    volumes:
-      - .:/app
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
     depends_on:
       - postgres
       - redis
-    command: celery -A mhackspace.celeryapp worker -l INFO
-    restart: always
-
-  celerybeat:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile
+    command: python manage.py run_huey
     env_file: .env
     volumes:
       - .:/app
-    depends_on:
-      - postgres
-      - redis
-    command: celery -A mhackspace.celeryapp beat -l INFO
-    restart: always
+      - sockets:/data/sockets
 
   directory:
     image: osixia/openldap:1.2.0

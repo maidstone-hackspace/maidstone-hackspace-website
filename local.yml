@@ -26,6 +26,20 @@ services:
       - postgres_data:/var/lib/postgresql/data
     env_file: .env
 
+  huey:
+    build:
+      context: .
+      dockerfile: ./compose/django/Dockerfile-dev
+    user: django
+    depends_on:
+      - postgres
+      - redis
+    command: python manage.py run_huey
+    env_file: .env
+    volumes:
+      - .:/app
+      - sockets:/data/sockets
+
   django:
     build:
       context: .
@@ -53,19 +67,6 @@ services:
       - .:/app
       - sockets:/data/sockets
 
-  django_gunicorn:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile-dev
-    user: django
-    depends_on:
-      - postgres
-    command: /usr/local/bin/gunicorn config.wsgi -w 1 -b unix:/data/sockets/gunicorn-mhackspace.sock --reload --chdir=/app
-    env_file: .env
-    volumes:
-      - .:/app
-      - sockets:/data/sockets
-
   mailhog:
     image: mailhog/mailhog
     ports:
@@ -74,29 +75,6 @@ services:
   redis:
     image: redis:latest
 
-  celeryworker:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile-dev
-    env_file: .env
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-      - redis
-    command: celery -A mhackspace.celeryapp worker -l INFO
-
-  celerybeat:
-    build:
-      context: .
-      dockerfile: ./compose/django/Dockerfile-dev
-    env_file: .env
-    volumes:
-      - .:/app
-    depends_on:
-      - postgres
-      - redis
-    command: celery -A mhackspace.celeryapp beat -l INFO
 
   # port 9000 by default
   bucket:

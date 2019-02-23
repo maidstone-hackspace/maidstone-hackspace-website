@@ -11,7 +11,7 @@ django-environ==0.4.5
 whitenoise==4.1.2
 # Static and Media Storage
 # ------------------------------------------------
-boto3==1.9.53
+boto3==1.9.96
 django-storages==1.7.1
 # django-storages-redux==1.3.2
 
@@ -20,7 +20,7 @@ django-storages==1.7.1
 django-braces==1.13.0
 django-crispy-forms==1.7.2
 
-django-extensions==2.1.4
+django-extensions==2.1.5
 Werkzeug==0.14.1
 
 # Models
@@ -28,7 +28,7 @@ django-stdimage==4.0.1
 django-model-utils==3.1.2
 
 # Images
-Pillow==5.3.0
+Pillow==5.4.1
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
@@ -36,13 +36,13 @@ django-allauth==0.38.0
 
 
 # Python-PostgreSQL Database Adapter
-psycopg2==2.7.6.1
+psycopg2==2.7.7
 
 # Unicode slugification
 awesome-slugify==1.6.5
 
 # Time zones support
-pytz==2018.7
+pytz==2018.9
 
 # Redis support
 django-redis==4.10.0
@@ -54,48 +54,46 @@ django-compressor==2.2
 #fix for use with s3 buckets merged in master, so next release we can remove this
 #django-sass-processor==0.5.7
 git+https://github.com/jrief/django-sass-processor.git
-libsass==0.16.1
-lxml==4.2.5
+libsass==0.17.0
+lxml==4.3.1
 
 # WSGI Handler
 # ------------------------------------------------
-gevent==1.3.7
+gevent==1.4.0
 gunicorn==19.9.0
 #https://github.com/jonashaag/bjoern
-#bjoern
+bjoern
 
 # Your custom requirements go here
 mock==2.0.0
 
 gocardless_pro==1.9.0
-braintree==3.49.0
+braintree==3.51.0
 
 django-autofixture==0.12.1
-wiki==0.4.2
+wiki==0.4.4
 
-djangorestframework==3.9.0
+djangorestframework==3.9.1
 djangorestframework-jwt==1.11.0
-django-filter==2.0.0
+django-filter==2.1.0
 coreapi==2.3.3
 # api libraries end
 
-martor==1.3.5
+martor==1.3.8
 
-django-spirit==0.6.2
-django-djconfig==0.8.0
+django-spirit==0.7.0
+django-djconfig==0.9.0
 django-haystack==2.8.1
 django-xforwardedfor-middleware==2.0
 
-# Application queue celery
-celery==4.2.1
-django-celery-results==1.0.4
-django-celery-beat==1.3.0
+# Application queue 
+huey[backends]
 
-argon2-cffi==18.3.0
+argon2-cffi==19.1.0
 django-cors-headers==2.4.0
 python-magic==0.4.15
-ldap3==2.5.1
-bcrypt==3.1.4
+ldap3==2.5.2
+bcrypt==3.1.6
 python-twitter==3.5
 feedparser==5.2.1
-PyJWT==1.6.4
+PyJWT==1.7.1

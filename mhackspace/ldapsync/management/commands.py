@@ -7,7 +7,7 @@ from mhackspace.subscriptions.helper import create_or_update_membership
 
 from django.contrib.auth.models import Group
 #from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
-from celery import shared_task
+from huey.contrib.djhuey import periodic_task, task
 from .models import User
 
 
