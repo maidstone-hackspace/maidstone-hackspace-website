@@ -1,10 +1,10 @@
 import requests
-from celery import shared_task
+from huey.contrib.djhuey import periodic_task, task
 from django.conf import settings
 from mhackspace.feeds.helper import import_feeds
 
 
-@shared_task
+@task()
 def update_homepage_feeds():
     import_feeds()
     return {'result': 'Homepage feeds imported'}
@@ -16,7 +16,7 @@ matrix_join_room_id_url = matrix_url + "rooms/%21{room}/join?access_token={acces
 matrix_send_msg_url = matrix_url + "/rooms/%21{room}/send/m.room.message?access_token={access_token}"
 
 
-@shared_task
+@task()
 def send_email(email_to,
                message,
                email_from='no-reply@maidstone-hackspace.org.uk',
@@ -33,7 +33,7 @@ def send_email(email_to,
     email.send()
     return {'result', 'Email sent to %s' % email_to}
 
-@shared_task
+@task()
 def matrix_message(message, prefix='', room='default'):
     # we dont rely on theses, so ignore if it goes wrong
     # TODO at least log that something has gone wrong
@@ -67,7 +67,7 @@ def matrix_message(message, prefix='', room='default'):
     return {'result', 'Matrix message sent successfully'}
 
 
-@shared_task
+@task()
 def twitter_message(message, prefix=''):
     import twitter
     api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,

@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.contrib.auth.models import Group
+from huey.contrib.djhuey import periodic_task, task
+
 from ldap3 import Server, Connection, ObjectDef, AttrDef, Reader, Writer, ALL
-from celery import shared_task
 import json
 
 
@@ -38,7 +39,7 @@ def ldap_list_users(connection):
 
 
 
-@shared_task
+@task()
 def ldap_add_organizational_unit(connection, name):
     exists = connection.search(
         'cn=%s, %s' % (name, settings.LDAP_ROOT),
@@ -51,7 +52,7 @@ def ldap_add_organizational_unit(connection, name):
     return connection.result
 
 
-@shared_task
+@task()
 def ldap_add_group(connection, group, users):
     exists = connection.search(
         'cn=%s, ou=groups, %s' % (group, settings.LDAP_ROOT),
@@ -67,7 +68,7 @@ def ldap_add_group(connection, group, users):
 
 
 
-@shared_task
+@task()
 def ldap_add_user(connection, username, name='', password=None):
     u = {'objectClass':  ['inetOrgPerson', 'person', 'top'], 'sn': 'user_sn', 'cn': 'First Last', 'userPassword': ''}
     if not password:
@@ -90,7 +91,7 @@ def ldap_add_user(connection, username, name='', password=None):
     return connection.result
 
 
-@shared_task
+@task()
 def complete_directory_sync(self):
     server = Server(settings.LDAP_SERVER)
     conn = Connection(

@@ -31,7 +31,7 @@ class ArticleAdmin(ModelAdmin):
         return my_urls + urls
 
     def import_articles(self, request):
-        update_homepage_feeds.delay()
+        update_homepage_feeds()#.delay()
         self.message_user(
             request,
             "Importing articles in background refresh in a few minutes",

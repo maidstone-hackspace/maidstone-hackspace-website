@@ -414,21 +414,8 @@ MAX_IMAGE_UPLOAD_SIZE = 10485760  # 10MB
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 
-# CELERY
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://redis:6379/0")
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_IGNORE_RESULT = False
-CELERY_REDIS_HOST = "redis"
-CELERY_REDIS_PORT = 6379
-CELERY_REDIS_DB = 0
 
-CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
-INSTALLED_APPS += ("django_celery_results", "django_celery_beat")
-CELERY_TIMEZONE = "UTC"
-CELERY_ENABLE_UTC = True
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
-# END CELERY
+INSTALLED_APPS += ('huey.contrib.djhuey',)
 
 # django-compressor
 # ------------------------------------------------------------------------------
@@ -629,3 +616,38 @@ ST_BASE_DIR = os.path.dirname(__file__)
 #   ST is Spirit forum software config
 
 RFID_SECRET = env("RFID_SECRET")
+
+HUEY = {
+    'name': DATABASES['default']['NAME'],  # Use db name for huey.
+    'result_store': True,  # Store return values of tasks.
+    'events': True,  # Consumer emits events allowing real-time monitoring.
+    'store_none': False,  # If a task returns None, do not save to results.
+    'always_eager': DEBUG,  # If DEBUG=True, run synchronously.
+    'store_errors': True,  # Store error info if task throws exception.
+    'blocking': False,  # Poll the queue rather than do blocking pop.
+    'backend_class': 'huey.RedisHuey',  # Use path to redis huey by default,
+    'connection': {
+        'host': 'redis',
+        'port': 6379,
+        'db': 0,
+        'connection_pool': None,  # Definitely you should use pooling!
+        # ... tons of other options, see redis-py for details.
+
+        # huey-specific connection parameters.
+        'read_timeout': 1,  # If not polling (blocking pop), use timeout.
+        'max_errors': 1000,  # Only store the 1000 most recent errors.
+        'url': None,  # Allow Redis config via a DSN.
+    },
+    'consumer': {
+        'workers': 1,
+        'worker_type': 'thread',
+        'initial_delay': 0.1,  # Smallest polling interval, same as -d.
+        'backoff': 1.15,  # Exponential backoff using this rate, -b.
+        'max_delay': 10.0,  # Max possible polling interval, -m.
+        'utc': True,  # Treat ETAs and schedules as UTC datetimes.
+        'scheduler_interval': 1,  # Check schedule every second, -s.
+        'periodic': True,  # Enable crontab feature.
+        'check_worker_health': True,  # Enable worker health checks.
+        'health_check_interval': 1,  # Check worker health every second.
+    },
+}
