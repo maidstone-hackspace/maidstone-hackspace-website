@@ -1,38 +1,31 @@
-FROM python:3.6
+FROM python:3.6-alpine
 
 ENV PYTHONUNBUFFERED 1
 
-# Requirements have to be pulled and installed here, otherwise caching won't work
+RUN apk add --no-cache  git build-base gcc \
+    python3-dev postgresql-dev musl-dev \
+    jpeg-dev zlib-dev openjpeg-dev tiff-dev libffi-dev \
+    freetype-dev libev-dev lcms2-dev tk-dev tcl-dev \
+    harfbuzz-dev fribidi-dev libxslt-dev
+
 COPY ./requirements /requirements
 
-RUN pip install --cache-dir ./cache/pip -r /requirements/production.txt \
-    && groupadd -r django \
-    && useradd -r -g django django
+RUN pip install --cache-dir ./cache/pip -r /requirements/local.txt \
+    && addgroup -g 1000 -S django \
+    && adduser -u 1000 -S django -G django
 
 COPY . /app
 
-RUN mkdir -p /var/log/gunicorn/ \
-    && mkdir -p /data/sockets \
-    && chown -R django /app \
-    && chown -R root:django /var/log/gunicorn/ \
-    && chmod -R 770 /var/log/gunicorn/ 
+RUN mkdir -p /data/sockets 
+#    && chown -R django /app
 
-COPY ./compose/django/dev-gunicorn-mhackspace.sh /dev-gunicorn-mhackspace.sh
-COPY ./compose/django/live-gunicorn-mhackspace.sh /live-gunicorn-mhackspace.sh
-COPY ./compose/django/stage-gunicorn-mhackspace.sh /stage-gunicorn-mhackspace.sh
+COPY ./compose/django/bjoern.py /bjoern.py
 COPY ./compose/django/entrypoint.sh /entrypoint.sh
+
+
 RUN sed -i 's/\r//' /entrypoint.sh \
-    && sed -i 's/\r//' /stage-gunicorn-mhackspace.sh \
-    && sed -i 's/\r//' /live-gunicorn-mhackspace.sh \
-    && sed -i 's/\r//' /dev-gunicorn-mhackspace.sh \
     && chmod +x /entrypoint.sh \
     && chown django /entrypoint.sh \
-    && chmod +x /dev-gunicorn-mhackspace.sh \
-    && chown django /dev-gunicorn-mhackspace.sh \
-    && chmod +x /stage-gunicorn-mhackspace.sh \
-    && chown django /stage-gunicorn-mhackspace.sh \
-    && chmod +x /live-gunicorn-mhackspace.sh \
-    && chown django /live-gunicorn-mhackspace.sh \
     && chown django /data/sockets 
 
 WORKDIR /app
