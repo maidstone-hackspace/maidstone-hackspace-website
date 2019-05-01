@@ -54,6 +54,24 @@ ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
 ST_BASE_DIR = os.path.dirname(__file__)
 # END  ST is Spirit forum software config 
 
+ALLOWED_HOSTS = ["*"]
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "10.0.2.2",
+    "172.22.0.9",
+    "192.168.1.113",
+    "172.22.0.4",
+    "0.0.0.0",
+    "192.168.1.64",
+]
+
+
+BUCKET_URL = env('BUCKET_URL', default="http://127.0.0.1:9000")
+# tricks to have debug toolbar when developing with docker
+if os.environ.get("USE_DOCKER") == "yes":
+    ip = socket.gethostbyname(socket.gethostname())
+    INTERNAL_IPS += [ip[:-1] + "1"]
+    BUCKET_URL = "http://" + socket.gethostbyname("bucket") + ":9000"
 
 SECRET_KEY = env(
     "DJANGO_SECRET_KEY",
@@ -296,7 +314,7 @@ STATICFILES_FINDERS = (
 
 AWS_AUTO_CREATE_BUCKET = True
 AWS_DEFAULT_ACL = "public-read"
-AWS_S3_ENDPOINT_URL = env('BUCKET_URL', default="http://127.0.0.1:9000")
+AWS_S3_ENDPOINT_URL = BUCKET_URL
 AWS_ACCESS_KEY_ID = env('BUCKET_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = env('BUCKET_SECRET_KEY')
 AWS_STORAGE_BUCKET_NAME = env('BUCKET_NAME', default="mhackspace-local")
@@ -527,20 +545,6 @@ STATICFILE_LOCATION = LOCATION_PREFIX + "static"
 
 COMPRESS_URL = "cache/"
 
-ALLOWED_HOSTS = ["*"]
-INTERNAL_IPS = [
-    "127.0.0.1",
-    "10.0.2.2",
-    "172.22.0.9",
-    "192.168.1.113",
-    "172.22.0.4",
-    "0.0.0.0",
-    "192.168.1.64",
-]
-# tricks to have debug toolbar when developing with docker
-if os.environ.get("USE_DOCKER") == "yes":
-    ip = socket.gethostbyname(socket.gethostname())
-    INTERNAL_IPS += [ip[:-1] + "1"]
 
 # CACHING
 # ------------------------------------------------------------------------------
