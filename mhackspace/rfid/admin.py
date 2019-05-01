@@ -7,7 +7,7 @@ from mhackspace.rfid.models import Device, AccessLog
 
 @admin.register(Device)
 class DeviceAdmin(ModelAdmin):
-    filter_vertical = ('users',)
+    filter_horizontal = ('users',)
     list_display = ('name', 'identifier')
 
 
