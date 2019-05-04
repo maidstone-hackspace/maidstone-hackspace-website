@@ -29,7 +29,7 @@ services:
   huey:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./compose/django/Dockerfile
     user: django
     depends_on:
       - postgres
@@ -43,7 +43,7 @@ services:
   django:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./compose/django/Dockerfile
     user: django
     depends_on:
       - postgres
@@ -57,7 +57,7 @@ services:
   django_bjoren:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./compose/django/Dockerfile
     user: django
     depends_on:
       - postgres

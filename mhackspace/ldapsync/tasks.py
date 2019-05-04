@@ -9,7 +9,7 @@ import json
 server = Server(settings.LDAP_SERVER)
 conn = Connection(
     server,
-    'cn=admin, dc=maidstone-hackspace, dc=org, dc=uk',
+    f'cn=admin, {settings.LDAP_ROOT}',
     settings.LDAP_PASSWORD,
     auto_bind=True)
 

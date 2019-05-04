@@ -52,13 +52,15 @@ application.debug = True
 # application = ReloadApplicationMiddleware(application)
 
 
-socket_path = '/data/sockets/bjoern-mhackspace.sock'
+socket_path = '/data/sockets/maidstone-hackspace.sock'
 if os.path.exists(socket_path):
     os.unlink(socket_path)
+
 sock = socket.socket(socket.AF_UNIX)
 sock.bind(socket_path)
 sock.listen(1024)
 os.chmod(socket_path, 0o666)
+
 try:
     bjoern.server_run(sock, application)
 except KeyboardInterrupt:

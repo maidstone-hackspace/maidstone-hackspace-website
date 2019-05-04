@@ -24,8 +24,9 @@ services:
     user: django
     depends_on:
       - postgres
-      # - redis
-    command: /stage-gunicorn-mhackspace.sh
+      - directory
+      - redis
+    command: python /app/wsgi_bjoern.py
     env_file: .env
     volumes:
       - .:/app
@@ -39,11 +40,12 @@ services:
   huey:
     build:
       context: .
-      dockerfile: ./compose/django/Dockerfile-dev
+      dockerfile: ./compose/django/Dockerfile
     user: django
     depends_on:
       - postgres
       - redis
+      - directory
     command: python manage.py run_huey
     env_file: .env
     volumes:
