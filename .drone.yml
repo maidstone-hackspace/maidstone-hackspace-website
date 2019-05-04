@@ -2,39 +2,59 @@ kind: pipeline
 name: default
 
 steps:
+  # - name: docker-build
+  #   image: plugins/docker
+  #   settings:
+  #     username:
+  #       from_secret: DOCKER_USER
+  #     password:
+  #       from_secret: DOCKER_PASS
+  #     repo: mhackspace-python
+  #     dockerfile: ./compose/django/Dockerfile
+  #     tags: latest
+  #     repo: docker.digitaloctave.com/do-registry
+  #     registry: docker.digitaloctave.com
+
   - name: tests
-    image: python:3.6
+    image: olymk2/python-built:3.6-alpine
     environment:
       PYTHONUSERBASE: /drone/src/cache/packages
       POSTGRES_USER: mhackspace
       USE_DOCKER: yes
       DJANGO_SETTINGS_MODULE: config.settings.test
-      BUCKET_URL: http://minio:9000
     commands:
-      - cp -n env.example .env
+      - apk add git build-base gcc python3-dev postgresql-dev musl-dev jpeg-dev zlib-dev openjpeg-dev tiff-dev libffi-dev freetype-dev libev-dev lcms2-dev tk-dev tcl-dev harfbuzz-dev fribidi-dev libxslt-dev
+      - cp env.example .env
       - mkdir -p ./cache/packages ./cache/pip
-      - pip install --user --cache-dir ./cache/pip -r ./requirements/test.txt
+      - pip install -r ./requirements/test.txt
       - python manage.py compilescss 
       - python manage.py collectstatic --no-input 
       - pytest -v
 #      - python manage.py test mhackspace --keepdb --verbosity 2
 
+
+
   - name: publish-stage
     pull: True
     image: appleboy/drone-ssh
-    host: stage.maidstone-hackspace.org.uk
-    user: root
-    secrets: [ ssh_key ]
-    port: 22
-    command_timeout: 480
-    script:
-      - cd /var/www/maidstone-hackspace-website
-      - git pull
-      - docker-compose -fstage.yml build
-      - docker-compose -fstage.yml run --rm django python manage.py compilescss
-      - docker-compose -fstage.yml run --rm django python manage.py collectstatic
-      - docker-compose -fstage.yml down --remove-orphans 
-      - docker-compose -fstage.yml up -d
+    settings:
+      host: stage.maidstone-hackspace.org.uk
+
+      username:
+        from_secret: ssh_user
+      key:
+        from_secret: ssh_key
+      port: 22
+      command_timeout: 30m
+      script:
+        - cd /var/www/maidstone-hackspace-website
+        - git pull
+        - docker-compose -fstage.yml build
+        - docker-compose -fstage.yml run --rm django python manage.py compilescss
+        - docker-compose -fstage.yml run --rm django python manage.py collectstatic
+        - docker-compose -fstage.yml down --remove-orphans 
+        - docker-compose -fstage.yml up -d
+        - echo 'Finished deploy'
 
   - name: publish-live
     pull: True
@@ -45,7 +65,7 @@ steps:
         target: ssh_key
     host: maidstone-hackspace.org.uk
     port: 22
-    command_timeout: 480
+    command_timeout: 5m
     script:
       - echo 'to be added'
     when:
@@ -61,7 +81,7 @@ services:
     - npm --version
     - npm install
 
-  - name: minio
+  - name: bucket
     image: minio/minio
     environment:
       MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE

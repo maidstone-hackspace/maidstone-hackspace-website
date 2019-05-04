@@ -626,6 +626,7 @@ HUEY = {
     'store_errors': True,  # Store error info if task throws exception.
     'blocking': False,  # Poll the queue rather than do blocking pop.
     'backend_class': 'huey.RedisHuey',  # Use path to redis huey by default,
+    'immediate': False,
     'connection': {
         'host': 'redis',
         'port': 6379,
@@ -635,7 +636,6 @@ HUEY = {
 
         # huey-specific connection parameters.
         'read_timeout': 1,  # If not polling (blocking pop), use timeout.
-        'max_errors': 1000,  # Only store the 1000 most recent errors.
         'url': None,  # Allow Redis config via a DSN.
     },
     'consumer': {

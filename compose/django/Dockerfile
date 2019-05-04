@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM olymk2/python-built:3.6-alpine
 
 ENV PYTHONUNBUFFERED 1
 
@@ -10,7 +10,7 @@ RUN apk add --no-cache  git build-base gcc \
 
 COPY ./requirements /requirements
 
-RUN pip install --cache-dir ./cache/pip -r /requirements/local.txt \
+RUN pip install --no-cache-dir -r /requirements/local.txt \
     && addgroup -g 1000 -S django \
     && adduser -u 1000 -S django -G django
 
