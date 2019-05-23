@@ -73,7 +73,7 @@ braintree==3.49.0
 django-autofixture==0.12.1
 wiki==0.4.2
 
-djangorestframework==3.9.0
+djangorestframework==3.9.1
 djangorestframework-jwt==1.11.0
 django-filter==2.0.0
 coreapi==2.3.3
