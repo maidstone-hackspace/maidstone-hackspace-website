@@ -26,7 +26,7 @@ services:
       - postgres
       - directory
       - redis
-    command: /live-gunicorn-mhackspace.sh
+    command: python /app/wsgi_bjoern.py
     env_file: .env
     volumes:
       - .:/app
@@ -55,4 +55,6 @@ services:
 
   directory:
     image: osixia/openldap:1.2.0
+    ports:
+      - "0.0.0.0:389:389"
     env_file: .env
