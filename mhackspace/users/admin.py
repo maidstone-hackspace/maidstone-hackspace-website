@@ -47,6 +47,7 @@ class MyUserAdmin(AuthUserAdmin):
     list_display = (
         "username",
         "name",
+        "email",
         "is_active",
         "is_superuser",
         "date_joined",

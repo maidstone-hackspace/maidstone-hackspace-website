@@ -11,3 +11,6 @@ celerybeat.pid
 .minio.sys
 buckets
 *.pyc
+maidstone/static/*
+mhackspace/static/*
+bucket/*
