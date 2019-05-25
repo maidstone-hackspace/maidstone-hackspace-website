@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django import forms
+from allauth.account.forms import SignupForm
 from .models import Blurb
 
 PAYMENT_PROVIDERS = (
@@ -9,8 +10,28 @@ PAYMENT_PROVIDERS = (
 )
 
 
-class BlurbForm(forms.ModelForm):
+class CustomSignupForm(SignupForm):
+    located = forms.ChoiceField(
+        required=False,
+        choices=[
+            ("abc", "Birmingham, UK"),
+            ("def", "Maidstone, Vermoont"),
+            ("ghi", "Maidstone UK"),
+            ("jkl", "London, UK"),
+        ],
+    )
 
+    def clean_located(self):
+        data = self.cleaned_data["located"]
+        if data == "ghi":
+            del (self.cleaned_data["located"])
+            return data
+        raise forms.ValidationError(
+            "Incorrect, Please answer correctly."
+        )
+
+
+class BlurbForm(forms.ModelForm):
     class Meta:
         model = Blurb
         exclude = ["user"]
