@@ -80,7 +80,7 @@ def blog_article_updated(sender, instance, **kwargs):
     instance.save()
     url = "https://%s%s" % (Site.objects.get_current().domain, instance.get_absolute_url())
     message = f"{instance.title} {url}"
-    twitter_message.delay(message)
-    matrix_message.delay(message)
+    twitter_message(message)
+    matrix_message(message)
 
 post_save.connect(blog_article_updated, sender=Post)

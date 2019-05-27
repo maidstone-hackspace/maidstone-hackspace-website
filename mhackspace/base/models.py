@@ -60,7 +60,7 @@ def send_topic_update_email(sender, instance, **kwargs):
             headers={"Reply-To": "no-reply@maidstone-hackspace.org.uk"},
         )
         email.send()
-    matrix_message.delay(
+    matrix_message(
         "https://%s%s"
         % (
             Site.objects.get_current().domain,
@@ -70,7 +70,7 @@ def send_topic_update_email(sender, instance, **kwargs):
 
 
 def wiki_article_updated(sender, instance, **kwargs):
-    matrix_message.delay(
+    matrix_message(
         "https://%s%s"
         % (
             Site.objects.get_current().domain,
@@ -80,7 +80,7 @@ def wiki_article_updated(sender, instance, **kwargs):
 
 
 def send_new_topic_notification(sender, instance, **kwargs):
-    matrix_message.delay(
+    matrix_message(
         "https://%s%s"
         % (Site.objects.get_current().domain, instance.get_absolute_url())
     )

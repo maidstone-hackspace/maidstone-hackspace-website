@@ -56,7 +56,7 @@ class UserRequestsComment(models.Model):
 
 
 def send_topic_update_email(sender, instance, **kwargs):
-    matrix_message.delay(
+    matrix_message(
         prefix=" - REQUEST",
         message="%s - https://%s%s"
         % (
