@@ -60,7 +60,7 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
 
         try:
             member = device.users.get(pk=rfid.user_id)
-            matrix_message.delay(
+            matrix_message(
                 f"{member.username} has just entered {device.name}"
             )
             AccessLog.objects.create(rfid=rfid, device=device, success=True)
