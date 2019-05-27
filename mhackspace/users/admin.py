@@ -49,7 +49,6 @@ class MyUserAdmin(AuthUserAdmin):
         "name",
         "email",
         "is_active",
-        "is_active",
         "is_superuser",
         "date_joined",
     )
