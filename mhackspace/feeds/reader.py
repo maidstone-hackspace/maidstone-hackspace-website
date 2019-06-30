@@ -75,7 +75,6 @@ def fetch_image(post, node, namespaces):
 def fetch_feeds(feeds):
     articles = {}
 
-    print(feeds)
     for feed in feeds:
         url = feed.get("url")
         author = feed.get("author")
@@ -86,19 +85,18 @@ def fetch_feeds(feeds):
         feed_image = ""
         if hasattr(parsed.feed, "image"):
             feed_image = parsed.feed.image.get("href")
-        print(author)
         for post in parsed.entries:
-            root_node = parse_content(post.description)
+            root_node = parse_content(getattr(post, "description", ""))
             image = fetch_image(post, root_node, namespaces) or feed_image
 
             articles.setdefault(author, []).append(
                 {
-                    "url": post.link,
+                    "url": getattr(post, "link", ""),
                     "feed": feed.get("id"),
-                    "title": post.title,
+                    "title": getattr(post, "title", ""),
                     "original_image": image,
-                    "description": post.description,
-                    "date": post.updated_parsed,
+                    "description": getattr(post, "description", ""),
+                    "date": getattr(post, "updated_parsed", ""),
                     "image": image,
                 }
             )
