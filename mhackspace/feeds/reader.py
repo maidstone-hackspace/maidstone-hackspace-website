@@ -64,7 +64,7 @@ def fetch_image(post, node, namespaces):
             return image
 
     # final attempt at getting an image from the item using description
-    image = fetch_image_from_node_text(post.description)
+    image = fetch_image_from_node_text(getattr(post, "description", ""))
     if image:
         return image
 
