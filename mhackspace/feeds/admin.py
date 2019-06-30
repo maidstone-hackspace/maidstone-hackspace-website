@@ -6,7 +6,6 @@ from django.urls import reverse
 
 from mhackspace.base.tasks import update_homepage_feeds
 from mhackspace.feeds.models import Feed, Article
-from mhackspace.feeds.helper import import_feeds
 
 
 @admin.register(Feed)

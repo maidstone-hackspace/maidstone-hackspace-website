@@ -10,12 +10,27 @@ from django.core.files import File
 
 from mhackspace.feeds.reader import fetch_feeds
 from mhackspace.feeds.models import Feed, Article
+from huey.contrib.djhuey import task
+
 
 logger = logging.getLogger(__name__)
 
 
 def import_feeds(feed=False):
-    remove_old_articles()
+    feeds = Feed.objects.filter(enabled=True)
+    count = 0
+    for feed in feeds.all():
+        try:
+            import_feed(feed.pk)
+            count += 1
+        except Exception as e:
+            raise Exception(f"Failed to parse feed {feed.id}")
+    return count
+
+
+@task()
+def import_feed(feed=False):
+    remove_old_articles(feed)
     articles = fetch_feeds(get_active_feeds(feed))
     article_objects = []
     # for author in articles:
@@ -36,10 +51,14 @@ def import_feeds(feed=False):
     return articles
 
 
-def remove_old_articles():
-    for article in Article.objects.all():
+def remove_old_articles(feed=None):
+    if feed:
+        articles = Article.objects.filter(feed_id=feed)
+    else:
+        articles = Article.objects.all()
+    for article in articles:
         article.image.delete(save=False)
-    Article.objects.all().delete()
+    articles.delete()
 
 
 def download_remote_images():
@@ -68,7 +87,7 @@ def download_remote_images():
 
 def get_active_feeds(feed=False):
     if feed is not False:
-        feeds = Feed.objects.filter(pk__in=feed)
+        feeds = Feed.objects.filter(pk=feed)
     else:
         feeds = Feed.objects.all()
 
