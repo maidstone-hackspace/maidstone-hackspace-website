@@ -17,8 +17,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         if options.get("blog_id"):
-
-            imported = import_feed(options["blog_id"])
+            for id in options["blog_id"]:
+                imported = import_feed(id)
         else:
             imported = import_feeds()
 

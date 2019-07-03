@@ -67,13 +67,18 @@ def download_remote_images():
             continue
         try:
             result = requests.get(article.original_image, timeout=5)
-        except Exception as e:
-            logger.exception(result.status_code)
+        except requests.exceptions.ConnectionError as e:
             logger.exception(
                 "Unable to download remote image for %s"
                 % article.original_image
             )
-            return
+            continue
+        except Exception as e:
+            logger.exception(
+                "Unable to download remote image for %s"
+                % article.original_image
+            )
+            continue
 
         try:
             article.image.save(
@@ -81,8 +86,12 @@ def download_remote_images():
                 File(BytesIO(result.content)),
             )
             article.save()
+        except OSError as e:
+            continue
+
         except Exception as e:
             logger.exception(result)
+            continue
 
 
 def get_active_feeds(feed=False):

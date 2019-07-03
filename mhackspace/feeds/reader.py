@@ -43,6 +43,8 @@ def parse_content(content):
 
 
 def fetch_image_from_node_text(text):
+    if not text:
+        return None
     html_parser = lxml.etree.HTMLParser()
     description = lxml.etree.parse(StringIO(text), html_parser)
     for image in description.xpath(".//img"):
