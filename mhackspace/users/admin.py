@@ -51,6 +51,7 @@ class MyUserAdmin(AuthUserAdmin):
         "is_active",
         "is_superuser",
         "date_joined",
+        "last_login",
     )
     search_fields = ["username", "name"]
 
