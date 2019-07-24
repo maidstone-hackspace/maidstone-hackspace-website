@@ -520,7 +520,7 @@ MATRIX_ROOM = {
 
 MSG_PREFIX = "MH"
 #X_FRAME_OPTIONS = "SAMEORIGIN"
-#X_FRAME_OPTIONS = 'ALLOW-FROM https://riot.im'
+X_FRAME_OPTIONS = 'ALLOW-FROM riot.im scalar.vector.im matrix.org'
 #CORS_ORIGIN_WHITELIST = ("matrix.org", "vector.im", "riot.im")
 
 
