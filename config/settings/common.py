@@ -507,7 +507,6 @@ REST_FRAMEWORK = {
 
 # Deprecated need removing, sorl plugin still expects TEMPLATE_DEBUG so for now we need it just for this plugin
 TEMPLATE_DEBUG = False
-CORS_ORIGIN_WHITELIST = ("matrix.org", "vector.im", "riot.im")
 
 # Matrix chat settings
 MATRIX_USER = env("MATRIX_USERNAME")
@@ -520,7 +519,10 @@ MATRIX_ROOM = {
 
 
 MSG_PREFIX = "MH"
-X_FRAME_OPTIONS = "SAMEORIGIN"
+#X_FRAME_OPTIONS = "SAMEORIGIN"
+#X_FRAME_OPTIONS = 'ALLOW-FROM https://riot.im'
+#CORS_ORIGIN_WHITELIST = ("matrix.org", "vector.im", "riot.im")
+
 
 # Twitter messageing settings
 TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
