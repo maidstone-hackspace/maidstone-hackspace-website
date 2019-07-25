@@ -183,7 +183,7 @@ MIDDLEWARE = (
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'csp.middleware.CSPMiddleware',
     # fix for ip logging behind a proxy
     "x_forwarded_for.middleware.XForwardedForMiddleware",
     "djconfig.middleware.DjConfigMiddleware",
@@ -519,10 +519,7 @@ MATRIX_ROOM = {
 
 
 MSG_PREFIX = "MH"
-#X_FRAME_OPTIONS = "SAMEORIGIN"
-X_FRAME_OPTIONS = 'ALLOW-FROM riot.im scalar.vector.im matrix.org'
-#CORS_ORIGIN_WHITELIST = ("matrix.org", "vector.im", "riot.im")
-
+CSP_FRAME_ANCESTORS = ("https://scalar.vector.im")
 
 # Twitter messageing settings
 TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
