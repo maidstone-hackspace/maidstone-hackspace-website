@@ -519,7 +519,7 @@ MATRIX_ROOM = {
 
 
 MSG_PREFIX = "MH"
-CSP_FRAME_ANCESTORS = ("https://scalar.vector.im")
+CSP_FRAME_ANCESTORS = ("https://scalar.vector.im", "https://riot.im")
 
 # Twitter messageing settings
 TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
