@@ -3,7 +3,7 @@ FROM olymk2/python-built:3.6-alpine
 ENV PYTHONUNBUFFERED 1
 
 RUN apk add --no-cache  git build-base gcc \
-    python3-dev postgresql-dev musl-dev \
+    python3-dev py3-lxml postgresql-dev musl-dev \
     jpeg-dev zlib-dev openjpeg-dev tiff-dev libffi-dev \
     freetype-dev libev-dev lcms2-dev tk-dev tcl-dev \
     harfbuzz-dev fribidi-dev libxslt-dev

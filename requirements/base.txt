@@ -54,8 +54,8 @@ django-compressor==2.3
 #fix for use with s3 buckets merged in master, so next release we can remove this
 #django-sass-processor==0.5.7
 git+https://github.com/jrief/django-sass-processor.git
-libsass==0.19.2
-lxml==4.3.4
+libsass==0.18.0
+#lxml==4.3.3
 
 # WSGI Handler
 # ------------------------------------------------
