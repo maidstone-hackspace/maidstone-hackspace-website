@@ -520,6 +520,8 @@ MATRIX_ROOM = {
 
 MSG_PREFIX = "MH"
 CSP_FRAME_ANCESTORS = ("https://scalar.vector.im", "https://riot.im")
+CSP_SCRIPT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com")
+CSP_DEFAULT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com")
 
 # Twitter messageing settings
 TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
