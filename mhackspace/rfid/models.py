@@ -11,10 +11,16 @@ from mhackspace.users.models import Rfid
 
 
 class Device(models.Model):
-    identifier = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    identifier = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
     users = models.ManyToManyField(settings.AUTH_USER_MODEL)
-    name = models.CharField(_('Device name'), max_length=255)
-    description = models.CharField(_('Short description of what the device does'), blank=True, max_length=255)
+    name = models.CharField(_("Device name"), max_length=255)
+    description = models.CharField(
+        _("Short description of what the device does"),
+        blank=True,
+        max_length=255,
+    )
     added_date = models.DateTimeField(default=timezone.now, editable=False)
 
     def __str__(self):
@@ -25,6 +31,7 @@ class AccessLog(models.Model):
     rfid = models.ForeignKey(Rfid, on_delete=models.CASCADE)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     success = models.BooleanField()
+    access_date = models.DateTimeField(default=timezone.now, editable=False)
 
     def __str__(self):
         return f"{self.rfid.user} {self.device}"
