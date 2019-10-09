@@ -520,8 +520,9 @@ MATRIX_ROOM = {
 
 MSG_PREFIX = "MH"
 CSP_FRAME_ANCESTORS = ("https://scalar.vector.im", "https://riot.im")
-CSP_SCRIPT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com")
-CSP_DEFAULT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com")
+CSP_SCRIPT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com", "http://code.jquery.com", "https://ams3.digitaloceanspaces.com", "https://www.google-analytics.com", "https://cdn.maidstone-hackspace.org.uk")
+CSP_IMG_SRC = ("'self'", "https://ams3.digitaloceanspaces.com", "http://cdn.maidstone-hackspace.org.uk")
+CSP_DEFAULT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com", "http://cdn.maidstone-hackspace.org.uk", "https://ams.digitaloceanspaces.com")
 
 # Twitter messageing settings
 TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
