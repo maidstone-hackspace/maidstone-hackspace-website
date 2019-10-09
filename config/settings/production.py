@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Production Configurations
-
-
-
 """
 from __future__ import absolute_import, unicode_literals
 
@@ -35,7 +32,6 @@ CSRF_COOKIE_HTTPONLY = False
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['maidstone-hackspace.org.uk', 'live.maidstone-hackspace.org.ukhackdev_postgres_data_dev', 'www.maidstone-hackspace.org.uk'])
 ALLOWED_HOSTS.append('127.0.0.1')
-ALLOWED_HOSTS.append('172.18.0.5')
 
 # END SITE CONFIGURATION
 
@@ -128,11 +124,6 @@ LOGGING = {
         },
     },
     'handlers': {
-        'mail_admins': {
-            'level': 'DEBUG',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -146,13 +137,13 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins', 'logfile'],
+            'handlers': ['logfile'],
             'level': 'ERROR',
             'propagate': True
         },
         'django.security.DisallowedHost': {
             'level': 'ERROR',
-            'handlers': ['logfile', 'console', 'mail_admins'],
+            'handlers': ['logfile', 'console'],
             'propagate': True
         }
     }
@@ -185,10 +176,10 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_LOCATION = 'static'
 
-STATIC_URL = '%s/%s/%s/' % (AWS_S3_ENDPOINT_URL, AWS_STORAGE_BUCKET_NAME, AWS_LOCATION)
+STATIC_URL = 'https://cdn.maidstone-hackspace.org.uk/static/'
+MEDIA_URL = 'https://cdn.maidstone-hackspace.org.uk/media/'
 
 # COMPRESSOR
 # ------------------------------------------------------------------------------
-COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 COMPRESS_STORAGE = STATICFILES_STORAGE
 COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
