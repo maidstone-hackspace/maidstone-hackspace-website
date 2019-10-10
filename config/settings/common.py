@@ -523,7 +523,7 @@ CSP_FRAME_ANCESTORS = ("https://scalar.vector.im", "https://riot.im", "https://g
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://unpkg.com", "https://cdnjs.cloudflare.com", "http://code.jquery.com", "https://ams3.digitaloceanspaces.com", "https://www.google-analytics.com", "https://cdn.maidstone-hackspace.org.uk", "https://www.google.com")
 CSP_IMG_SRC = ("'self'", "'unsafe-inline'", "https://www.google-analytics.com" "https://ams3.digitaloceanspaces.com", "http://cdn.maidstone-hackspace.org.uk")
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://unpkg.com/", "https://cdnjs.cloudflare.com", "http://cdn.maidstone-hackspace.org.uk", "https://ams3.digitaloceanspaces.com", "https://maxcdn.bootstrapcdn.com/")
-CSP_DEFAULT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com", "http://cdn.maidstone-hackspace.org.uk", "https://ams3.digitaloceanspaces.com", "https://maxcdn.bootstrapcdn.com/", "https://riot.im", "https://www.google-analytics.com" "https://groups.google.com/")
+CSP_DEFAULT_SRC = ("'self'", "https://unpkg.com", "https://cdnjs.cloudflare.com", "http://cdn.maidstone-hackspace.org.uk", "https://ams3.digitaloceanspaces.com", "https://maxcdn.bootstrapcdn.com/", "https://riot.im", "https://www.google-analytics.com", "https://groups.google.com/")
 
 # Twitter messageing settings
 TWITTER_CONSUMER_KEY = env("TWITTER_CONSUMER_KEY")
