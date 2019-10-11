@@ -13,5 +13,5 @@ class DeviceAdmin(ModelAdmin):
 
 @admin.register(AccessLog)
 class AccessLogAdmin(ModelAdmin):
-    list_display = ('rfid', 'device', 'success')
+    list_display = ('rfid', 'device', 'success', 'access_date')
     list_filter = ('success',)
