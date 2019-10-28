@@ -26,8 +26,14 @@ To get started checkout the project to your machine, with the command below.
 git clone https://github.com/maidstone-hackspace/maidstone-hackspace-website.git
 #+END_SRC
 
+*** Then copy and edit `env` file
+Once checked out you need to have a `.env` file.
+The simplest way to do this is copy thr `env.example`, you can edit it as required.
+
+
 *** Then build your containers to install the sites requirements
-Once checked out build your containers locally you only need to do this when first start or if requirements change.
+Once you have your `.env` file in place you can build your containers locally.
+You only need to do this when first starting or if requirements change.
 
 #+BEGIN_SRC sh
 docker-compose -f local.yml build
