@@ -29,7 +29,14 @@ git clone https://github.com/maidstone-hackspace/maidstone-hackspace-website.git
 *** Then copy and edit `env` file
 Once checked out you need to have a `.env` file.
 The simplest way to do this is copy thr `env.example`, you can edit it as required.
-
+One edit you will need to make is to change
+#+BEGIN_SRC sh
+DJANGO_SETTINGS_MODULE=config.settings.test
+#+END_SRC
+to
+#+BEGIN_SRC sh
+DJANGO_SETTINGS_MODULE=config.settings.local 
+#+END_SRC
 
 *** Then build your containers to install the sites requirements
 Once you have your `.env` file in place you can build your containers locally.
