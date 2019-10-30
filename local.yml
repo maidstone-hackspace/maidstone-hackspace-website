@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 
 volumes:
   sockets:
@@ -7,7 +7,6 @@ volumes:
     driver: local
   postgres_backup:
     driver: local
-
 
 services:
   nginx:
@@ -48,6 +47,7 @@ services:
     depends_on:
       - postgres
       # - redis
+      - bucket
     command: python manage.py runserver 0.0.0.0:8000
     env_file: .env
     volumes:
@@ -74,7 +74,6 @@ services:
 
   redis:
     image: redis:latest
-
 
   # port 9000 by default
   bucket:
