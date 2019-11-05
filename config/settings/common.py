@@ -633,7 +633,7 @@ HUEY = {
     'backend_class': 'huey.RedisHuey',  # Use path to redis huey by default,
     'immediate': False,
     'connection': {
-        'host': 'redis',
+        'host': env("REDIS_HOST", default="redis"),
         'port': 6379,
         'db': 0,
         'connection_pool': None,  # Definitely you should use pooling!
