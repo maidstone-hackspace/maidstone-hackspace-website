@@ -71,8 +71,14 @@ mock==3.0.5
 gocardless_pro==1.11.0
 braintree==3.57.1
 
+markdown==3.1.1
+martor==1.4.3
+
 django-autofixture==0.12.1
-wiki==0.4.5
+#wiki==0.4.5
+git+https://github.com/django-wiki/django-wiki.git
+
+
 
 djangorestframework==3.10.3
 djangorestframework-jwt==1.11.0
@@ -80,7 +86,7 @@ django-filter==2.2.0
 coreapi==2.3.3
 # api libraries end
 
-martor==1.4.3
+
 
 django-spirit==0.7.1
 django-djconfig==0.10.0
