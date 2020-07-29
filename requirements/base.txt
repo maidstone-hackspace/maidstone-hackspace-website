@@ -4,7 +4,7 @@
 # Verified bug on Python 3.5.1
 wheel==0.33.6
 # Bleeding edge Django
-django==2.2.13
+django==2.2.14
 django-dynamic-filenames==1.1.4
 # Configuration
 django-environ==0.4.5
@@ -88,7 +88,7 @@ coreapi==2.3.3
 
 
 
-django-spirit==0.7.1
+django-spirit==0.8.0
 django-djconfig==0.10.0
 django-haystack==2.8.1
 django-xforwardedfor-middleware==2.0

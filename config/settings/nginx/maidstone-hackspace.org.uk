@@ -15,7 +15,7 @@ server {
     resolver 127.0.0.11;
 
     server_tokens off;
-    add_header X-Frame-Options "ALLOW-FROM riot.im";
+    add_header X-Frame-Options "ALLOW-FROM app.element.io riot.im";
     add_header X-Content-Type-Options nosniff;
     add_header X-XSS-Protection "1; mode=block";
     add_header Strict-Transport-Security max-age=15768000;
