@@ -75,7 +75,7 @@ markdown==3.1.1
 martor==1.4.3
 
 django-autofixture==0.12.1
-wiki==0.6
+wiki==0.5
 #git+https://github.com/django-wiki/django-wiki.git
 
 
