@@ -75,7 +75,7 @@ markdown==3.1.1
 martor==1.4.3
 
 django-autofixture==0.12.1
-wiki==0.5
+wiki==0.6
 #git+https://github.com/django-wiki/django-wiki.git
 
 
@@ -92,7 +92,7 @@ django-spirit==0.8.0
 django-djconfig==0.10.0
 django-haystack==2.8.1
 django-xforwardedfor-middleware==2.0
-django-csp==3.5
+django-csp==3.6
 
 # Application queue 
 huey[backends]==2.1.3
