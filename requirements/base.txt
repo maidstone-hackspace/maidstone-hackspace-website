@@ -28,7 +28,7 @@ django-stdimage==5.0.1
 django-model-utils==3.2.0
 
 # Images
-Pillow==6.2.1
+Pillow==7.2.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
@@ -75,12 +75,12 @@ markdown==3.1.1
 martor==1.4.3
 
 django-autofixture==0.12.1
-wiki==0.5
+wiki==0.6
 #git+https://github.com/django-wiki/django-wiki.git
 
 
 
-djangorestframework==3.10.3
+djangorestframework==3.11.0
 djangorestframework-jwt==1.11.0
 django-filter==2.2.0
 coreapi==2.3.3
@@ -92,7 +92,7 @@ django-spirit==0.8.0
 django-djconfig==0.10.0
 django-haystack==2.8.1
 django-xforwardedfor-middleware==2.0
-django-csp==3.5
+django-csp==3.6
 
 # Application queue 
 huey[backends]==2.1.3
