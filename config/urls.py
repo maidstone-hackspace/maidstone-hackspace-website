@@ -17,7 +17,7 @@ from mhackspace.members.views import MemberListView
 from mhackspace.subscriptions import views as subscription
 from mhackspace.base.feeds import LatestEntriesFeed
 from mhackspace.blog.feeds import RssFeed, BlogFeed, BlogCategoryFeed
-from mhackspace.base.views import markdown_uploader
+from mhackspace.base.views import markdown_uploader, StatsViewSet
 from mhackspace.blog.views import PostViewSet, CategoryViewSet, BlogPost, PostList
 from mhackspace.blog.sitemaps import PostSitemap, CategorySitemap
 from mhackspace.feeds.views import FeedViewSet, ArticleViewSet
@@ -37,6 +37,7 @@ router.register(r'posts', PostViewSet, 'posts')
 router.register(r'categories', CategoryViewSet, basename='categories')
 router.register(r'feeds', FeedViewSet, 'feeds')
 router.register(r'articles', ArticleViewSet, basename='articles')
+router.register(r'stats', StatsViewSet, basename='stats')
 router.register(r'rfid', DeviceViewSet, basename='rfid_device')
 router.register(r'rfid_auth', AuthUserWithDeviceViewSet, basename='device_auth')
 

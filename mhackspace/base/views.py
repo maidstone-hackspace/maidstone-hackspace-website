@@ -8,8 +8,20 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from rest_framework import viewsets
+from rest_framework.response import Response
+
 
 from martor.utils import LazyEncoder
+from mhackspace.users.models import Membership
+
+
+class StatsViewSet(viewsets.ViewSet):
+    def list(self, request):
+        membership_count = Membership.objects.filter(status=1).all().count()
+        membership_expired = Membership.objects.filter(status=3).all().count()
+        return Response({"membership_now": membership_count,
+                         "membership_expired": membership_count})
 
 
 @login_required
