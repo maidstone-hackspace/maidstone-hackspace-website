@@ -3,7 +3,7 @@ from __future__ import unicode_literals, absolute_import
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
+from six import python_2_unicode_compatible
 from stdimage.models import StdImageField
 from dynamic_filenames import FilePattern
 

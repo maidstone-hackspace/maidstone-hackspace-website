@@ -7,7 +7,6 @@ Stage Configurations
 """
 from __future__ import absolute_import, unicode_literals
 
-from django.utils import six
 from .common import *  # noqa
 
 
@@ -145,7 +144,7 @@ AWS_QUERYSTRING_AUTH = False
 # AWS cache settings, don't change unless you know what you're doing:
 AWS_EXPIRY = 60 * 60 * 24 * 7
 AWS_HEADERS = {
-    'Cache-Control': six.b('max-age=%d, s-maxage=%d, must-revalidate' % (
+    'Cache-Control': str.b('max-age=%d, s-maxage=%d, must-revalidate' % (
         AWS_EXPIRY, AWS_EXPIRY))
 }
 

@@ -34,11 +34,11 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 router = DefaultRouter()
 router.register(r'posts', PostViewSet, 'posts')
-router.register(r'categories', CategoryViewSet, base_name='categories')
+router.register(r'categories', CategoryViewSet, basename='categories')
 router.register(r'feeds', FeedViewSet, 'feeds')
-router.register(r'articles', ArticleViewSet, base_name='articles')
-router.register(r'rfid', DeviceViewSet, base_name='rfid_device')
-router.register(r'rfid_auth', AuthUserWithDeviceViewSet, base_name='device_auth')
+router.register(r'articles', ArticleViewSet, basename='articles')
+router.register(r'rfid', DeviceViewSet, basename='rfid_device')
+router.register(r'rfid_auth', AuthUserWithDeviceViewSet, basename='device_auth')
 
 
 sitemaps = {
