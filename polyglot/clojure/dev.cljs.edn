@@ -1,0 +1,8 @@
+{:output-to "resources/public/cljs-out/dev-main.js"
+ :open-url "http://[[server-hostname]]/[[server-port]]/matrix.html"
+ :optimizations :none
+ :pretty-print true
+ :source-map true
+ :source-map-timestamp true
+ :devcards true
+ :main core}
