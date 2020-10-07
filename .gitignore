@@ -15,3 +15,5 @@ maidstone/static/*
 mhackspace/static/*
 bucket/*
 mhackspace/static/*
+.cpcache
+/polyglot/clojure/resources/public/cljs-out/
