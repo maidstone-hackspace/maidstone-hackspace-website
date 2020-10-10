@@ -1,0 +1,9 @@
+:443 {
+  root * /var/www/embed/matrix/
+  file_server
+}
+
+matrix.maidstone-hackspace.org.uk:443 {
+  root * /var/www/embed/matrix/
+  file_server
+}
