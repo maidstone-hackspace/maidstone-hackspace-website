@@ -13,14 +13,14 @@ if os.environ.get('USE_DOCKER') == 'yes':
     ip = socket.gethostbyname(socket.gethostname())
     INTERNAL_IPS += [ip[:-1] + "1"]
 
-MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
-INSTALLED_APPS += ('debug_toolbar', )
-DEBUG_TOOLBAR_CONFIG = {
-    'DISABLE_PANELS': [
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    ],
-    'SHOW_TEMPLATE_CONTEXT': True,
-}
+#MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
+#INSTALLED_APPS += ('debug_toolbar', )
+#DEBUG_TOOLBAR_CONFIG = {
+#    'DISABLE_PANELS': [
+#        'debug_toolbar.panels.redirects.RedirectsPanel',
+#    ],
+#    'SHOW_TEMPLATE_CONTEXT': True,
+#}
 
 
 # TESTING
@@ -108,8 +108,10 @@ PAYMENT_PROVIDERS['gocardless']['redirect_url'] = 'http://127.0.0.1:8180'
 # ------------------------------------------------------------------------------
 COMPRESS_ENABLED = env.bool('COMPRESS_ENABLED', default=True)
 COMPRESS_STORAGE = STATICFILES_STORAGE
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-}
 
+CSP_FRAME_ANCESTORS = ("*")
+CSP_SCRIPT_SRC = ("*")
+CSP_IMG_SRC = ("*")
+CSP_STYLE_SRC = ("*")
+CSP_DEFAULT_SRC = ("*")
 

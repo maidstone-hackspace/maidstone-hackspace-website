@@ -1,0 +1,13 @@
+{:deps {org.clojure/clojure {:mvn/version "1.10.0"}
+        org.clojure/clojurescript {:mvn/version "1.10.764"}
+        org.clojure/test.check {:mvn/version "0.10.0"}
+        com.bhauman/figwheel-main {:mvn/version "0.2.11"}
+        reagent {:mvn/version "1.0.0-alpha2"}
+        reagent-utils {:mvn/version "0.3.3"} 
+        cljs-ajax {:mvn/version "0.8.0"} ;;ajax library
+
+        metosin/reitit {:mvn/version "0.5.6"}
+        metosin/reitit-frontend {:mvn/version "0.5.6"}
+        }
+ :paths ["src" "resources"]}
+

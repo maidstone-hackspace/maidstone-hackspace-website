@@ -1,0 +1,6 @@
+{
+ :open-url "http://[[server-hostname]]:[[server-port]]/matrix.html"
+ :target-dir "resources"
+ :watch-dirs ["src"]
+; :css-dirs ["resources/public/css"]
+}

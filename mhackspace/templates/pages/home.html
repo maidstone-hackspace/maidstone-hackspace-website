@@ -1,27 +1,34 @@
 {% extends "base.html" %}
 {% load feed_views %}
 {% load banner_images %}
-{% load static from staticfiles %}
+{% load static from static %}
 
 {% block content %}
 
   {% show_banner_images %}
 
 <section>
-            <h3>Visit us on Wednesdays</h3>
+            <h3>We are currently operating as a virtual makerspace due to COVID-19</h3>
             <p>
-              We hold open evenings <strong>every wednesday</strong> from <strong>5:30pm</strong> till <strong> 8:00pm </strong>
-                where members and non-members can visit and hang out, work on projects, socialise, and collaborate.
+                To join the video conference use <a href="https://meet.jit.si/maidstone-hackspace"> follow this link, check in the chat but this will run on Wednesday evening possibly other if people want to use it.</a>
+                </p>
+            <p>
+
+                To join in discussion visit <a href="https://app.element.io/#/room/#maidstone-hackspace:matrix.org"> the chat room and say hi. </a>.
+                </p>
+            <p>
+              You can join us <strong>any Wednesday evening</strong> from <strong>5:30pm</strong> until <strong> 8:00pm </strong>
+                where anyone can hang out and work on projects while socialising at the same time.
                 <a href="{% url 'about' %}">Learn more</a>.
             </p>
         </section>
 
   <h3>Introduction</h3>
-  <p>Hackspaces (also known as makerspaces) are a shared space where artists, designers, makers, hackers, programmers, tinkerers, professionals and hobbyists can work on their projects, share knowledge and collaborate.</p>
+  <p>Hackspaces (also known as Makerspaces) are a shared space in which artists, designers, makers, hackers, programmers, tinkerers, professionals and hobbyists can work on their projects, share knowledge and collaborate.</p>
 
-  <p>We now how a space as of March 2017, we are now in the process of kitting it out with tools to facilitate working on your projects. At the moment, communication is via a <a href="https://groups.google.com/forum/#!forum/maidstone-hackspace">mailing list</a>, email, and <a href="https://riot.im/app/#/room/#maidstone-hackspace:matrix.org">Chat</a>. If you're at all intrested please join our mailing list and say hi.</p>
+  <p>Our space is kitted out with tools to facilitate working on your projects. You can contact via a <a href="https://groups.google.com/forum/#!forum/maidstone-hackspace">mailing list</a>, email, and <a href="https://app.element.io/#/room/#maidstone-hackspace:matrix.org">Chat</a>. If you're intrested please join our mailing list and come say hey.</p>
 
-  <p>If you would like to visit us <a href="https://www.google.co.uk/maps/place/Maidstone+Community+Support+Centre/@51.2743759,0.5252557,17z/data=!3m1!4b1!4m5!3m4!1s0x47df32307962b7b3:0x8478b1177ec21ef7!8m2!3d51.2743759!4d0.5274444">click here</a> for a map, and check the <a href="https://groups.google.com/forum/#!forum/maidstone-hackspace">mailing list</a> for when we are at the space, we recommend contacting us to avoid disapointment.</p>
+  <p>If you would like to visit us <a href="https://www.google.co.uk/maps/place/Maidstone+Community+Support+Centre/@51.2743759,0.5252557,17z/data=!3m1!4b1!4m5!3m4!1s0x47df32307962b7b3:0x8478b1177ec21ef7!8m2!3d51.2743759!4d0.5274444">click here</a> for a map, and check the <a href="https://groups.google.com/forum/#!forum/maidstone-hackspace">mailing list</a> for when we are at the space, we recommend contacting us to avoid disappointment.</p>
 
   {% show_feeds %}
 {% endblock content %}
@@ -34,3 +41,5 @@
  });
 </script>
 {% endblock %}
+
+
