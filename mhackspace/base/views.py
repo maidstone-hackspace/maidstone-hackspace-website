@@ -27,7 +27,7 @@ class StatsViewSet(viewsets.ViewSet):
 @login_required
 def markdown_uploader(request):
     """
-    Makdown image upload for locale storage
+    Makdown image upload for local storage
     and represent as json to markdown editor.
     """
     if request.method == 'POST' and request.is_ajax():

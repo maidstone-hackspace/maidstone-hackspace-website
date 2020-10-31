@@ -49,7 +49,7 @@ def send_email(
 
 @task()
 def matrix_message(message, prefix="", room="default"):
-    # we dont rely on theses, so ignore if it goes wrong
+    # we dont rely on these, so ignore if it goes wrong
     # TODO at least log that something has gone wrong
     try:
         # login
