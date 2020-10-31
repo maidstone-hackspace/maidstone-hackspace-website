@@ -22,7 +22,7 @@ class UserRequest(models.Model):
         settings.AUTH_USER_MODEL, related_name="+", on_delete=models.CASCADE
     )
     title = models.CharField(
-        max_length=255, help_text="Whats being requested ?"
+        max_length=255, help_text="What is being requested?"
     )
     request_type = models.IntegerField(choices=REQUEST_TYPES, null=False)
     acquired = models.BooleanField(default=False)
@@ -32,7 +32,7 @@ class UserRequest(models.Model):
         help_text="Leave blank, if no associated cost, or add estimated cost if not sure.",
     )
     description = MartorField(
-        help_text="detail of what's being requested and where it can be purchased"
+        help_text="detail of what is being requested, and where it can be purchased."
     )
     created_date = models.DateTimeField(default=timezone.now)
 
