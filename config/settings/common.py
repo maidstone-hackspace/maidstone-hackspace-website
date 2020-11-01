@@ -130,7 +130,6 @@ THIRD_PARTY_APPS = (
     "spirit.topic.favorite",
     "spirit.topic.moderate",
     "spirit.topic.notification",
-    "spirit.topic.poll",  # todo: remove in Spirit v0.6
     "spirit.topic.private",
     "spirit.topic.unread",
     "spirit.comment",
@@ -617,6 +616,7 @@ ST_UPLOAD_IMAGE_ENABLED = True
 ST_UPLOAD_FILE_ENABLED = True
 
 ST_TESTS_RATELIMIT_NEVER_EXPIRE = False
+ST_SITE_URL = "https://maidstone-hackspace.org.uk/"
 ST_BASE_DIR = os.path.dirname(__file__)
 #   ST is Spirit forum software config
 
