@@ -144,7 +144,7 @@ AWS_QUERYSTRING_AUTH = False
 # AWS cache settings, don't change unless you know what you're doing:
 AWS_EXPIRY = 60 * 60 * 24 * 7
 AWS_HEADERS = {
-    'Cache-Control': str.b('max-age=%d, s-maxage=%d, must-revalidate' % (
+    'Cache-Control': str.encode('max-age=%d, s-maxage=%d, must-revalidate' % (
         AWS_EXPIRY, AWS_EXPIRY))
 }
 
