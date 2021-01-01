@@ -169,7 +169,7 @@ AWS_HEADERS = {
 }
 
 AWS_S3_SECURE_URLS = True
-AWS_S3_ENDPOINT_URL = 'https://ams3.digitaloceanspaces.com'
+AWS_S3_ENDPOINT_URL = env('BUCKET_URL', 'https://fra1.digitaloceanspaces.com')
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
