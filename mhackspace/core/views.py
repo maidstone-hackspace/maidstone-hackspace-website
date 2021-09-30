@@ -28,7 +28,7 @@ class StatusView(TemplateView):
         context["members"] = membership_count
         context["members_expired"] = membership_expired
 
-        access = AccessLog.objects.order_by("access_date").first()
+        access = AccessLog.objects.order_by("access_date").desc().first()
         context["space_access"] = {
             "user": access.rfid.user.username,
             "date": access.access_date,
