@@ -17,3 +17,4 @@ bucket/*
 mhackspace/static/*
 .cpcache
 /polyglot/clojure/resources/public/cljs-out/
+static
