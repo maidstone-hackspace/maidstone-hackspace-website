@@ -392,7 +392,7 @@ ACCOUNT_ALLOW_REGISTRATION = env.bool(
 ACCOUNT_ADAPTER = "mhackspace.users.adapters.AccountAdapter"
 SOCIALACCOUNT_ADAPTER = "mhackspace.users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_QUERY_EMAIL = True
-
+ACCOUNT_DEFAULT_HTTP_PROTOCOL='https'
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = "users.User"
@@ -402,7 +402,7 @@ WIKI_ACCOUNT_HANDLING = False
 # WIKI_EDITOR_INCLUDE_JAVASCRIPT = False
 EDITOR_INCLUDE_JAVASCRIPT = False
 
-
+MARTOR_THEME = 'bootstrap'
 MARTOR_ENABLE_CONFIGS = {
     'imgur': 'true',     # to enable/disable imgur uploader/custom uploader.
     'mention': 'true',   # to enable/disable mention
