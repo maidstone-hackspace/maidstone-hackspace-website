@@ -51,6 +51,7 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
             rfid = Rfid.objects.get(code=data["rfid_code"])
         except Rfid.DoesNotExist:
             logger.warning(f"Unable to find valid rfid {data['rfid_code']}")
+            rfid = Rfid.objects.create(code=data["rfid_code"], description="Code not registered to user")
             AccessLog.objects.create(rfid=rfid, device=device, success=False)
             return Response(status=status.HTTP_404_NOT_FOUND)
         try:
