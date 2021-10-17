@@ -47,17 +47,19 @@ class AuthUserWithDeviceViewSet(viewsets.ViewSet):
 
         if data.get("rfid_code") is None or data.get("rfid_code") is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            device = Device.objects.get(identifier=data["device_id"])
+        except Device.DoesNotExist:
+            logger.warning(f"Unable to find valid device {data['device_id']}")
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         try:
             rfid = Rfid.objects.get(code=data["rfid_code"])
         except Rfid.DoesNotExist:
             logger.warning(f"Unable to find valid rfid {data['rfid_code']}")
             rfid = Rfid.objects.create(code=data["rfid_code"], description="Code not registered to user")
             AccessLog.objects.create(rfid=rfid, device=device, success=False)
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        try:
-            device = Device.objects.get(identifier=data["device_id"])
-        except Device.DoesNotExist:
-            logger.warning(f"Unable to find valid device {data['device_id']}")
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         try:
