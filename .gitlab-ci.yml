@@ -15,13 +15,13 @@ buildcaddy:
   script:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -f compose/caddy/Dockerfile -t registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-caddy:latest .
-    - docker push registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-caddy:latest
+    - docker build -f compose/caddy/Dockerfile -t registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-website/caddy:latest .
+    - docker push registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-website/caddy:latest
 
 build:
   stage: build
   script:
     - docker info
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-website:latest .
-    - docker push registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-website:latest
+    - docker build -t registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-website/django:latest .
+    - docker push registry.gitlab.com/maidstone-hackspace/maidstone-hackspace-website/django:latest
