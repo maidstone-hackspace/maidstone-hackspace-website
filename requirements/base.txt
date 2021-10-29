@@ -76,7 +76,7 @@ markdown==3.3.3
 martor==1.6.4
 
 django-autofixture==0.12.1
-wiki==0.7.1
+wiki==0.7.8
 #git+https://github.com/django-wiki/django-wiki.git
 
 
@@ -87,7 +87,7 @@ django-filter==2.4.0
 coreapi==2.3.3
 # api libraries end
 
-django-spirit==0.12.0
+django-spirit==0.12.2
 django-djconfig==0.10.0
 django-haystack==3.0
 django-xforwardedfor-middleware==2.0
