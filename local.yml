@@ -81,8 +81,20 @@ services:
     env_file: .env
     volumes:
       - ./bucket:/data
-    command: server --config-dir /tmp/minio /data
+    command: server --console-address ":9001" --config-dir /tmp/minio /data
 
   directory:
     image: osixia/openldap:1.2.0
     env_file: .env
+
+  bucketInit:
+    build: .
+    env_file: .env
+    image: bucket
+    command: mkdir -p /data/$BUCKET_NAME
+    volumes:
+      - ./bucket:/data
+    links:
+      - bucket
+    depends_on:
+      - bucket
