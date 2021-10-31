@@ -28,7 +28,7 @@ git clone https://github.com/maidstone-hackspace/maidstone-hackspace-website.git
 
 *** Then copy and edit `env` file
 Once checked out you need to have a `.env` file.
-The simplest way to do this is copy thr `env.example`, you can edit it as required.
+The simplest way to do this is copy the `env.example`, you can edit it as required.
 One edit you will need to make is to change
 #+BEGIN_SRC sh
 DJANGO_SETTINGS_MODULE=config.settings.test
@@ -45,6 +45,16 @@ You only need to do this when first starting or if requirements change.
 #+BEGIN_SRC sh
 docker-compose -f local.yml build
 #+END_SRC
+
+If you receive a similar error to the following:
+#+BEGIN_SRC sh
+    with open(full_path, 'rb') as f:
+PermissionError: [Errno 13] Permission denied: 'maidstone-hackspace-website/bucket/.minio.sys/format.json'
+#+END_SRC
+This is because internally docker runs as root and so files created on your file system may be created as root.
+
+You can either re-run with `sudo` or delete the entire `bucket/.minio.sys` folder.
+
 
 *** Next start your new containers containing a database and django
 
