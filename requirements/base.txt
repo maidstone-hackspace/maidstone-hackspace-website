@@ -87,7 +87,7 @@ django-filter==2.4.0
 coreapi==2.3.3
 # api libraries end
 
-django-spirit==0.12.2
+django-spirit==0.12.3
 django-djconfig==0.10.0
 django-haystack==3.0
 django-xforwardedfor-middleware==2.0
