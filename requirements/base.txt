@@ -3,7 +3,7 @@
 # See http://bitly.com/wheel-building-fails-CPython-35
 # Verified bug on Python 3.5.1
 six==1.15.0
-wheel==0.35.1
+wheel==0.38.1
 # Bleeding edge Django
 django==3.1.13
 django-dynamic-filenames==1.1.4
